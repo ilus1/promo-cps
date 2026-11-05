@@ -1,0 +1,14 @@
+[Unit]
+Description=Promo CPS watchdog (checks /api/health and notifies)
+Documentation=file:///home/fernando/projetos/promo-cps/README.md
+
+[Service]
+Type=oneshot
+TimeoutStartSec=2min
+WorkingDirectory=/home/fernando/projetos/promo-cps
+Environment=PATH=/home/fernando/.nvm/versions/node/v22.13.1/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PROMO_URL=http://127.0.0.1:8510
+ExecStart=/home/fernando/.nvm/versions/node/v22.13.1/bin/node node_modules/tsx/dist/cli.mjs scripts/watchdog.ts
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=promo-cps-watchdog

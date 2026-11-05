@@ -1,0 +1,9 @@
+[Unit]
+Description=Run the Promo CPS watchdog hourly
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1h
+
+[Install]
+WantedBy=timers.target

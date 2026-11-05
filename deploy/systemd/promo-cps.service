@@ -1,0 +1,29 @@
+[Unit]
+Description=Promo CPS (Next.js) on port 8510
+Documentation=file:///home/fernando/projetos/promo-cps/README.md
+After=graphical-session.target
+PartOf=graphical-session.target
+StartLimitBurst=10
+StartLimitIntervalSec=120
+
+[Service]
+Type=simple
+WorkingDirectory=/home/fernando/projetos/promo-cps
+Environment=NODE_ENV=production
+# The login window and notify-send need the desktop session's DISPLAY and DBUS
+# address, which the user manager holds, so this unit follows the graphical session.
+# Pinned Node (.nvmrc) first; Chrome, Xvfb and notify-send resolve from the rest.
+Environment=PATH=/home/fernando/.nvm/versions/node/v22.13.1/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/bin/sh -c 'set -a && . ./.env && exec node node_modules/next/dist/bin/next start -H 127.0.0.1 -p "$${PORT:-8510}"'
+Restart=always
+RestartSec=10
+KillSignal=SIGTERM
+SuccessExitStatus=143
+KillMode=control-group
+TimeoutStopSec=40
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=promo-cps
+
+[Install]
+WantedBy=graphical-session.target
