@@ -1,0 +1,1 @@
+ALTER TABLE "items" ADD COLUMN "seen_price_cents" integer;

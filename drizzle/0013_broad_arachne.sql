@@ -1,0 +1,1 @@
+ALTER TABLE "price_checks" ADD COLUMN "second_low_cents" integer;

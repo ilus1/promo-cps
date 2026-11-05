@@ -1,0 +1,1 @@
+CREATE INDEX "alert_hits_item_idx" ON "alert_hits" USING btree ("item_id");

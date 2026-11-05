@@ -1,0 +1,1 @@
+ALTER TABLE "coupons" ADD COLUMN "discovery_priority_at" timestamp with time zone;

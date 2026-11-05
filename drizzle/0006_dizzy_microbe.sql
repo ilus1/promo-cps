@@ -1,0 +1,2 @@
+CREATE INDEX "sources_type_seen_idx" ON "item_sources" USING btree ("source_type","last_seen_at");--> statement-breakpoint
+CREATE INDEX "items_status_observed_idx" ON "items" USING btree ("status","observed_at");

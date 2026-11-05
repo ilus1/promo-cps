@@ -1,0 +1,1 @@
+ALTER TABLE "searches" ADD COLUMN "last_items" integer;
