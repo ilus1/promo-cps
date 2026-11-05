@@ -1,0 +1,1299 @@
+{
+  "getResultsPromise": {
+    "status": "fulfilled",
+    "value": {
+      "optimizedResponse": {
+        "results": [
+          {
+            "id": "POLYCARD",
+            "polycard": {
+              "unique_id": "OjbLd9J15NcrOH_OaFMJIqzREOEakUyhJrF6NLGxIDs",
+              "metadata": {
+                "id": "MLB4062725089",
+                "product_id": "MLB2039137119",
+                "variation_id": "MLB2039137119",
+                "pid": "MLBF2039137119_MLB4062725089",
+                "pid_extended": "MLBF2039137119_MLB4062725089",
+                "pid_family": "MLBF2039137119",
+                "pid_version": "0.6.0",
+                "url": "www.mercadolivre.com.br/lexar-nm790-1tb-ssd-heatsink-pcie-gen4-nvme-m2-7400mbs/p/MLB2039137119",
+                "url_fragments": "#polycard_client=search-desktop&be_origin=searchv2&overlay_label=not_apply&search_layout=grid&position=1&type=product&tracking_id=5e36be08-e214-45c1-968f-494c2aa23332&overlay_label_capability=not_apply&wid=MLB4062725089&sid=search",
+                "url_params": "?pdp_filters=item_id%3AMLB4062725089",
+                "tracks": {
+                  "sold_quantity": null
+                },
+                "card_type": "grid-card",
+                "signal": {
+                  "pid": "MLBF2039137119_MLB4062725089",
+                  "pid_extended": "MLBF2039137119_MLB4062725089",
+                  "pid_family": "MLBF2039137119",
+                  "pid_version": "0.6.0",
+                  "item_id": "MLB4062725089",
+                  "surface": "search",
+                  "section": "search-results",
+                  "source_id": "5e36be08-e214-45c1-968f-494c2aa23332",
+                  "layout": "grid",
+                  "prc": 1546,
+                  "prc_currency": "BRL",
+                  "inst_amount": 154.61,
+                  "inst_currency": "BRL",
+                  "inst_issuer": "credit_card",
+                  "inst_psj": 10
+                },
+                "vertical_id": "CORE",
+                "is_pad": "false",
+                "category_id": "MLB58441",
+                "category_path": "MLB1144,MLB438579,MLB438637,MLB58441",
+                "domain_id": "MLB-HARD_DRIVES_AND_SSDS",
+                "item_position": "1",
+                "price_per_quantity": "false",
+                "pxu_b2b": "false",
+                "bulk_sale": "false"
+              },
+              "pictures": {
+                "scale": "FILL",
+                "pictures": [
+                  {
+                    "id": "867655-CBT84715099467_052025"
+                  }
+                ],
+                "square": "Q",
+                "alt_text": "Imagem",
+                "overlay": true,
+                "ratio": "1"
+              },
+              "bookmark": {
+                "alt_text": "Favorito",
+                "alt_text_active": "Adicionar aos favoritos",
+                "alt_text_inactive": "Remover dos favoritos",
+                "bookmarked": false
+              },
+              "components": [
+                {
+                  "type": "title",
+                  "id": "title",
+                  "title": {
+                    "text": "Lexar 1tb Nm790 Ssd With Heatsink Pcie Gen4 Nvme M.2 2280...",
+                    "long_title": false,
+                    "title_tag": "h3"
+                  }
+                },
+                {
+                  "type": "price",
+                  "id": "price_v2",
+                  "price": {
+                    "current_price": {
+                      "value": 1546,
+                      "currency": "BRL",
+                      "weight": "regular"
+                    },
+                    "installments": {
+                      "text": "10x {price} sem juros",
+                      "no_interest": true,
+                      "values": [
+                        {
+                          "key": "price",
+                          "type": "price",
+                          "price": {
+                            "value": 154.61,
+                            "currency": "BRL"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "promotions",
+                  "id": "promotions",
+                  "promotions": [
+                    {
+                      "type": "coupon",
+                      "text": "{1} com Cupom",
+                      "values": [
+                        {
+                          "key": "1",
+                          "type": "price",
+                          "price": {
+                            "value": 1526.06,
+                            "currency": "BRL"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "shipping_v2",
+                  "id": "shipping_v2",
+                  "shipping_v2": [
+                    {
+                      "version": "1",
+                      "text": "{free_shipping_single} {new_buyer}",
+                      "values": [
+                        {
+                          "type": "pill",
+                          "key": "free_shipping_single",
+                          "styles": {
+                            "color": "#00A650",
+                            "font_weight": "semibold",
+                            "background_color": "#E5F6ED",
+                            "padding": "0 6 0 6",
+                            "border_radius": "20 20 20 20"
+                          },
+                          "pill": {
+                            "text": "{shipping_truck_quiet_icon} Grátis",
+                            "values": [
+                              {
+                                "type": "icon",
+                                "key": "shipping_truck_quiet_icon",
+                                "icon": {
+                                  "key": "shipping_truck_quiet_icon"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "label",
+                          "key": "new_buyer",
+                          "styles": {
+                            "color": "#000000E6",
+                            "font_weight": "regular"
+                          },
+                          "label": {
+                            "text": "por ser sua primeira compra",
+                            "alt_text": "por ser sua primeira compra"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "cbt",
+                  "id": "cbt",
+                  "cbt": {
+                    "text": "{icon_cbt_new_fit} {country_text}",
+                    "alt_text": "Internacional USA",
+                    "values": [
+                      {
+                        "key": "icon_cbt_new_fit",
+                        "type": "icon",
+                        "icon": {
+                          "key": "icon_cbt_new_fit"
+                        }
+                      },
+                      {
+                        "key": "country_text",
+                        "type": "label",
+                        "label": {
+                          "text": "EUA"
+                        },
+                        "styles": {
+                          "color_hex": "#666666",
+                          "font_size": "s",
+                          "font_weight": "regular",
+                          "font_style": "normal"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "POLYCARD",
+            "polycard": {
+              "unique_id": "faZtudtE3fLW_8xsWLOX4kf3YbBRPjcztqNEaN_LTV4",
+              "metadata": {
+                "id": "MLB7911640588",
+                "product_id": "MLB48078783",
+                "user_product_id": "MLBU5702278035",
+                "variation_id": "MLB48078783",
+                "pid": "MLBP48078783",
+                "pid_extended": "MLBP48078783_MLB7911640588",
+                "pid_family": "MLBP48078770",
+                "pid_version": "0.6.0",
+                "url": "www.mercadolivre.com.br/ssd-wdblack-sn7100-1-tb-m2-2280-nvme-pcie-gen-40-para-notebook-e-pc/p/MLB48078783",
+                "url_fragments": "#polycard_client=search-desktop&be_origin=searchv2&overlay_label=not_apply&search_layout=grid&position=2&type=product&tracking_id=5e36be08-e214-45c1-968f-494c2aa23332&overlay_label_capability=not_apply&wid=MLB7911640588&sid=search",
+                "url_params": "?pdp_filters=item_id%3AMLB7911640588",
+                "tracks": {
+                  "sold_quantity": 500
+                },
+                "card_type": "grid-card",
+                "signal": {
+                  "pid": "MLBP48078783",
+                  "pid_extended": "MLBP48078783_MLB7911640588",
+                  "pid_family": "MLBP48078770",
+                  "pid_version": "0.6.0",
+                  "item_id": "MLB7911640588",
+                  "surface": "search",
+                  "section": "search-results",
+                  "source_id": "5e36be08-e214-45c1-968f-494c2aa23332",
+                  "layout": "grid",
+                  "prc": 1625,
+                  "prc_currency": "BRL",
+                  "inst_amount": 156.19,
+                  "inst_currency": "BRL",
+                  "inst_issuer": "credit_card",
+                  "inst_pcj": 12
+                },
+                "vertical_id": "CORE",
+                "is_pad": "false",
+                "category_id": "MLB58441",
+                "category_path": "MLB1144,MLB438579,MLB438637,MLB58441",
+                "domain_id": "MLB-HARD_DRIVES_AND_SSDS",
+                "item_position": "2",
+                "price_per_quantity": "false",
+                "pxu_b2b": "false",
+                "bulk_sale": "false"
+              },
+              "pictures": {
+                "scale": "FILL",
+                "pictures": [
+                  {
+                    "id": "923501-MLA99955414229_112025"
+                  }
+                ],
+                "square": "Q",
+                "alt_text": "Imagem",
+                "overlay": true,
+                "ratio": "1"
+              },
+              "bookmark": {
+                "alt_text": "Favorito",
+                "alt_text_active": "Adicionar aos favoritos",
+                "alt_text_inactive": "Remover dos favoritos",
+                "bookmarked": false
+              },
+              "components": [
+                {
+                  "type": "title",
+                  "id": "title",
+                  "title": {
+                    "text": "SSD WD_BLACK SN7100 1 TB M.2 2280 NVMe PCIe Gen 4.0 para Notebook e PC",
+                    "long_title": false,
+                    "title_tag": "h3"
+                  }
+                },
+                {
+                  "type": "review_compacted",
+                  "id": "review_compacted",
+                  "review_compacted": {
+                    "text": "{icon_star_fill} {label} {label2}",
+                    "alt_text": "Classificação 4.9 de 5 estrelas. Mais de 500 produtos vendidos.",
+                    "values": [
+                      {
+                        "key": "icon_star_fill",
+                        "type": "icon",
+                        "icon": {
+                          "key": "icon_star_fill",
+                          "icon_id": "icon_star_fill"
+                        }
+                      },
+                      {
+                        "key": "label",
+                        "type": "label",
+                        "label": {
+                          "text": "4.9"
+                        }
+                      },
+                      {
+                        "key": "label2",
+                        "type": "label",
+                        "label": {
+                          "text": "| +500 vendidos"
+                        },
+                        "styles": {
+                          "color_hex": "#737373"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "price",
+                  "id": "price_v2",
+                  "price": {
+                    "current_price": {
+                      "value": 1625,
+                      "currency": "BRL",
+                      "weight": "regular"
+                    },
+                    "installments": {
+                      "text": "12x {price}",
+                      "no_interest": false,
+                      "values": [
+                        {
+                          "key": "price",
+                          "type": "price",
+                          "price": {
+                            "value": 156.19,
+                            "currency": "BRL"
+                          }
+                        }
+                      ],
+                      "styles": {
+                        "color": "primary"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "shipping_v2",
+                  "id": "shipping_v2",
+                  "shipping_v2": [
+                    {
+                      "version": "1",
+                      "text": "{free_shipping_single} {new_buyer}",
+                      "values": [
+                        {
+                          "type": "pill",
+                          "key": "free_shipping_single",
+                          "styles": {
+                            "color": "#00A650",
+                            "font_weight": "semibold",
+                            "background_color": "#E5F6ED",
+                            "padding": "0 6 0 6",
+                            "border_radius": "20 20 20 20"
+                          },
+                          "pill": {
+                            "text": "{shipping_truck_quiet_icon} Grátis",
+                            "values": [
+                              {
+                                "type": "icon",
+                                "key": "shipping_truck_quiet_icon",
+                                "icon": {
+                                  "key": "shipping_truck_quiet_icon"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "label",
+                          "key": "new_buyer",
+                          "styles": {
+                            "color": "#000000E6",
+                            "font_weight": "regular"
+                          },
+                          "label": {
+                            "text": "por ser sua primeira compra",
+                            "alt_text": "por ser sua primeira compra"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "POLYCARD",
+            "polycard": {
+              "unique_id": "uoszDHuuXWXuspFmZrBU5TaR9EcOuxilOqtuOcYXqII",
+              "metadata": {
+                "id": "MLB7358533826",
+                "product_id": "MLB40283493",
+                "variation_id": "MLB40283493",
+                "pid": "MLBP40283493",
+                "pid_extended": "MLBP40283493_MLB7358533826",
+                "pid_family": "MLBP40283492",
+                "pid_version": "0.6.0",
+                "url": "www.mercadolivre.com.br/ssd-1tb-m2-2280-nvme-sandisk-extreme-pcie-gen-40-sdssdx3n-1t00-velocidade-de-leitura-ate-5150mbs-e-gravacao-ate-4900mbs-cor-preto/p/MLB40283493",
+                "url_fragments": "#polycard_client=search-desktop&be_origin=searchv2&overlay_label=not_apply&search_layout=grid&position=3&type=product&tracking_id=5e36be08-e214-45c1-968f-494c2aa23332&overlay_label_capability=not_apply&wid=MLB7358533826&sid=search",
+                "url_params": "?pdp_filters=item_id%3AMLB7358533826",
+                "tracks": {
+                  "sold_quantity": 100
+                },
+                "card_type": "grid-card",
+                "signal": {
+                  "pid": "MLBP40283493",
+                  "pid_extended": "MLBP40283493_MLB7358533826",
+                  "pid_family": "MLBP40283492",
+                  "pid_version": "0.6.0",
+                  "item_id": "MLB7358533826",
+                  "surface": "search",
+                  "section": "search-results",
+                  "source_id": "5e36be08-e214-45c1-968f-494c2aa23332",
+                  "layout": "grid",
+                  "prc": 1160,
+                  "prc_currency": "BRL",
+                  "inst_amount": 116.03,
+                  "inst_currency": "BRL",
+                  "inst_issuer": "credit_card",
+                  "inst_psj": 10
+                },
+                "vertical_id": "CORE",
+                "is_pad": "false",
+                "category_id": "MLB58441",
+                "category_path": "MLB1144,MLB438579,MLB438637,MLB58441",
+                "domain_id": "MLB-HARD_DRIVES_AND_SSDS",
+                "item_position": "3",
+                "price_per_quantity": "false",
+                "pxu_b2b": "false",
+                "bulk_sale": "false"
+              },
+              "pictures": {
+                "scale": "FILL",
+                "pictures": [
+                  {
+                    "id": "927734-MLA99953105855_112025"
+                  }
+                ],
+                "square": "Q",
+                "alt_text": "Imagem",
+                "overlay": true,
+                "ratio": "1"
+              },
+              "bookmark": {
+                "alt_text": "Favorito",
+                "alt_text_active": "Adicionar aos favoritos",
+                "alt_text_inactive": "Remover dos favoritos",
+                "bookmarked": false
+              },
+              "components": [
+                {
+                  "type": "title",
+                  "id": "title",
+                  "title": {
+                    "text": "SSD 1TB M.2 2280 NVMe Sandisk Extreme PCIe Gen 4.0 SDSSDX3N-1T00 Velocidade de Leitura até 5150MB/s e Gravação até 4900MB/s Cor Preto",
+                    "long_title": false,
+                    "title_tag": "h3"
+                  }
+                },
+                {
+                  "type": "review_compacted",
+                  "id": "review_compacted",
+                  "review_compacted": {
+                    "text": "{icon_star_fill} {label} {label2}",
+                    "alt_text": "Classificação 5.0 de 5 estrelas. Mais de 100 produtos vendidos.",
+                    "values": [
+                      {
+                        "key": "icon_star_fill",
+                        "type": "icon",
+                        "icon": {
+                          "key": "icon_star_fill",
+                          "icon_id": "icon_star_fill"
+                        }
+                      },
+                      {
+                        "key": "label",
+                        "type": "label",
+                        "label": {
+                          "text": "5.0"
+                        }
+                      },
+                      {
+                        "key": "label2",
+                        "type": "label",
+                        "label": {
+                          "text": "| +100 vendidos"
+                        },
+                        "styles": {
+                          "color_hex": "#737373"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "price",
+                  "id": "price_v2",
+                  "price": {
+                    "current_price": {
+                      "value": 1160,
+                      "currency": "BRL",
+                      "weight": "regular"
+                    },
+                    "installments": {
+                      "text": "10x {price} sem juros",
+                      "no_interest": true,
+                      "values": [
+                        {
+                          "key": "price",
+                          "type": "price",
+                          "price": {
+                            "value": 116.03,
+                            "currency": "BRL"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "promotions",
+                  "id": "promotions",
+                  "promotions": [
+                    {
+                      "type": "coupon",
+                      "text": "{1} com Cupom",
+                      "values": [
+                        {
+                          "key": "1",
+                          "type": "price",
+                          "price": {
+                            "value": 1140.25,
+                            "currency": "BRL"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "shipping_v2",
+                  "id": "shipping_v2",
+                  "shipping_v2": [
+                    {
+                      "version": "1",
+                      "text": "{free_shipping_single} {new_buyer}",
+                      "values": [
+                        {
+                          "type": "pill",
+                          "key": "free_shipping_single",
+                          "styles": {
+                            "color": "#00A650",
+                            "font_weight": "semibold",
+                            "background_color": "#E5F6ED",
+                            "padding": "0 6 0 6",
+                            "border_radius": "20 20 20 20"
+                          },
+                          "pill": {
+                            "text": "{shipping_truck_quiet_icon} Grátis",
+                            "values": [
+                              {
+                                "type": "icon",
+                                "key": "shipping_truck_quiet_icon",
+                                "icon": {
+                                  "key": "shipping_truck_quiet_icon"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "label",
+                          "key": "new_buyer",
+                          "styles": {
+                            "color": "#000000E6",
+                            "font_weight": "regular"
+                          },
+                          "label": {
+                            "text": "por ser sua primeira compra",
+                            "alt_text": "por ser sua primeira compra"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "cbt",
+                  "id": "cbt",
+                  "cbt": {
+                    "text": "{icon_cbt_new_fit} {country_text} {vpp_full_icon}",
+                    "alt_text": "Internacional USA Enviado pelo FULL",
+                    "values": [
+                      {
+                        "key": "icon_cbt_new_fit",
+                        "type": "icon",
+                        "icon": {
+                          "key": "icon_cbt_new_fit"
+                        }
+                      },
+                      {
+                        "key": "country_text",
+                        "type": "label",
+                        "label": {
+                          "text": "EUA"
+                        },
+                        "styles": {
+                          "color_hex": "#666666",
+                          "font_size": "s",
+                          "font_weight": "regular",
+                          "font_style": "normal"
+                        }
+                      },
+                      {
+                        "key": "vpp_full_icon",
+                        "type": "icon",
+                        "icon": {
+                          "key": "vpp_full_icon"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "pagination": {
+          "selected_page": 1,
+          "show_pagination": true,
+          "previous_page": {
+            "value": "Anterior",
+            "show": false
+          },
+          "next_page": {
+            "value": "Próximo",
+            "url": "https://lista.mercadolivre.com.br/informatica/armazenamento/discos-acessorios/hds-ssds/ssd/ssd-nvme-1tb_Desde_49_NoIndex_True",
+            "show": true
+          }
+        }
+      },
+      "sharedState": {
+        "search": {
+          "results": [
+            {
+              "id": "POLYCARD",
+              "polycard": {
+                "unique_id": "OjbLd9J15NcrOH_OaFMJIqzREOEakUyhJrF6NLGxIDs",
+                "metadata": {
+                  "id": "MLB4062725089",
+                  "product_id": "MLB2039137119",
+                  "variation_id": "MLB2039137119",
+                  "pid": "MLBF2039137119_MLB4062725089",
+                  "pid_extended": "MLBF2039137119_MLB4062725089",
+                  "pid_family": "MLBF2039137119",
+                  "pid_version": "0.6.0",
+                  "url": "www.mercadolivre.com.br/lexar-nm790-1tb-ssd-heatsink-pcie-gen4-nvme-m2-7400mbs/p/MLB2039137119",
+                  "url_fragments": "#polycard_client=search-desktop&be_origin=searchv2&overlay_label=not_apply&search_layout=grid&position=1&type=product&tracking_id=5e36be08-e214-45c1-968f-494c2aa23332&overlay_label_capability=not_apply&wid=MLB4062725089&sid=search",
+                  "url_params": "?pdp_filters=item_id%3AMLB4062725089",
+                  "tracks": {
+                    "sold_quantity": null
+                  },
+                  "card_type": "grid-card",
+                  "signal": {
+                    "pid": "MLBF2039137119_MLB4062725089",
+                    "pid_extended": "MLBF2039137119_MLB4062725089",
+                    "pid_family": "MLBF2039137119",
+                    "pid_version": "0.6.0",
+                    "item_id": "MLB4062725089",
+                    "surface": "search",
+                    "section": "search-results",
+                    "source_id": "5e36be08-e214-45c1-968f-494c2aa23332",
+                    "layout": "grid",
+                    "prc": 1546,
+                    "prc_currency": "BRL",
+                    "inst_amount": 154.61,
+                    "inst_currency": "BRL",
+                    "inst_issuer": "credit_card",
+                    "inst_psj": 10
+                  },
+                  "vertical_id": "CORE",
+                  "is_pad": "false",
+                  "category_id": "MLB58441",
+                  "category_path": "MLB1144,MLB438579,MLB438637,MLB58441",
+                  "domain_id": "MLB-HARD_DRIVES_AND_SSDS",
+                  "item_position": "1",
+                  "price_per_quantity": "false",
+                  "pxu_b2b": "false",
+                  "bulk_sale": "false"
+                },
+                "pictures": {
+                  "scale": "FILL",
+                  "pictures": [
+                    {
+                      "id": "867655-CBT84715099467_052025"
+                    }
+                  ],
+                  "square": "Q",
+                  "alt_text": "Imagem",
+                  "overlay": true,
+                  "ratio": "1"
+                },
+                "bookmark": {
+                  "alt_text": "Favorito",
+                  "alt_text_active": "Adicionar aos favoritos",
+                  "alt_text_inactive": "Remover dos favoritos",
+                  "bookmarked": false
+                },
+                "components": [
+                  {
+                    "type": "title",
+                    "id": "title",
+                    "title": {
+                      "text": "Lexar 1tb Nm790 Ssd With Heatsink Pcie Gen4 Nvme M.2 2280...",
+                      "long_title": false,
+                      "title_tag": "h3"
+                    }
+                  },
+                  {
+                    "type": "price",
+                    "id": "price_v2",
+                    "price": {
+                      "current_price": {
+                        "value": 1546,
+                        "currency": "BRL",
+                        "weight": "regular"
+                      },
+                      "installments": {
+                        "text": "10x {price} sem juros",
+                        "no_interest": true,
+                        "values": [
+                          {
+                            "key": "price",
+                            "type": "price",
+                            "price": {
+                              "value": 154.61,
+                              "currency": "BRL"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "promotions",
+                    "id": "promotions",
+                    "promotions": [
+                      {
+                        "type": "coupon",
+                        "text": "{1} com Cupom",
+                        "values": [
+                          {
+                            "key": "1",
+                            "type": "price",
+                            "price": {
+                              "value": 1526.06,
+                              "currency": "BRL"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "shipping_v2",
+                    "id": "shipping_v2",
+                    "shipping_v2": [
+                      {
+                        "version": "1",
+                        "text": "{free_shipping_single} {new_buyer}",
+                        "values": [
+                          {
+                            "type": "pill",
+                            "key": "free_shipping_single",
+                            "styles": {
+                              "color": "#00A650",
+                              "font_weight": "semibold",
+                              "background_color": "#E5F6ED",
+                              "padding": "0 6 0 6",
+                              "border_radius": "20 20 20 20"
+                            },
+                            "pill": {
+                              "text": "{shipping_truck_quiet_icon} Grátis",
+                              "values": [
+                                {
+                                  "type": "icon",
+                                  "key": "shipping_truck_quiet_icon",
+                                  "icon": {
+                                    "key": "shipping_truck_quiet_icon"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "label",
+                            "key": "new_buyer",
+                            "styles": {
+                              "color": "#000000E6",
+                              "font_weight": "regular"
+                            },
+                            "label": {
+                              "text": "por ser sua primeira compra",
+                              "alt_text": "por ser sua primeira compra"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "cbt",
+                    "id": "cbt",
+                    "cbt": {
+                      "text": "{icon_cbt_new_fit} {country_text}",
+                      "alt_text": "Internacional USA",
+                      "values": [
+                        {
+                          "key": "icon_cbt_new_fit",
+                          "type": "icon",
+                          "icon": {
+                            "key": "icon_cbt_new_fit"
+                          }
+                        },
+                        {
+                          "key": "country_text",
+                          "type": "label",
+                          "label": {
+                            "text": "EUA"
+                          },
+                          "styles": {
+                            "color_hex": "#666666",
+                            "font_size": "s",
+                            "font_weight": "regular",
+                            "font_style": "normal"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": "POLYCARD",
+              "polycard": {
+                "unique_id": "faZtudtE3fLW_8xsWLOX4kf3YbBRPjcztqNEaN_LTV4",
+                "metadata": {
+                  "id": "MLB7911640588",
+                  "product_id": "MLB48078783",
+                  "user_product_id": "MLBU5702278035",
+                  "variation_id": "MLB48078783",
+                  "pid": "MLBP48078783",
+                  "pid_extended": "MLBP48078783_MLB7911640588",
+                  "pid_family": "MLBP48078770",
+                  "pid_version": "0.6.0",
+                  "url": "www.mercadolivre.com.br/ssd-wdblack-sn7100-1-tb-m2-2280-nvme-pcie-gen-40-para-notebook-e-pc/p/MLB48078783",
+                  "url_fragments": "#polycard_client=search-desktop&be_origin=searchv2&overlay_label=not_apply&search_layout=grid&position=2&type=product&tracking_id=5e36be08-e214-45c1-968f-494c2aa23332&overlay_label_capability=not_apply&wid=MLB7911640588&sid=search",
+                  "url_params": "?pdp_filters=item_id%3AMLB7911640588",
+                  "tracks": {
+                    "sold_quantity": 500
+                  },
+                  "card_type": "grid-card",
+                  "signal": {
+                    "pid": "MLBP48078783",
+                    "pid_extended": "MLBP48078783_MLB7911640588",
+                    "pid_family": "MLBP48078770",
+                    "pid_version": "0.6.0",
+                    "item_id": "MLB7911640588",
+                    "surface": "search",
+                    "section": "search-results",
+                    "source_id": "5e36be08-e214-45c1-968f-494c2aa23332",
+                    "layout": "grid",
+                    "prc": 1625,
+                    "prc_currency": "BRL",
+                    "inst_amount": 156.19,
+                    "inst_currency": "BRL",
+                    "inst_issuer": "credit_card",
+                    "inst_pcj": 12
+                  },
+                  "vertical_id": "CORE",
+                  "is_pad": "false",
+                  "category_id": "MLB58441",
+                  "category_path": "MLB1144,MLB438579,MLB438637,MLB58441",
+                  "domain_id": "MLB-HARD_DRIVES_AND_SSDS",
+                  "item_position": "2",
+                  "price_per_quantity": "false",
+                  "pxu_b2b": "false",
+                  "bulk_sale": "false"
+                },
+                "pictures": {
+                  "scale": "FILL",
+                  "pictures": [
+                    {
+                      "id": "923501-MLA99955414229_112025"
+                    }
+                  ],
+                  "square": "Q",
+                  "alt_text": "Imagem",
+                  "overlay": true,
+                  "ratio": "1"
+                },
+                "bookmark": {
+                  "alt_text": "Favorito",
+                  "alt_text_active": "Adicionar aos favoritos",
+                  "alt_text_inactive": "Remover dos favoritos",
+                  "bookmarked": false
+                },
+                "components": [
+                  {
+                    "type": "title",
+                    "id": "title",
+                    "title": {
+                      "text": "SSD WD_BLACK SN7100 1 TB M.2 2280 NVMe PCIe Gen 4.0 para Notebook e PC",
+                      "long_title": false,
+                      "title_tag": "h3"
+                    }
+                  },
+                  {
+                    "type": "review_compacted",
+                    "id": "review_compacted",
+                    "review_compacted": {
+                      "text": "{icon_star_fill} {label} {label2}",
+                      "alt_text": "Classificação 4.9 de 5 estrelas. Mais de 500 produtos vendidos.",
+                      "values": [
+                        {
+                          "key": "icon_star_fill",
+                          "type": "icon",
+                          "icon": {
+                            "key": "icon_star_fill",
+                            "icon_id": "icon_star_fill"
+                          }
+                        },
+                        {
+                          "key": "label",
+                          "type": "label",
+                          "label": {
+                            "text": "4.9"
+                          }
+                        },
+                        {
+                          "key": "label2",
+                          "type": "label",
+                          "label": {
+                            "text": "| +500 vendidos"
+                          },
+                          "styles": {
+                            "color_hex": "#737373"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "price",
+                    "id": "price_v2",
+                    "price": {
+                      "current_price": {
+                        "value": 1625,
+                        "currency": "BRL",
+                        "weight": "regular"
+                      },
+                      "installments": {
+                        "text": "12x {price}",
+                        "no_interest": false,
+                        "values": [
+                          {
+                            "key": "price",
+                            "type": "price",
+                            "price": {
+                              "value": 156.19,
+                              "currency": "BRL"
+                            }
+                          }
+                        ],
+                        "styles": {
+                          "color": "primary"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "shipping_v2",
+                    "id": "shipping_v2",
+                    "shipping_v2": [
+                      {
+                        "version": "1",
+                        "text": "{free_shipping_single} {new_buyer}",
+                        "values": [
+                          {
+                            "type": "pill",
+                            "key": "free_shipping_single",
+                            "styles": {
+                              "color": "#00A650",
+                              "font_weight": "semibold",
+                              "background_color": "#E5F6ED",
+                              "padding": "0 6 0 6",
+                              "border_radius": "20 20 20 20"
+                            },
+                            "pill": {
+                              "text": "{shipping_truck_quiet_icon} Grátis",
+                              "values": [
+                                {
+                                  "type": "icon",
+                                  "key": "shipping_truck_quiet_icon",
+                                  "icon": {
+                                    "key": "shipping_truck_quiet_icon"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "label",
+                            "key": "new_buyer",
+                            "styles": {
+                              "color": "#000000E6",
+                              "font_weight": "regular"
+                            },
+                            "label": {
+                              "text": "por ser sua primeira compra",
+                              "alt_text": "por ser sua primeira compra"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "POLYCARD",
+              "polycard": {
+                "unique_id": "uoszDHuuXWXuspFmZrBU5TaR9EcOuxilOqtuOcYXqII",
+                "metadata": {
+                  "id": "MLB7358533826",
+                  "product_id": "MLB40283493",
+                  "variation_id": "MLB40283493",
+                  "pid": "MLBP40283493",
+                  "pid_extended": "MLBP40283493_MLB7358533826",
+                  "pid_family": "MLBP40283492",
+                  "pid_version": "0.6.0",
+                  "url": "www.mercadolivre.com.br/ssd-1tb-m2-2280-nvme-sandisk-extreme-pcie-gen-40-sdssdx3n-1t00-velocidade-de-leitura-ate-5150mbs-e-gravacao-ate-4900mbs-cor-preto/p/MLB40283493",
+                  "url_fragments": "#polycard_client=search-desktop&be_origin=searchv2&overlay_label=not_apply&search_layout=grid&position=3&type=product&tracking_id=5e36be08-e214-45c1-968f-494c2aa23332&overlay_label_capability=not_apply&wid=MLB7358533826&sid=search",
+                  "url_params": "?pdp_filters=item_id%3AMLB7358533826",
+                  "tracks": {
+                    "sold_quantity": 100
+                  },
+                  "card_type": "grid-card",
+                  "signal": {
+                    "pid": "MLBP40283493",
+                    "pid_extended": "MLBP40283493_MLB7358533826",
+                    "pid_family": "MLBP40283492",
+                    "pid_version": "0.6.0",
+                    "item_id": "MLB7358533826",
+                    "surface": "search",
+                    "section": "search-results",
+                    "source_id": "5e36be08-e214-45c1-968f-494c2aa23332",
+                    "layout": "grid",
+                    "prc": 1160,
+                    "prc_currency": "BRL",
+                    "inst_amount": 116.03,
+                    "inst_currency": "BRL",
+                    "inst_issuer": "credit_card",
+                    "inst_psj": 10
+                  },
+                  "vertical_id": "CORE",
+                  "is_pad": "false",
+                  "category_id": "MLB58441",
+                  "category_path": "MLB1144,MLB438579,MLB438637,MLB58441",
+                  "domain_id": "MLB-HARD_DRIVES_AND_SSDS",
+                  "item_position": "3",
+                  "price_per_quantity": "false",
+                  "pxu_b2b": "false",
+                  "bulk_sale": "false"
+                },
+                "pictures": {
+                  "scale": "FILL",
+                  "pictures": [
+                    {
+                      "id": "927734-MLA99953105855_112025"
+                    }
+                  ],
+                  "square": "Q",
+                  "alt_text": "Imagem",
+                  "overlay": true,
+                  "ratio": "1"
+                },
+                "bookmark": {
+                  "alt_text": "Favorito",
+                  "alt_text_active": "Adicionar aos favoritos",
+                  "alt_text_inactive": "Remover dos favoritos",
+                  "bookmarked": false
+                },
+                "components": [
+                  {
+                    "type": "title",
+                    "id": "title",
+                    "title": {
+                      "text": "SSD 1TB M.2 2280 NVMe Sandisk Extreme PCIe Gen 4.0 SDSSDX3N-1T00 Velocidade de Leitura até 5150MB/s e Gravação até 4900MB/s Cor Preto",
+                      "long_title": false,
+                      "title_tag": "h3"
+                    }
+                  },
+                  {
+                    "type": "review_compacted",
+                    "id": "review_compacted",
+                    "review_compacted": {
+                      "text": "{icon_star_fill} {label} {label2}",
+                      "alt_text": "Classificação 5.0 de 5 estrelas. Mais de 100 produtos vendidos.",
+                      "values": [
+                        {
+                          "key": "icon_star_fill",
+                          "type": "icon",
+                          "icon": {
+                            "key": "icon_star_fill",
+                            "icon_id": "icon_star_fill"
+                          }
+                        },
+                        {
+                          "key": "label",
+                          "type": "label",
+                          "label": {
+                            "text": "5.0"
+                          }
+                        },
+                        {
+                          "key": "label2",
+                          "type": "label",
+                          "label": {
+                            "text": "| +100 vendidos"
+                          },
+                          "styles": {
+                            "color_hex": "#737373"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "price",
+                    "id": "price_v2",
+                    "price": {
+                      "current_price": {
+                        "value": 1160,
+                        "currency": "BRL",
+                        "weight": "regular"
+                      },
+                      "installments": {
+                        "text": "10x {price} sem juros",
+                        "no_interest": true,
+                        "values": [
+                          {
+                            "key": "price",
+                            "type": "price",
+                            "price": {
+                              "value": 116.03,
+                              "currency": "BRL"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "promotions",
+                    "id": "promotions",
+                    "promotions": [
+                      {
+                        "type": "coupon",
+                        "text": "{1} com Cupom",
+                        "values": [
+                          {
+                            "key": "1",
+                            "type": "price",
+                            "price": {
+                              "value": 1140.25,
+                              "currency": "BRL"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "shipping_v2",
+                    "id": "shipping_v2",
+                    "shipping_v2": [
+                      {
+                        "version": "1",
+                        "text": "{free_shipping_single} {new_buyer}",
+                        "values": [
+                          {
+                            "type": "pill",
+                            "key": "free_shipping_single",
+                            "styles": {
+                              "color": "#00A650",
+                              "font_weight": "semibold",
+                              "background_color": "#E5F6ED",
+                              "padding": "0 6 0 6",
+                              "border_radius": "20 20 20 20"
+                            },
+                            "pill": {
+                              "text": "{shipping_truck_quiet_icon} Grátis",
+                              "values": [
+                                {
+                                  "type": "icon",
+                                  "key": "shipping_truck_quiet_icon",
+                                  "icon": {
+                                    "key": "shipping_truck_quiet_icon"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "label",
+                            "key": "new_buyer",
+                            "styles": {
+                              "color": "#000000E6",
+                              "font_weight": "regular"
+                            },
+                            "label": {
+                              "text": "por ser sua primeira compra",
+                              "alt_text": "por ser sua primeira compra"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "cbt",
+                    "id": "cbt",
+                    "cbt": {
+                      "text": "{icon_cbt_new_fit} {country_text} {vpp_full_icon}",
+                      "alt_text": "Internacional USA Enviado pelo FULL",
+                      "values": [
+                        {
+                          "key": "icon_cbt_new_fit",
+                          "type": "icon",
+                          "icon": {
+                            "key": "icon_cbt_new_fit"
+                          }
+                        },
+                        {
+                          "key": "country_text",
+                          "type": "label",
+                          "label": {
+                            "text": "EUA"
+                          },
+                          "styles": {
+                            "color_hex": "#666666",
+                            "font_size": "s",
+                            "font_weight": "regular",
+                            "font_style": "normal"
+                          }
+                        },
+                        {
+                          "key": "vpp_full_icon",
+                          "type": "icon",
+                          "icon": {
+                            "key": "vpp_full_icon"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "pagination": {
+            "selected_page": 1,
+            "show_pagination": true,
+            "previous_page": {
+              "value": "Anterior",
+              "show": false
+            },
+            "next_page": {
+              "value": "Próximo",
+              "url": "https://lista.mercadolivre.com.br/informatica/armazenamento/discos-acessorios/hds-ssds/ssd/ssd-nvme-1tb_Desde_49_NoIndex_True",
+              "show": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

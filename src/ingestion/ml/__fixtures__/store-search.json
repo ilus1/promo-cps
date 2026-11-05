@@ -1,0 +1,611 @@
+{
+  "initialState": {
+    "results": [
+      {
+        "id": "POLYCARD",
+        "polycard": {
+          "unique_id": "D0E_XG2p6oyVCF23dbuI6Jn8dO7LtR6-H5_ywahPLTI",
+          "metadata": {
+            "id": "MLB7408680188",
+            "product_id": "MLB61951322",
+            "user_product_id": "MLBU4710980148",
+            "variation_id": "MLB61951322",
+            "pid": "MLBP61951322",
+            "pid_extended": "MLBP61951322_MLB7408680188",
+            "pid_family": "MLBP61951321",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/meiao-umbro-team-juvenil-preto-e-branco-cor-preto-branco-tamanho-34-38/p/MLB61951322",
+            "url_fragments": "#polycard_client=search-desktop&be_origin=backend&overlay_label=not_apply&search_layout=grid&position=1&type=product&tracking_id=983fb24c-2ad8-4941-9614-31067c9258a9&overlay_label_capability=not_apply&wid=MLB7408680188&sid=search",
+            "url_params": "?pdp_filters=seller_id%3A95320180",
+            "tracks": {
+              "best_seller_winner:MLB7408680188": "best_seller",
+              "sold_quantity": 1000,
+              "best_seller_candidates_count": 13
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP61951322",
+              "pid_extended": "MLBP61951322_MLB7408680188",
+              "pid_family": "MLBP61951321",
+              "pid_version": "0.6.0",
+              "item_id": "MLB7408680188",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "983fb24c-2ad8-4941-9614-31067c9258a9",
+              "layout": "grid",
+              "highlights": "best_seller",
+              "prc": 24.9,
+              "prc_currency": "BRL"
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB61928",
+            "category_path": "MLB1276,MLB1286,MLB67864,MLB61928",
+            "domain_id": "MLB-FOOTBALL_SOCKS",
+            "item_position": "1",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "789732-MLA110946120307_042026"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "float_highlight_generic": {
+            "highlight": {
+              "id": "best_seller",
+              "text": "MAIS VENDIDO",
+              "styles": {
+                "color_hex": "#FFFFFF",
+                "background_color_hex": "#FF7733"
+              }
+            },
+            "should_fill": false
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Meião Umbro Team Juvenil Preto E Branco Cor Preto-branco Tamanho 34-38",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label}",
+                "values": [
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "UMBRO"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.9 de 5 estrelas. Mais de 1000 produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.9"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +1000 vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "current_price": {
+                  "value": 24.9,
+                  "currency": "BRL",
+                  "weight": "regular"
+                }
+              }
+            },
+            {
+              "type": "promotions",
+              "id": "promotions",
+              "promotions": [
+                {
+                  "type": "coupon",
+                  "text": "15% OFF com Cupom"
+                }
+              ]
+            },
+            {
+              "type": "shipping_v2",
+              "id": "shipping_v2",
+              "shipping_v2": [
+                {
+                  "version": "1",
+                  "text": "{same_day_free_shipping} {full_icon} {new_buyer}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "same_day_free_shipping",
+                      "styles": {
+                        "color": "#FFFFFF",
+                        "font_weight": "semibold",
+                        "background_color": "#00A650"
+                      },
+                      "pill": {
+                        "text": "Chegará grátis hoje"
+                      }
+                    },
+                    {
+                      "type": "icon",
+                      "key": "full_icon",
+                      "icon": {
+                        "key": "vpp_full_icon",
+                        "alt_text": "Enviado pelo FULL"
+                      }
+                    },
+                    {
+                      "type": "label",
+                      "key": "new_buyer",
+                      "styles": {
+                        "color": "#000000E6",
+                        "font_weight": "regular"
+                      },
+                      "label": {
+                        "text": "por ser sua primeira compra",
+                        "alt_text": "por ser sua primeira compra"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "POLYCARD",
+        "polycard": {
+          "unique_id": "wO4M85qOtaKr27dN6RVMu0JRD501dIkxlQcmYQ7R1oQ",
+          "metadata": {
+            "id": "MLB5311436210",
+            "product_id": "MLB23789903",
+            "user_product_id": "MLBU2980088311",
+            "variation_id": "MLB23789903",
+            "pid": "MLBP23789903",
+            "pid_extended": "MLBP23789903_MLB5311436210",
+            "pid_family": "MLBP23789890",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/suqueira-com-torneira-e-base-lousa-preta-agua-suco-3600ml/p/MLB23789903",
+            "url_fragments": "#polycard_client=search-desktop&be_origin=backend&overlay_label=not_apply&search_layout=grid&position=2&type=product&tracking_id=983fb24c-2ad8-4941-9614-31067c9258a9&overlay_label_capability=not_apply&wid=MLB5311436210&sid=search",
+            "url_params": "?pdp_filters=seller_id%3A95320180",
+            "tracks": {
+              "sold_quantity": 1000
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP23789903",
+              "pid_extended": "MLBP23789903_MLB5311436210",
+              "pid_family": "MLBP23789890",
+              "pid_version": "0.6.0",
+              "item_id": "MLB5311436210",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "983fb24c-2ad8-4941-9614-31067c9258a9",
+              "layout": "grid",
+              "prc": 22.81,
+              "prc_currency": "BRL"
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB193619",
+            "category_path": "MLB1574,MLB1618,MLB436298,MLB455324,MLB193619",
+            "domain_id": "MLB-DRINK_DISPENSERS",
+            "item_position": "2",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "789255-MLA99599721340_122025"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Suqueira Com Torneira E Base Lousa Preta Agua Suco 3600ml",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label}",
+                "values": [
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "BANDEIRANTE"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.7 de 5 estrelas. Mais de 1000 produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.7"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +1000 vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "current_price": {
+                  "value": 22.81,
+                  "currency": "BRL",
+                  "weight": "regular"
+                }
+              }
+            },
+            {
+              "type": "promotions",
+              "id": "promotions",
+              "promotions": [
+                {
+                  "type": "coupon",
+                  "text": "15% OFF com Cupom"
+                }
+              ]
+            },
+            {
+              "type": "shipping_v2",
+              "id": "shipping_v2",
+              "shipping_v2": [
+                {
+                  "version": "1",
+                  "text": "{next_day_free_shipping} {full_icon} {new_buyer}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "next_day_free_shipping",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold",
+                        "background_color": "#E5F6ED"
+                      },
+                      "pill": {
+                        "text": "Chegará grátis amanhã"
+                      }
+                    },
+                    {
+                      "type": "icon",
+                      "key": "full_icon",
+                      "icon": {
+                        "key": "vpp_full_icon",
+                        "alt_text": "Enviado pelo FULL"
+                      }
+                    },
+                    {
+                      "type": "label",
+                      "key": "new_buyer",
+                      "styles": {
+                        "color": "#000000E6",
+                        "font_weight": "regular"
+                      },
+                      "label": {
+                        "text": "por ser sua primeira compra",
+                        "alt_text": "por ser sua primeira compra"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "POLYCARD",
+        "polycard": {
+          "unique_id": "WggDlH3aH9ixpHq6FCdvNlBu6UcP-2PBSu2OOQzmmdw",
+          "metadata": {
+            "id": "MLB7408239950",
+            "product_id": "MLB63564160",
+            "user_product_id": "MLBU4622653642",
+            "variation_id": "MLB63564160",
+            "pid": "MLBP63564160",
+            "pid_extended": "MLBP63564160_MLB7408239950",
+            "pid_family": "MLBP61951321",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/meiao-umbro-team-preto-com-branco-preto-branco-39-43/p/MLB63564160",
+            "url_fragments": "#polycard_client=search-desktop&be_origin=backend&overlay_label=not_apply&search_layout=grid&position=3&type=product&tracking_id=983fb24c-2ad8-4941-9614-31067c9258a9&overlay_label_capability=not_apply&wid=MLB7408239950&sid=search",
+            "url_params": "?pdp_filters=seller_id%3A95320180",
+            "tracks": {
+              "sold_quantity": 1000
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP63564160",
+              "pid_extended": "MLBP63564160_MLB7408239950",
+              "pid_family": "MLBP61951321",
+              "pid_version": "0.6.0",
+              "item_id": "MLB7408239950",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "983fb24c-2ad8-4941-9614-31067c9258a9",
+              "layout": "grid",
+              "prc": 24.9,
+              "prc_currency": "BRL"
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB61928",
+            "category_path": "MLB1276,MLB1286,MLB67864,MLB61928",
+            "domain_id": "MLB-FOOTBALL_SOCKS",
+            "item_position": "3",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "809418-MLA102180089626_122025"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Meião Umbro Team Preto Com Branco Preto-branco 39-43",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label}",
+                "values": [
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "UMBRO"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.9 de 5 estrelas. Mais de 1000 produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.9"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +1000 vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "current_price": {
+                  "value": 24.9,
+                  "currency": "BRL",
+                  "weight": "regular"
+                }
+              }
+            },
+            {
+              "type": "promotions",
+              "id": "promotions",
+              "promotions": [
+                {
+                  "type": "coupon",
+                  "text": "15% OFF com Cupom"
+                }
+              ]
+            },
+            {
+              "type": "shipping_v2",
+              "id": "shipping_v2",
+              "shipping_v2": [
+                {
+                  "version": "1",
+                  "text": "{next_day_free_shipping} {full_icon} {new_buyer}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "next_day_free_shipping",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold",
+                        "background_color": "#E5F6ED"
+                      },
+                      "pill": {
+                        "text": "Chegará grátis amanhã"
+                      }
+                    },
+                    {
+                      "type": "icon",
+                      "key": "full_icon",
+                      "icon": {
+                        "key": "vpp_full_icon",
+                        "alt_text": "Enviado pelo FULL"
+                      }
+                    },
+                    {
+                      "type": "label",
+                      "key": "new_buyer",
+                      "styles": {
+                        "color": "#000000E6",
+                        "font_weight": "regular"
+                      },
+                      "label": {
+                        "text": "por ser sua primeira compra",
+                        "alt_text": "por ser sua primeira compra"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "pagination": {
+      "selected_page": 1,
+      "show_pagination": true,
+      "next_page": {
+        "value": "Próximo",
+        "url": "https://lista.mercadolivre.com.br/pagina/lojadomstore/_Desde_49_NoIndex_True",
+        "show": true
+      }
+    }
+  }
+}

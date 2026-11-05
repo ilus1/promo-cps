@@ -1,0 +1,268 @@
+{
+  "filteredCouponsData": {
+    "header": {
+      "title": "Todos os cupons"
+    },
+    "totalCouponsQuantity": {
+      "number": 1926,
+      "text": "1926 Cupons",
+      "color": "rgba(0,0,0,0.55)"
+    },
+    "pagination": {
+      "page": 1,
+      "total": 65,
+      "text": {
+        "totalPagesText": "de 65",
+        "previousPageText": "Anterior",
+        "nextPageText": "Próximo"
+      }
+    },
+    "rawCoupons": [
+      {
+        "campaign_id": "14565378",
+        "background_color": "rgba(255,255,255,1)",
+        "icon": "default",
+        "icon_url": "https://http2.mlstatic.com/D_Q_NP_630110-MLU108648422959_032026-G.jpg",
+        "title": {
+          "text": "20% OFF em Beleza",
+          "color": "rgba(0,0,0,0.9)",
+          "accessibility": {
+            "title": {
+              "fractional_amount": "20",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "20% OFF em Beleza",
+              "sr_label": "Cupom 20% OFF em Beleza"
+            }
+          }
+        },
+        "initial_subtitle": {
+          "text": "Em produtos selecionados",
+          "color": "rgba(0,0,0,0.9)"
+        },
+        "action": {
+          "text": "Aplicar",
+          "type": "button",
+          "accessibility": {
+            "label": "Aplicar",
+            "sr_label": "Aplicar cupom 20 por cento OFF em Beleza Em produtos selecionados"
+          }
+        },
+        "code": "FIXTURE-ACTIVATE-CODE-1",
+        "status": {
+          "id": "INACTIVE"
+        },
+        "expiration_date": {
+          "text": "Está esgotando!",
+          "color": "rgba(255,119,51,1)"
+        },
+        "allow_multi_code": false,
+        "activation_type": "EU_QUERO",
+        "app": "ML",
+        "amount": {
+          "min_amount": "Compra mínima R$ 199,9",
+          "min_amount_color": "rgba(0,0,0,0.55)",
+          "cap_amount": "Limite de R$ 145",
+          "cap_amount_color": "rgba(0,0,0,0.55)",
+          "accessibility": {
+            "cap_amount": {
+              "fractional_amount": "145",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "Limite de {amount}"
+            },
+            "min_amount": {
+              "fractional_amount": "199",
+              "decimal_amount": "9",
+              "currency_id": "BRL",
+              "label": "Compra mínima{amount}"
+            }
+          }
+        },
+        "help": {
+          "icon": "info",
+          "action_text": "Entendi",
+          "alt_text": "Termos e condições Cupom 20% OFF"
+        },
+        "items": [
+          {
+            "image_url": "https://http2.mlstatic.com/D_NQ_NP_634603-MLA116953684200_092026-V.webp",
+            "alt_text": "Gel De Limpeza Facial Darrow Actine Pele Oleosa E Acneica Refil 300g",
+            "domain_id": "MLB-LIQUID_HAND_AND_BODY_SOAPS"
+          }
+        ],
+        "future_coupon_info": {
+          "scarcity_display": "date",
+          "reminder_text": "Disponível em",
+          "start_date": "2026-10-22T12:30Z",
+          "scarcity_text": "Disponível até",
+          "expiration_date": "2026-12-01T02:59Z"
+        },
+        "is_verified": false
+      },
+      {
+        "campaign_id": "13980785",
+        "background_color": "rgba(255,255,255,1)",
+        "icon": "store",
+        "icon_url": "https://http2.mlstatic.com/D_Q_NP_712922-MLU114244986962_082026-Z.jpg",
+        "title": {
+          "text": "15% OFF",
+          "color": "rgba(0,0,0,0.9)",
+          "accessibility": {
+            "title": {
+              "fractional_amount": "15",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "15% OFF",
+              "sr_label": "Cupom ativado de 15% OFF em produtos de Dsdomstore"
+            }
+          }
+        },
+        "initial_subtitle": {
+          "text": "Em produtos de Dsdomstore",
+          "color": "rgba(0,0,0,0.9)"
+        },
+        "action": {
+          "text": "Conferir",
+          "type": "link",
+          "color": "rgba(52,131,250,1)",
+          "value": "https://lista.mercadolivre.com.br/pagina/lojadomstore/?coupon_campaign_id=13980785",
+          "accessibility": {
+            "label": "Conferir",
+            "sr_label": "Conferir produtos do cupom 15 por cento OFF Em produtos de Dsdomstore"
+          }
+        },
+        "code": "",
+        "status": {
+          "id": "ACTIVE"
+        },
+        "expiration_date": {
+          "text": "Vence hoje!",
+          "color": "rgba(255,119,51,1)"
+        },
+        "allow_multi_code": false,
+        "activation_type": "AUTOMATIC",
+        "app": "ML",
+        "amount": {
+          "min_amount": "Compra mínima R$ 120",
+          "min_amount_color": "rgba(0,0,0,0.55)",
+          "cap_amount": "Limite de R$ 50",
+          "cap_amount_color": "rgba(0,0,0,0.55)",
+          "accessibility": {
+            "cap_amount": {
+              "fractional_amount": "50",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "Limite de {amount}"
+            },
+            "min_amount": {
+              "fractional_amount": "120",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "Compra mínima{amount}"
+            }
+          }
+        },
+        "help": {
+          "icon": "info",
+          "action_text": "Entendi",
+          "alt_text": "Termos e condições Cupom 15% OFF"
+        },
+        "items": [
+          {
+            "image_url": "https://http2.mlstatic.com/D_NQ_NP_965761-MLA112937572019_062026-V.webp",
+            "alt_text": "Cadeira De Banho Alumínio Dellamed Dobrável Até 135kg D55",
+            "domain_id": "MLB-SHOWER_AND_TOILET_CHAIRS"
+          }
+        ],
+        "future_coupon_info": {
+          "reminder_text": "Disponível em",
+          "start_date": "2026-10-31T03:00Z",
+          "scarcity_text": "Encerra em",
+          "expiration_date": "2026-11-03T02:59:59Z"
+        },
+        "is_verified": false
+      },
+      {
+        "campaign_id": "14633544",
+        "background_color": "rgba(255,255,255,1)",
+        "icon": "furniture",
+        "icon_url": "https://http2.mlstatic.com/D_Q_NP_601584-MLU108649437451_032026-G.jpg",
+        "title": {
+          "text": "R$ 200 OFF Móveis pra Casa",
+          "color": "rgba(0,0,0,0.9)",
+          "accessibility": {
+            "title": {
+              "fractional_amount": "200",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "{amount} OFF Móveis pra Casa",
+              "sr_label": "Cupom ativado de {amount} OFF Móveis pra Casa"
+            }
+          }
+        },
+        "initial_subtitle": {
+          "text": "Em produtos selecionados",
+          "color": "rgba(0,0,0,0.9)"
+        },
+        "action": {
+          "text": "Conferir",
+          "type": "link",
+          "color": "rgba(52,131,250,1)",
+          "value": "https://lista.mercadolivre.com.br/_Container_FH-Cupom-Boost-16?coupon_campaign_id=14633544",
+          "accessibility": {
+            "label": "Conferir",
+            "sr_label": "Conferir produtos do cupom 200 reais OFF Móveis pra Casa Em produtos selecionados"
+          }
+        },
+        "code": "",
+        "status": {
+          "id": "ACTIVE"
+        },
+        "allow_multi_code": false,
+        "activation_type": "EU_QUERO",
+        "app": "ML",
+        "amount": {
+          "min_amount": "Compra mínima R$ 400",
+          "min_amount_color": "rgba(0,0,0,0.55)",
+          "cap_amount": "Limite de R$ 10.000",
+          "cap_amount_color": "rgba(0,0,0,0.55)",
+          "accessibility": {
+            "cap_amount": {
+              "fractional_amount": "10.000",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "Limite de {amount}"
+            },
+            "min_amount": {
+              "fractional_amount": "400",
+              "decimal_amount": "0",
+              "currency_id": "BRL",
+              "label": "Compra mínima{amount}"
+            }
+          }
+        },
+        "help": {
+          "icon": "info",
+          "action_text": "Entendi",
+          "alt_text": "Termos e condições Cupom R$ 200 OFF"
+        },
+        "items": [
+          {
+            "image_url": "https://http2.mlstatic.com/D_NQ_NP_610870-MLA95657253150_102025-V.webp",
+            "alt_text": "Guarda Roupa Casal Madesa Mônaco 3 Portas Correr Espelho Cor Branco 1093d81e",
+            "domain_id": "MLB-WARDROBES_AND_UPPER_STORAGES"
+          }
+        ],
+        "future_coupon_info": {
+          "scarcity_display": "date",
+          "reminder_text": "Disponível em",
+          "start_date": "2026-10-30T16:15Z",
+          "scarcity_text": "Disponível até",
+          "expiration_date": "2027-01-01T02:59Z"
+        },
+        "is_verified": false
+      }
+    ]
+  }
+}

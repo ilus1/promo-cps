@@ -1,0 +1,267 @@
+{
+  "page": "pdp",
+  "initialState": {
+    "id": "MLB32362095",
+    "filters": "item_id:MLB5465378923",
+    "app": "pdp",
+    "applied_product_filters": "MLB32362095",
+    "selected_offer_type": "BEST_PRICE",
+    "history": {
+      "id": "MLB5465378923",
+      "product_id": "MLB32362095",
+      "parent_product_id": "MLB32362093"
+    },
+    "components": {
+      "header": {
+        "id": "header",
+        "type": "header",
+        "state": "VISIBLE",
+        "title": "Ssd M.2 1tb Sandisk Plus Nvme 2280",
+        "subtitle": "Novo  |  +10 mil vendidos"
+      },
+      "gallery": {
+        "id": "gallery",
+        "type": "gallery",
+        "pictures": [
+          {
+            "id": "729633-MLA99465062840_112025",
+            "alt": "Imagem 1 de 3 de Ssd M.2 1tb Sandisk Plus Nvme 2280",
+            "width": 877,
+            "height": 1200
+          }
+        ]
+      },
+      "price": {
+        "id": "price",
+        "type": "price",
+        "state": "VISIBLE",
+        "price": {
+          "type": "price",
+          "value": 878.75,
+          "original_value": 925,
+          "currency_symbol": "R$",
+          "currency_id": "BRL",
+          "billing": false,
+          "original_value_color": "GRAY",
+          "layout_specs": {
+            "margin_top": "size16"
+          },
+          "font_size": "XXLARGE",
+          "font_family": "SEMIBOLD"
+        },
+        "discount_label": {
+          "color": "WHITE",
+          "value": 5,
+          "bg_color": "GREEN",
+          "font_family": "SEMIBOLD",
+          "value_font_size": "XSMALL"
+        },
+        "subtitles": [
+          {
+            "id": "pricing_price_subtitle",
+            "text": "{o} {total_price} em outros meios",
+            "color": "BLACK",
+            "font_size": "XSMALL",
+            "font_family": "REGULAR",
+            "values": {
+              "total_price": {
+                "money_style": "SUPERSCRIPT",
+                "type": "price",
+                "value": 925,
+                "currency_symbol": "R$",
+                "currency_id": "BRL",
+                "color": "BLACK"
+              },
+              "o": {
+                "text": "ou",
+                "color": "BLACK"
+              }
+            },
+            "layout_specs": {
+              "margin_top": "size0"
+            }
+          }
+        ],
+        "price_tags": [],
+        "has_currency_change": false,
+        "discounts_tags": [],
+        "price_breakdown": {
+          "discount": {
+            "icon": {
+              "id": "CHEVRON_RIGHT_GREEN",
+              "alignment": "right"
+            },
+            "label": {
+              "text": "no Pix",
+              "color": "GREEN",
+              "font_size": "XSMALL",
+              "font_family": "SEMIBOLD"
+            }
+          },
+          "bottomsheet": {
+            "title": {
+              "text": "Detalhe do preço",
+              "color": "TEXT_PRIMARY",
+              "font_size": "XLARGE",
+              "font_family": "SEMIBOLD"
+            },
+            "items": [
+              {
+                "value": {
+                  "label": {
+                    "text": "{price}",
+                    "color": "TEXT_SECONDARY",
+                    "font_size": "SMALL",
+                    "values": {
+                      "price": {
+                        "money_type": "PREVIOUS",
+                        "money_style": "SUPERSCRIPT",
+                        "type": "price",
+                        "value": 925,
+                        "currency_symbol": "R$",
+                        "currency_id": "BRL"
+                      }
+                    }
+                  }
+                },
+                "title": {
+                  "label": {
+                    "text": "Preço original",
+                    "color": "TEXT_PRIMARY",
+                    "font_size": "SMALL",
+                    "font_family": "REGULAR"
+                  }
+                }
+              },
+              {
+                "value": {
+                  "label": {
+                    "text": "- {price}",
+                    "color": "GREEN",
+                    "font_size": "SMALL",
+                    "values": {
+                      "price": {
+                        "money_style": "SUPERSCRIPT",
+                        "type": "price",
+                        "value": 46.25,
+                        "currency_symbol": "R$",
+                        "currency_id": "BRL",
+                        "color": "GREEN"
+                      }
+                    }
+                  }
+                },
+                "title": {
+                  "label": {
+                    "text": "Desconto no Pix",
+                    "color": "TEXT_PRIMARY",
+                    "font_size": "SMALL",
+                    "font_family": "REGULAR"
+                  }
+                }
+              }
+            ],
+            "footer": {
+              "value": {
+                "label": {
+                  "text": "{price}",
+                  "color": "TEXT_PRIMARY",
+                  "font_size": "SMALL",
+                  "font_family": "SEMIBOLD",
+                  "values": {
+                    "price": {
+                      "money_style": "SUPERSCRIPT",
+                      "type": "price",
+                      "value": 878.75,
+                      "currency_symbol": "R$",
+                      "currency_id": "BRL"
+                    }
+                  }
+                }
+              },
+              "title": {
+                "label": {
+                  "text": "Preço estimado",
+                  "color": "TEXT_PRIMARY",
+                  "font_size": "SMALL",
+                  "font_family": "REGULAR"
+                }
+              },
+              "subtitle": {
+                "label": {
+                  "text": "O valor final será exibido ao finalizar a compra",
+                  "color": "TEXT_SECONDARY",
+                  "font_size": "XSMALL"
+                }
+              }
+            }
+          },
+          "position": "inline",
+          "layout_specs": {
+            "margin_top": "size0",
+            "margin_bottom": "size0"
+          }
+        },
+        "layout_specs": {
+          "margin_top": "size16"
+        }
+      },
+      "seller_summary": {
+        "id": "seller_summary",
+        "type": "seller_summary",
+        "state": "VISIBLE",
+        "sold_by": {
+          "text": "Loja oficial",
+          "color": "BLACK",
+          "font_size": "XSMALL",
+          "font_family": "REGULAR"
+        },
+        "subtitles": [
+          {
+            "text": "+1000 vendas",
+            "color": "BLACK",
+            "font_size": "XSMALL",
+            "font_family": "SEMIBOLD"
+          }
+        ],
+        "seller": {
+          "id": 1010390291,
+          "official_store_id": 383786,
+          "name": "BESTBYBRASIL",
+          "reputation_level": "5_green"
+        },
+        "store_type": "OFFICIAL_STORE",
+        "seller_link": {
+          "target": "https://www.mercadolivre.com.br/loja/bestbybrasil?item_id=MLB5465378923&category_id=MLB1648&official_store_id=383786&client=recoview-selleritems&recos_listing=true",
+          "label": {
+            "text": "BESTBYBRASIL",
+            "color": "BLUE",
+            "font_size": "XSMALL",
+            "font_family": "REGULAR"
+          }
+        }
+      },
+      "track": {
+        "melidata_event": {
+          "path": "/pdp",
+          "event_data": {
+            "item_id": "MLB5465378923",
+            "catalog_product_id": "MLB32362095",
+            "catalog_parent_id": "MLB32362093",
+            "category_id": "MLB1672",
+            "domain_id": "MLB-HARD_DRIVES_AND_SSDS",
+            "seller_id": 1010390291,
+            "seller_name": "BESTBYBRASIL",
+            "price": 925,
+            "free_shipping": true,
+            "shipping_mode": "me2",
+            "logistic_type": "xd_drop_off",
+            "item_condition": "new",
+            "quantity": 11,
+            "sold_quantity": 10000
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,985 @@
+{
+  "initialState": {
+    "pagination": {
+      "page_count": 3,
+      "first_page": 1,
+      "last_page": 3,
+      "selected_page": 1,
+      "show_pagination": true,
+      "previous_page": {
+        "value": "Anterior",
+        "show": false
+      },
+      "pagination_nodes_url": [
+        {
+          "value": "1",
+          "url": "https://lista.mercadolivre.com.br/_Container_fh-cupom-boost-16_NoIndex_True",
+          "is_actual_page": true
+        },
+        {
+          "value": "2",
+          "url": "https://lista.mercadolivre.com.br/_Desde_49_Container_fh-cupom-boost-16_NoIndex_True",
+          "is_actual_page": false
+        },
+        {
+          "value": "3",
+          "url": "https://lista.mercadolivre.com.br/_Desde_97_Container_fh-cupom-boost-16_NoIndex_True",
+          "is_actual_page": false
+        }
+      ],
+      "next_page": {
+        "value": "Próximo",
+        "url": "https://lista.mercadolivre.com.br/_Desde_49_Container_fh-cupom-boost-16_NoIndex_True",
+        "show": true
+      },
+      "results_limit": 101
+    },
+    "results": [
+      {
+        "id": "POLYCARD",
+        "state": "VISIBLE",
+        "polycard": {
+          "unique_id": "T0eufOT8fYrvuRrJi1JHMl5ngOIm_ZvsVq5XI2nbdYA",
+          "metadata": {
+            "id": "MLB5290670816",
+            "user_product_id": "MLBU3023247720",
+            "variation_id": "MLBU3023247720",
+            "pid": "MLBU3023247720",
+            "pid_extended": "MLBU3023247720_MLB5290670816",
+            "pid_family": "MLBU5623829269878380",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/sala-de-jantar-mesa-tampo-madeira-4-cadeiras-tina-madesa-rp/up/MLBU3023247720",
+            "url_fragments": "#polycard_client=search-desktop&be_origin=backend&overlay_label=not_apply&search_layout=grid&position=50&type=product&tracking_id=00000000-0000-4000-8000-000000000000&overlay_label_capability=not_apply&wid=MLB5290670816&sid=search",
+            "url_params": "?pdp_filters=deal%3AMLB1890691-1",
+            "tracks": {
+              "other_highlight_subtype:MLB5290670816": "black_friday",
+              "sold_quantity": 25,
+              "other_highlight_winner:MLB5290670816": "commercial_event",
+              "price": {
+                "promotions": [
+                  {
+                    "type": "price_decrement",
+                    "campaign_id": "14633544"
+                  }
+                ],
+                "price": 319.99
+              }
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBU3023247720",
+              "pid_extended": "MLBU3023247720_MLB5290670816",
+              "pid_family": "MLBU5623829269878380",
+              "pid_version": "0.6.0",
+              "item_id": "MLB5290670816",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "00000000-0000-4000-8000-000000000000",
+              "layout": "grid",
+              "highlights": "commercial_event",
+              "prc": 319.99,
+              "prc_currency": "BRL",
+              "prc_disc_pct": 57
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB1627",
+            "category_path": "MLB1574,MLB436380,MLB436392,MLB1627",
+            "domain_id": "MLB-DINING_KITS",
+            "item_position": "38",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "888205-MLB110648926926_052026"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "sanitized_title": "--sala-de-jantar-mesa-tampo-madeira-4-cadeiras-tina-madesa-rp",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "float_highlight_generic": {
+            "highlight": {
+              "id": "commercial_event",
+              "text": "{black_friday_icon} BLACK FRIDAY",
+              "values": [
+                {
+                  "key": "black_friday_icon",
+                  "type": "icon",
+                  "icon": {
+                    "key": "black_friday_icon",
+                    "icon_id": "black_friday_icon"
+                  }
+                }
+              ],
+              "styles": {
+                "color_hex": "#FFFFFF",
+                "background_color_hex": "#1A1A1A"
+              }
+            },
+            "should_fill": false
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Sala De Jantar Mesa Tampo Madeira 4 Cadeiras Tina Madesa Rp",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label} por Madesa moveis {icon_cockade}",
+                "values": [
+                  {
+                    "key": "icon_cockade",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_cockade",
+                      "alt_text": "Loja oficial",
+                      "icon_id": "icon_cockade"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "MADESA"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{label2}",
+                "alt_text": "Mais de 25 produtos vendidos.",
+                "values": [
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "+25 vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "price_labels": [
+                  {
+                    "version": "1",
+                    "text": "{previous_price}",
+                    "values": [
+                      {
+                        "type": "price",
+                        "key": "previous_price",
+                        "styles": {
+                          "color": "#757575"
+                        },
+                        "price": {
+                          "value": 752.92,
+                          "currency": "BRL",
+                          "size": 12,
+                          "decimal_style": "normal",
+                          "previous": true,
+                          "show_decimals": true
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "discount_polylabel": {
+                  "version": "1",
+                  "text": "{previous_label}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "previous_label",
+                      "styles": {
+                        "color": "#FFFFFF",
+                        "background_color": "#00A650"
+                      },
+                      "pill": {
+                        "text": "57% OFF"
+                      }
+                    }
+                  ]
+                },
+                "current_price": {
+                  "value": 319.99,
+                  "currency": "BRL",
+                  "weight": "regular",
+                  "styles": {
+                    "justify_content": "start",
+                    "max_lines": 2
+                  }
+                },
+                "discount_complement": {
+                  "version": "1",
+                  "text": "{discount_complement}",
+                  "values": [
+                    {
+                      "type": "label",
+                      "key": "discount_complement",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold"
+                      },
+                      "label": {
+                        "text": "com Cupom"
+                      }
+                    }
+                  ]
+                },
+                "discount_pct": 57
+              }
+            },
+            {
+              "type": "shipping_v2",
+              "id": "shipping_v2",
+              "shipping_v2": [
+                {
+                  "version": "1",
+                  "text": "{free_shipping_single} {new_buyer}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "free_shipping_single",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold",
+                        "background_color": "#E5F6ED",
+                        "padding": "0 6 0 6",
+                        "border_radius": "20 20 20 20"
+                      },
+                      "pill": {
+                        "text": "{shipping_truck_quiet_icon} Grátis",
+                        "values": [
+                          {
+                            "type": "icon",
+                            "key": "shipping_truck_quiet_icon",
+                            "icon": {
+                              "key": "shipping_truck_quiet_icon"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "label",
+                      "key": "new_buyer",
+                      "styles": {
+                        "color": "#000000E6",
+                        "font_weight": "regular"
+                      },
+                      "label": {
+                        "text": "por ser sua primeira compra",
+                        "alt_text": "por ser sua primeira compra"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "installation_services",
+              "id": "installation_services",
+              "installation_services": {
+                "text": "{buflo_reference_installation} Serviço de montagem",
+                "values": [
+                  {
+                    "key": "buflo_reference_installation",
+                    "type": "icon",
+                    "icon": {
+                      "key": "buflo_reference_installation",
+                      "alt_text": "Ícono de Instalación disponible: llave azul",
+                      "icon_id": "buflo_reference_installation"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "POLYCARD",
+        "state": "VISIBLE",
+        "polycard": {
+          "unique_id": "EvRahQ_m19lraA28SRMh02onRS5n_hUM8ZO6bZEe6LQ",
+          "metadata": {
+            "id": "MLB5423723154",
+            "product_id": "MLB47587989",
+            "user_product_id": "MLBU3096033484",
+            "variation_id": "MLB47587989",
+            "pid": "MLBP47587989",
+            "pid_extended": "MLBP47587989_MLB5423723154",
+            "pid_family": "MLBP47587988",
+            "pid_version": "0.6.0",
+            "url": "click1.mercadolivre.com.br/mclics/clicks/external/MLB/count",
+            "url_fragments": "#polycard_client=search-desktop&is_advertising=true&searchVariation=MLB47587989&backend_model=search-backend&be_origin=backend&overlay_label=rta&search_layout=grid&position=8&type=pad&tracking_id=00000000-0000-4000-8000-000000000000&overlay_label_capability=not_apply&wid=MLB5423723154&sid=search",
+            "url_params": "?a=FIXTURE-CLICK-TOKEN",
+            "tracks": {
+              "other_highlight_subtype:MLB5423723154": "black_friday",
+              "sold_quantity": 50,
+              "price": {
+                "promotions": [
+                  {
+                    "type": "price_decrement",
+                    "campaign_id": "14633544-14471080"
+                  }
+                ],
+                "price": 1223.59
+              },
+              "other_highlight_winner:MLB5423723154": "commercial_event"
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP47587989",
+              "pid_extended": "MLBP47587989_MLB5423723154",
+              "pid_family": "MLBP47587988",
+              "pid_version": "0.6.0",
+              "item_id": "MLB5423723154",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "00000000-0000-4000-8000-000000000000",
+              "layout": "grid",
+              "highlights": "commercial_event",
+              "prc": 1223,
+              "prc_currency": "BRL",
+              "prc_disc_pct": 59
+            },
+            "ads_promotions_position": "FOOTER",
+            "vertical_id": "CORE",
+            "is_pad": "true",
+            "category_id": "MLB1627",
+            "category_path": "MLB1574,MLB436380,MLB436392,MLB1627",
+            "domain_id": "MLB-DINING_KITS",
+            "item_position": "-1",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "631285-MLA96119972529_102025"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "ads_promotions": {
+            "type": "label",
+            "text": "Ad",
+            "url": "https://publicidade.mercadolivre.com.br",
+            "target": "_blank",
+            "alt_text": "Patrocinado"
+          },
+          "float_highlight_generic": {
+            "highlight": {
+              "id": "commercial_event",
+              "text": "{black_friday_icon} BLACK FRIDAY",
+              "values": [
+                {
+                  "key": "black_friday_icon",
+                  "type": "icon",
+                  "icon": {
+                    "key": "black_friday_icon",
+                    "icon_id": "black_friday_icon"
+                  }
+                }
+              ],
+              "styles": {
+                "color_hex": "#FFFFFF",
+                "background_color_hex": "#1A1A1A"
+              }
+            },
+            "should_fill": false
+          },
+          "overlay_label": {
+            "id": "rta",
+            "labels": [
+              {
+                "text": "FÁCIL DE"
+              },
+              {
+                "text": "MONTAR"
+              }
+            ],
+            "styles": {
+              "background_color_hex": "#181818"
+            }
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Conjunto Sala De Jantar 6 Cadeiras Manila Carraro Rose",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label} {icon_cockade}",
+                "values": [
+                  {
+                    "key": "icon_cockade",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_cockade",
+                      "alt_text": "Loja oficial",
+                      "icon_id": "icon_cockade"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "CARRARO"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.8 de 5 estrelas. Mais de 50 produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.8"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +50 vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "price_labels": [
+                  {
+                    "version": "1",
+                    "text": "{previous_price}",
+                    "values": [
+                      {
+                        "type": "price",
+                        "key": "previous_price",
+                        "styles": {
+                          "color": "#757575"
+                        },
+                        "price": {
+                          "value": 3021.04,
+                          "currency": "BRL",
+                          "size": 12,
+                          "decimal_style": "none",
+                          "previous": true,
+                          "show_decimals": false
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "discount_polylabel": {
+                  "version": "1",
+                  "text": "{previous_label}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "previous_label",
+                      "styles": {
+                        "color": "#FFFFFF",
+                        "background_color": "#00A650"
+                      },
+                      "pill": {
+                        "text": "59% OFF"
+                      }
+                    }
+                  ]
+                },
+                "current_price": {
+                  "value": 1223,
+                  "currency": "BRL",
+                  "weight": "regular",
+                  "styles": {
+                    "justify_content": "start",
+                    "max_lines": 2
+                  }
+                },
+                "discount_complement": {
+                  "version": "1",
+                  "text": "{discount_complement}",
+                  "values": [
+                    {
+                      "type": "label",
+                      "key": "discount_complement",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold"
+                      },
+                      "label": {
+                        "text": "no Pix com Cupom"
+                      }
+                    }
+                  ]
+                },
+                "discount_pct": 59
+              }
+            },
+            {
+              "type": "installation_services",
+              "id": "installation_services",
+              "installation_services": {
+                "text": "{buflo_reference_installation} Serviço de montagem",
+                "values": [
+                  {
+                    "key": "buflo_reference_installation",
+                    "type": "icon",
+                    "icon": {
+                      "key": "buflo_reference_installation",
+                      "alt_text": "Ícono de Instalación disponible: llave azul",
+                      "icon_id": "buflo_reference_installation"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "POLYCARD",
+        "state": "VISIBLE",
+        "polycard": {
+          "unique_id": "otLcbIHMdgou-XgwlWBx9yctVGzUB9BnvY14lugBC7I",
+          "metadata": {
+            "id": "MLB3659223609",
+            "product_id": "MLB35802200",
+            "user_product_id": "MLBU1743194163",
+            "variation_id": "MLB35802200",
+            "pid": "MLBP35802200",
+            "pid_extended": "MLBP35802200_MLB3659223609",
+            "pid_family": "MLBP39880109",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/conjunto-2-cadeiras-de-jantar-1736-carraro-caramelo-rose/p/MLB35802200",
+            "url_fragments": "#polycard_client=search-desktop&be_origin=backend&overlay_label=rta&search_layout=grid&position=14&type=product&tracking_id=00000000-0000-4000-8000-000000000000&overlay_label_capability=not_apply&wid=MLB3659223609&sid=search",
+            "url_params": "?pdp_filters=deal%3AMLB1890691-1",
+            "tracks": {
+              "other_highlight_subtype:MLB3659223609": "black_friday",
+              "other_highlight_winner:MLB3659223609": "commercial_event",
+              "sold_quantity": 500,
+              "price": {
+                "promotions": [
+                  {
+                    "type": "price_decrement",
+                    "campaign_id": "14471080"
+                  }
+                ],
+                "price": 349.59
+              }
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP35802200",
+              "pid_extended": "MLBP35802200_MLB3659223609",
+              "pid_family": "MLBP39880109",
+              "pid_version": "0.6.0",
+              "item_id": "MLB3659223609",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "00000000-0000-4000-8000-000000000000",
+              "layout": "grid",
+              "highlights": "commercial_event",
+              "prc": 349.59,
+              "prc_currency": "BRL",
+              "prc_disc_pct": 40,
+              "inst_issuer": "credit_card"
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB32664",
+            "category_path": "MLB1574,MLB436380,MLB436389,MLB32664",
+            "domain_id": "MLB-DINING_CHAIRS",
+            "item_position": "12",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "836670-MLA96617089113_102025"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "float_highlight_generic": {
+            "highlight": {
+              "id": "commercial_event",
+              "text": "{black_friday_icon} BLACK FRIDAY",
+              "values": [
+                {
+                  "key": "black_friday_icon",
+                  "type": "icon",
+                  "icon": {
+                    "key": "black_friday_icon",
+                    "icon_id": "black_friday_icon"
+                  }
+                }
+              ],
+              "styles": {
+                "color_hex": "#FFFFFF",
+                "background_color_hex": "#1A1A1A"
+              }
+            },
+            "should_fill": false
+          },
+          "overlay_label": {
+            "id": "rta",
+            "labels": [
+              {
+                "text": "FÁCIL DE"
+              },
+              {
+                "text": "MONTAR"
+              }
+            ],
+            "styles": {
+              "background_color_hex": "#181818"
+            }
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Conjunto 2 Cadeiras De Jantar 1736 Carraro Caramelo Rose",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label} {icon_cockade}",
+                "values": [
+                  {
+                    "key": "icon_cockade",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_cockade",
+                      "alt_text": "Loja oficial",
+                      "icon_id": "icon_cockade"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "CARRARO"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.8 de 5 estrelas. Mais de 500 produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.8"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +500 vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "price_labels": [
+                  {
+                    "version": "1",
+                    "text": "{previous_price}",
+                    "values": [
+                      {
+                        "type": "price",
+                        "key": "previous_price",
+                        "styles": {
+                          "color": "#757575"
+                        },
+                        "price": {
+                          "value": 589.99,
+                          "currency": "BRL",
+                          "size": 12,
+                          "decimal_style": "normal",
+                          "previous": true,
+                          "show_decimals": true
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "discount_polylabel": {
+                  "version": "1",
+                  "text": "{previous_label}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "previous_label",
+                      "styles": {
+                        "color": "#FFFFFF",
+                        "background_color": "#00A650"
+                      },
+                      "pill": {
+                        "text": "40% OFF"
+                      }
+                    }
+                  ]
+                },
+                "current_price": {
+                  "value": 349.59,
+                  "currency": "BRL",
+                  "weight": "regular",
+                  "styles": {
+                    "justify_content": "start",
+                    "max_lines": 2
+                  }
+                },
+                "discount_complement": {
+                  "version": "1",
+                  "text": "{discount_complement}",
+                  "values": [
+                    {
+                      "type": "label",
+                      "key": "discount_complement",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold"
+                      },
+                      "label": {
+                        "text": "no Pix"
+                      }
+                    }
+                  ]
+                },
+                "discount_pct": 40,
+                "installments": {
+                  "text": "ou {price_total} em outros meios",
+                  "no_interest": false,
+                  "values": [
+                    {
+                      "key": "price_total",
+                      "type": "price",
+                      "price": {
+                        "value": 379.99,
+                        "currency": "BRL"
+                      },
+                      "styles": {
+                        "color": "primary"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "promotions",
+              "id": "promotions",
+              "promotions": [
+                {
+                  "type": "coupon",
+                  "text": "{amount} OFF com Cupom",
+                  "values": [
+                    {
+                      "key": "amount",
+                      "type": "price",
+                      "price": {
+                        "value": 200,
+                        "currency": "BRL"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "shipping_v2",
+              "id": "shipping_v2",
+              "shipping_v2": [
+                {
+                  "version": "1",
+                  "text": "{free_shipping_single} {new_buyer}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "free_shipping_single",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold",
+                        "background_color": "#E5F6ED",
+                        "padding": "0 6 0 6",
+                        "border_radius": "20 20 20 20"
+                      },
+                      "pill": {
+                        "text": "{shipping_truck_quiet_icon} Grátis",
+                        "values": [
+                          {
+                            "type": "icon",
+                            "key": "shipping_truck_quiet_icon",
+                            "icon": {
+                              "key": "shipping_truck_quiet_icon"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "label",
+                      "key": "new_buyer",
+                      "styles": {
+                        "color": "#000000E6",
+                        "font_weight": "regular"
+                      },
+                      "label": {
+                        "text": "por ser sua primeira compra",
+                        "alt_text": "por ser sua primeira compra"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "installation_services",
+              "id": "installation_services",
+              "installation_services": {
+                "text": "{buflo_reference_installation} Serviço de montagem",
+                "values": [
+                  {
+                    "key": "buflo_reference_installation",
+                    "type": "icon",
+                    "icon": {
+                      "key": "buflo_reference_installation",
+                      "alt_text": "Ícono de Instalación disponible: llave azul",
+                      "icon_id": "buflo_reference_installation"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

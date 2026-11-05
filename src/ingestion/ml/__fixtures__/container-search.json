@@ -1,0 +1,896 @@
+{
+  "initialState": {
+    "results": [
+      {
+        "id": "POLYCARD",
+        "polycard": {
+          "unique_id": "6Q4nubDcbOZGNYMZyzzMsjtkcFRyc61QEC7yGhWIxH4",
+          "metadata": {
+            "id": "MLB3555628527",
+            "product_id": "MLB19493942",
+            "user_product_id": "MLBU1402108317",
+            "variation_id": "MLB19493942",
+            "pid": "MLBP19493942",
+            "pid_extended": "MLBP19493942_MLB3555628527",
+            "pid_family": "MLBP19493941",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/guarda-roupa-casal-madesa-monaco-3-portas-correr-espelho-cor-branco-1093d81e/p/MLB19493942",
+            "url_fragments": "#polycard_client=search-desktop&be_origin=backend&overlay_label=not_apply&search_layout=grid&position=1&type=product&tracking_id=c42d9666-957c-48b8-a5af-5340c1f69e7d&overlay_label_capability=not_apply&wid=MLB3555628527&sid=search",
+            "url_params": "?pdp_filters=deal%3AMLB1890691-1",
+            "tracks": {
+              "best_seller_winner:MLB3555628527": "best_seller",
+              "best_seller_candidates_count": 14,
+              "sold_quantity": 5000,
+              "price": {
+                "promotions": [
+                  {
+                    "type": "price_decrement",
+                    "campaign_id": "14633544-14471080"
+                  }
+                ],
+                "price": 643.99
+              }
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP19493942",
+              "pid_extended": "MLBP19493942_MLB3555628527",
+              "pid_family": "MLBP19493941",
+              "pid_version": "0.6.0",
+              "item_id": "MLB3555628527",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "c42d9666-957c-48b8-a5af-5340c1f69e7d",
+              "layout": "grid",
+              "highlights": "best_seller",
+              "prc": 643.99,
+              "prc_currency": "BRL",
+              "prc_disc_pct": 47,
+              "inst_amount": 90,
+              "inst_currency": "BRL",
+              "inst_issuer": "credit_card",
+              "inst_psj": 10
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB186153",
+            "category_path": "MLB1574,MLB436380,MLB436382,MLB186153",
+            "domain_id": "MLB-WARDROBES_AND_UPPER_STORAGES",
+            "item_position": "1",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "610870-MLA95657253150_102025"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "float_highlight_generic": {
+            "highlight": {
+              "id": "best_seller",
+              "text": "MAIS VENDIDO",
+              "styles": {
+                "color_hex": "#FFFFFF",
+                "background_color_hex": "#FF7733"
+              }
+            },
+            "should_fill": false
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Guarda Roupa Casal Madesa Mônaco 3 Portas Correr Espelho Cor Branco 1093D81E",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label} por Madesa moveis {icon_cockade}",
+                "values": [
+                  {
+                    "key": "icon_cockade",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_cockade",
+                      "alt_text": "Loja oficial",
+                      "icon_id": "icon_cockade"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "MADESA"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.6 de 5 estrelas. Mais de 5mil produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.6"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +5mil vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "price_labels": [
+                  {
+                    "version": "1",
+                    "text": "{previous_price}",
+                    "values": [
+                      {
+                        "type": "price",
+                        "key": "previous_price",
+                        "styles": {
+                          "color": "#757575"
+                        },
+                        "price": {
+                          "value": 1235.28,
+                          "currency": "BRL",
+                          "size": 12,
+                          "decimal_style": "none",
+                          "previous": true,
+                          "show_decimals": false
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "discount_polylabel": {
+                  "version": "1",
+                  "text": "{previous_label}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "previous_label",
+                      "styles": {
+                        "color": "#FFFFFF",
+                        "background_color": "#00A650"
+                      },
+                      "pill": {
+                        "text": "47% OFF"
+                      }
+                    }
+                  ]
+                },
+                "current_price": {
+                  "value": 643.99,
+                  "currency": "BRL",
+                  "weight": "regular",
+                  "styles": {
+                    "justify_content": "start",
+                    "max_lines": 2
+                  }
+                },
+                "discount_complement": {
+                  "version": "1",
+                  "text": "{discount_complement}",
+                  "values": [
+                    {
+                      "type": "label",
+                      "key": "discount_complement",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold"
+                      },
+                      "label": {
+                        "text": "no Pix com Cupom"
+                      }
+                    }
+                  ]
+                },
+                "discount_pct": 47,
+                "installments": {
+                  "text": "{o} {price_total} {en} 10x {price} sem juros",
+                  "no_interest": true,
+                  "values": [
+                    {
+                      "key": "o",
+                      "type": "label",
+                      "label": {
+                        "text": "ou"
+                      },
+                      "styles": {
+                        "color": "primary"
+                      }
+                    },
+                    {
+                      "key": "price_total",
+                      "type": "price",
+                      "price": {
+                        "value": 899.99,
+                        "currency": "BRL"
+                      },
+                      "styles": {
+                        "color": "primary"
+                      }
+                    },
+                    {
+                      "key": "en",
+                      "type": "label",
+                      "label": {
+                        "text": "em"
+                      },
+                      "styles": {
+                        "color": "primary"
+                      }
+                    },
+                    {
+                      "key": "price",
+                      "type": "price",
+                      "price": {
+                        "value": 90,
+                        "currency": "BRL"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "installation_services",
+              "id": "installation_services",
+              "installation_services": {
+                "text": "{buflo_reference_installation} Serviço de montagem",
+                "values": [
+                  {
+                    "key": "buflo_reference_installation",
+                    "type": "icon",
+                    "icon": {
+                      "key": "buflo_reference_installation",
+                      "alt_text": "Ícono de Instalación disponible: llave azul",
+                      "icon_id": "buflo_reference_installation"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "POLYCARD",
+        "polycard": {
+          "unique_id": "q2o1j8v-WokD1rGBsdAmlhybiXGFmkspQg_GQe21CtY",
+          "metadata": {
+            "id": "MLB5456355088",
+            "product_id": "MLB47791833",
+            "user_product_id": "MLBU3258769364",
+            "variation_id": "MLB47791833",
+            "pid": "MLBP47791833",
+            "pid_extended": "MLBP47791833_MLB5456355088",
+            "pid_family": "MLBP47893744",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/conjunto-sala-jantar-4-cadeiras-charlotte-carraro-nogal-rose/p/MLB47791833",
+            "url_fragments": "#polycard_client=search-desktop&be_origin=backend&overlay_label=not_apply&search_layout=grid&position=2&type=product&tracking_id=c42d9666-957c-48b8-a5af-5340c1f69e7d&overlay_label_capability=not_apply&wid=MLB5456355088&sid=search",
+            "url_params": "?pdp_filters=deal%3AMLB1890691-1",
+            "tracks": {
+              "sold_quantity": 1000,
+              "price": {
+                "promotions": [
+                  {
+                    "type": "price_decrement",
+                    "campaign_id": "14633544-14471080"
+                  }
+                ],
+                "price": 616.39
+              }
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP47791833",
+              "pid_extended": "MLBP47791833_MLB5456355088",
+              "pid_family": "MLBP47893744",
+              "pid_version": "0.6.0",
+              "item_id": "MLB5456355088",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "c42d9666-957c-48b8-a5af-5340c1f69e7d",
+              "layout": "grid",
+              "prc": 616.39,
+              "prc_currency": "BRL",
+              "prc_disc_pct": 62
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB1627",
+            "category_path": "MLB1574,MLB436380,MLB436392,MLB1627",
+            "domain_id": "MLB-DINING_KITS",
+            "item_position": "2",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "668359-MLA110473535085_042026"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Conjunto Sala Jantar 4 Cadeiras Charlotte Carraro Nogal Rose",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label} {icon_cockade}",
+                "values": [
+                  {
+                    "key": "icon_cockade",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_cockade",
+                      "alt_text": "Loja oficial",
+                      "icon_id": "icon_cockade"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "CARRARO"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.8 de 5 estrelas. Mais de 1000 produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.8"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +1000 vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "price_labels": [
+                  {
+                    "version": "1",
+                    "text": "{previous_price}",
+                    "values": [
+                      {
+                        "type": "price",
+                        "key": "previous_price",
+                        "styles": {
+                          "color": "#757575"
+                        },
+                        "price": {
+                          "value": 1631.57,
+                          "currency": "BRL",
+                          "size": 12,
+                          "decimal_style": "none",
+                          "previous": true,
+                          "show_decimals": false
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "discount_polylabel": {
+                  "version": "1",
+                  "text": "{previous_label}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "previous_label",
+                      "styles": {
+                        "color": "#FFFFFF",
+                        "background_color": "#00A650"
+                      },
+                      "pill": {
+                        "text": "62% OFF"
+                      }
+                    }
+                  ]
+                },
+                "current_price": {
+                  "value": 616.39,
+                  "currency": "BRL",
+                  "weight": "regular",
+                  "styles": {
+                    "justify_content": "start",
+                    "max_lines": 2
+                  }
+                },
+                "discount_complement": {
+                  "version": "1",
+                  "text": "{discount_complement}",
+                  "values": [
+                    {
+                      "type": "label",
+                      "key": "discount_complement",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold"
+                      },
+                      "label": {
+                        "text": "no Pix com Cupom"
+                      }
+                    }
+                  ]
+                },
+                "discount_pct": 62
+              }
+            },
+            {
+              "type": "installation_services",
+              "id": "installation_services",
+              "installation_services": {
+                "text": "{buflo_reference_installation} Serviço de montagem",
+                "values": [
+                  {
+                    "key": "buflo_reference_installation",
+                    "type": "icon",
+                    "icon": {
+                      "key": "buflo_reference_installation",
+                      "alt_text": "Ícono de Instalación disponible: llave azul",
+                      "icon_id": "buflo_reference_installation"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "POLYCARD",
+        "polycard": {
+          "unique_id": "HmEHANEhnbfUAAmaUY_Ww9pWEeHQFvmP0wfRZzX2SBQ",
+          "metadata": {
+            "id": "MLB3604975437",
+            "product_id": "MLB27690155",
+            "user_product_id": "MLBU1729494760",
+            "variation_id": "MLB27690155",
+            "pid": "MLBP27690155",
+            "pid_extended": "MLBP27690155_MLB3604975437",
+            "pid_family": "MLBP27664417",
+            "pid_version": "0.6.0",
+            "url": "www.mercadolivre.com.br/cozinha-compacta-arizona-glam-com-armario-e-balcao-carraro-cor-carvalhopreto/p/MLB27690155",
+            "url_fragments": "#polycard_client=search-desktop&float_highlight=last_unit&be_origin=backend&overlay_label=not_apply&search_layout=grid&position=3&type=product&tracking_id=c42d9666-957c-48b8-a5af-5340c1f69e7d&overlay_label_capability=not_apply&wid=MLB3604975437&sid=search",
+            "url_params": "?pdp_filters=deal%3AMLB1890691-1",
+            "tracks": {
+              "sold_quantity": 5000,
+              "other_highlight_winner:MLB3604975437": "last_unit",
+              "price": {
+                "promotions": [
+                  {
+                    "type": "price_decrement",
+                    "campaign_id": "14633544-14471080"
+                  }
+                ],
+                "price": 331.19
+              }
+            },
+            "card_type": "grid-card",
+            "signal": {
+              "pid": "MLBP27690155",
+              "pid_extended": "MLBP27690155_MLB3604975437",
+              "pid_family": "MLBP27664417",
+              "pid_version": "0.6.0",
+              "item_id": "MLB3604975437",
+              "surface": "search",
+              "section": "search-results",
+              "source_id": "c42d9666-957c-48b8-a5af-5340c1f69e7d",
+              "layout": "grid",
+              "highlights": "last_unit",
+              "prc": 331.19,
+              "prc_currency": "BRL",
+              "prc_disc_pct": 58,
+              "buying_options": {
+                "prc_currency": "BRL",
+                "prc": 619.99,
+                "prc_disc_pct": 52,
+                "inst_currency": "BRL",
+                "inst_amount": 62,
+                "inst_issuer": "credit_card",
+                "inst_psj": 10
+              }
+            },
+            "vertical_id": "CORE",
+            "is_pad": "false",
+            "category_id": "MLB439421",
+            "category_path": "MLB1574,MLB436380,MLB454690,MLB454692,MLB454701,MLB439421",
+            "domain_id": "MLB-KITCHEN_CABINETS",
+            "item_position": "3",
+            "price_per_quantity": "false",
+            "pxu_b2b": "false",
+            "bulk_sale": "false"
+          },
+          "pictures": {
+            "scale": "FILL",
+            "pictures": [
+              {
+                "id": "667736-MLA89574935092_082025"
+              }
+            ],
+            "square": "Q",
+            "alt_text": "Imagem",
+            "overlay": true,
+            "ratio": "1"
+          },
+          "bookmark": {
+            "alt_text": "Favorito",
+            "alt_text_active": "Adicionar aos favoritos",
+            "alt_text_inactive": "Remover dos favoritos",
+            "bookmarked": false
+          },
+          "float_highlight_generic": {
+            "highlight": {
+              "id": "last_unit",
+              "text": "{icon_flame_white} ÚLTIMA!",
+              "values": [
+                {
+                  "key": "icon_flame_white",
+                  "type": "icon",
+                  "icon": {
+                    "key": "icon_flame_white",
+                    "icon_id": "icon_flame_white"
+                  }
+                }
+              ],
+              "styles": {
+                "color_hex": "#FFFFFF",
+                "background_color_hex": "#FF7733"
+              }
+            },
+            "should_fill": false
+          },
+          "components": [
+            {
+              "type": "title",
+              "id": "title",
+              "title": {
+                "text": "Cozinha Compacta Arizona Glam Com Armário E Balcão Carraro Cor Carvalho/Preto",
+                "long_title": false,
+                "title_tag": "h3"
+              }
+            },
+            {
+              "type": "seller",
+              "id": "seller",
+              "seller": {
+                "text": "{label} {icon_cockade}",
+                "values": [
+                  {
+                    "key": "icon_cockade",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_cockade",
+                      "alt_text": "Loja oficial",
+                      "icon_id": "icon_cockade"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "CARRARO"
+                    },
+                    "styles": {
+                      "color_hex": "#191919",
+                      "font_weight": "semibold"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "review_compacted",
+              "id": "review_compacted",
+              "review_compacted": {
+                "text": "{icon_star_fill} {label} {label2}",
+                "alt_text": "Classificação 4.6 de 5 estrelas. Mais de 5mil produtos vendidos.",
+                "values": [
+                  {
+                    "key": "icon_star_fill",
+                    "type": "icon",
+                    "icon": {
+                      "key": "icon_star_fill",
+                      "icon_id": "icon_star_fill"
+                    }
+                  },
+                  {
+                    "key": "label",
+                    "type": "label",
+                    "label": {
+                      "text": "4.6"
+                    }
+                  },
+                  {
+                    "key": "label2",
+                    "type": "label",
+                    "label": {
+                      "text": "| +5mil vendidos"
+                    },
+                    "styles": {
+                      "color_hex": "#737373"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "price",
+              "id": "price_v2",
+              "price": {
+                "price_labels": [
+                  {
+                    "version": "1",
+                    "text": "{previous_price}",
+                    "values": [
+                      {
+                        "type": "price",
+                        "key": "previous_price",
+                        "styles": {
+                          "color": "#757575"
+                        },
+                        "price": {
+                          "value": 799.9,
+                          "currency": "BRL",
+                          "size": 12,
+                          "decimal_style": "normal",
+                          "previous": true,
+                          "show_decimals": true
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "discount_polylabel": {
+                  "version": "1",
+                  "text": "{previous_label}",
+                  "values": [
+                    {
+                      "type": "pill",
+                      "key": "previous_label",
+                      "styles": {
+                        "color": "#FFFFFF",
+                        "background_color": "#00A650"
+                      },
+                      "pill": {
+                        "text": "58% OFF"
+                      }
+                    }
+                  ]
+                },
+                "current_price": {
+                  "value": 331.19,
+                  "currency": "BRL",
+                  "weight": "regular",
+                  "styles": {
+                    "justify_content": "start",
+                    "max_lines": 2
+                  }
+                },
+                "discount_complement": {
+                  "version": "1",
+                  "text": "{discount_complement}",
+                  "values": [
+                    {
+                      "type": "label",
+                      "key": "discount_complement",
+                      "styles": {
+                        "color": "#00A650",
+                        "font_weight": "semibold"
+                      },
+                      "label": {
+                        "text": "no Pix com Cupom"
+                      }
+                    }
+                  ]
+                },
+                "discount_pct": 58
+              }
+            },
+            {
+              "type": "buy_box",
+              "id": "buy_box",
+              "buy_box": {
+                "text": "Outra opção de compra",
+                "alternative_options": [
+                  {
+                    "url": "https://www.mercadolivre.com.br/cozinha-compacta-arizona-glam-com-armario-e-balcao-carraro-cor-carvalhopreto/p/MLB27690155?offer_type=BEST_INSTALLMENTS#wid=MLB5444306946&sid=search",
+                    "url_params": "?offer_type=BEST_INSTALLMENTS",
+                    "url_fragments": "#polycard_client=search-desktop&wid=MLB3604975437&sid=search",
+                    "target": "_self",
+                    "components": [
+                      {
+                        "type": "price",
+                        "id": "price_v2",
+                        "price": {
+                          "price_labels": [
+                            {
+                              "version": "1",
+                              "text": "{previous_price}",
+                              "values": [
+                                {
+                                  "type": "price",
+                                  "key": "previous_price",
+                                  "styles": {
+                                    "color": "#757575"
+                                  },
+                                  "price": {
+                                    "value": 1294.73,
+                                    "currency": "BRL",
+                                    "size": 12,
+                                    "decimal_style": "none",
+                                    "previous": true,
+                                    "show_decimals": false
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "discount_polylabel": {
+                            "version": "1",
+                            "text": "{previous_label}",
+                            "values": [
+                              {
+                                "type": "pill",
+                                "key": "previous_label",
+                                "styles": {
+                                  "color": "#FFFFFF",
+                                  "background_color": "#00A650"
+                                },
+                                "pill": {
+                                  "text": "52% OFF"
+                                }
+                              }
+                            ]
+                          },
+                          "current_price": {
+                            "value": 619.99,
+                            "currency": "BRL",
+                            "weight": "regular",
+                            "styles": {
+                              "justify_content": "start",
+                              "max_lines": 2
+                            }
+                          },
+                          "discount_pct": 52,
+                          "installments": {
+                            "text": "10x {price} sem juros",
+                            "no_interest": true,
+                            "values": [
+                              {
+                                "key": "price",
+                                "type": "price",
+                                "price": {
+                                  "value": 62,
+                                  "currency": "BRL"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "pagination": {
+      "selected_page": 1,
+      "show_pagination": true,
+      "next_page": {
+        "value": "Próximo",
+        "url": "https://lista.mercadolivre.com.br/_Desde_49_Container_fh-cupom-boost-16_NoIndex_True",
+        "show": true
+      }
+    }
+  }
+}
