@@ -1,6 +1,6 @@
 import { setTimeout as sleep } from 'node:timers/promises'
 import type { Page, Response as BrowserResponse } from 'playwright'
-import { discoveryTargets } from '@/db/coupons'
+import { verifyTargets } from '@/db/coupons'
 import { VERIFY_TIMEOUT_MS } from '@/lib/constants'
 import { isVerifyInProgress, type VerifyState, type VerifyStatus } from '@/lib/domain'
 import { closedOutcome, verifyPhase, verifyTarget, type VerifyPhase } from '@/lib/ml-verify'
@@ -82,7 +82,7 @@ export function startVerify(): void {
       setVerify('failed', hold.text)
       return
     }
-    const target = verifyTarget(await discoveryTargets(1, new Date()))
+    const target = verifyTarget(await verifyTargets(new Date()))
     await withMlBrowser('visible', async (page) => {
       setVerify('waiting')
       const observer = observeVerify(page)

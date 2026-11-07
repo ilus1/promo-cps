@@ -8,8 +8,7 @@ import { cycleHealth, healthMask, shouldNotifyHealth } from '@/lib/cycle-health'
 import type { CycleActivity } from '@/lib/domain'
 import { pruneLine } from '@/lib/prune-rules'
 import {
-  activationLimit, cycleStatus, discoveryBudget, endingCutoff, endingDecision, endingRefusedReason, joinReasons, partialReason,
-  type EndingDecision,
+  activationLimit, cycleStatus, endingCutoff, endingDecision, endingRefusedReason, joinReasons, partialReason, type EndingDecision,
 } from './cycle-rules'
 import { afterRun } from './after-run'
 import { replanAutoRun } from './auto-run'
@@ -18,9 +17,8 @@ import { mlHoldCheck } from './request-hold'
 import { phaseOf, recordedRun, requestJob, stoppedSinceRequest, type JobBook } from './recorded-run'
 import { activate } from './steps/activate'
 import { loadBreaker } from './steps/breaker'
-import { discover } from './steps/discover'
-import { runDueBuscas } from './steps/buscas'
 import { harvest } from './steps/harvest'
+import { watchMl } from './steps/watch-ml'
 
 declare global {
   var __promoCycle: JobBook<Run> | undefined
@@ -110,24 +108,12 @@ async function runCycle(): Promise<Run> {
       [CYCLE_COUNT.activationFailed]: a.failed,
       [CYCLE_COUNT.activationSkipped]: a.skipped,
     })
-    const s = await runDueBuscas(page, new Date(), breaker, env().RUN_EVERY_HOURS)
-    Object.assign(counts, s.counts)
-    const d = await discover(page, discoveryBudget(env().DISCOVERY_PAGES_PER_RUN, counts[CYCLE_COUNT.buscaPages]), new Date(), breaker)
-    Object.assign(counts, {
-      [CYCLE_COUNT.discoveryPages]: d.pages,
-      [CYCLE_COUNT.discoveredItems]: d.items,
-      [CYCLE_COUNT.discoveryFailed]: d.failed,
-      [CYCLE_COUNT.discoveryRead]: d.read,
-      [CYCLE_COUNT.discoveryEmpty]: d.empty,
-      [CYCLE_COUNT.discoveryLinks]: d.couponLinks,
-      [CYCLE_COUNT.discoveryCards]: d.cards,
-      [CYCLE_COUNT.discoveryBasisOther]: d.basisOther,
-      [CYCLE_COUNT.droppedCards]: d.droppedCards,
-    })
+    const w = await watchMl(page, breaker)
+    Object.assign(counts, w.counts)
     await healthCounts(counts, previousWorked, startedAt)
-    report.status = cycleStatus(h.allPagesLoaded, s.failed + d.failed)
+    report.status = cycleStatus(h.allPagesLoaded, w.failed)
     report.error = joinReasons(
-      report.status === 'partial' ? partialReason(h, d.lastError ?? s.lastError) : undefined,
+      report.status === 'partial' ? partialReason(h, w.lastError) : undefined,
       endingRefusedReason(refusal),
     )
   })

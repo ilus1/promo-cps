@@ -7,8 +7,11 @@ describe('parseEnv', () => {
   it('applies defaults', () => {
     expect(parseEnv(base)).toMatchObject({
       PORT: 8510, AUTO_RUN: 'on', RUN_EVERY_HOURS: 3, PAGE_DELAY_MS: 1500,
-      ACTIVATE_PER_RUN: 20, DISCOVERY_PAGES_PER_RUN: 300,
+      ACTIVATE_PER_RUN: 20,
     })
+  })
+  it('ignores the removed discovery budget left in an old .env', () => {
+    expect(parseEnv({ ...base, DISCOVERY_PAGES_PER_RUN: '300' })).not.toHaveProperty('DISCOVERY_PAGES_PER_RUN')
   })
   it('holds on ca-DC-ipsec-vpn by default and parses a list', () => {
     expect(parseEnv(base).VPN_HOLD_NAMES).toEqual(['ca-DC-ipsec-vpn'])

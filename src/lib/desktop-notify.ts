@@ -1,7 +1,6 @@
 import { spawn } from 'node:child_process'
-import type { Item, Run } from '@/db/schema'
+import type { Run } from '@/db/schema'
 import { isRunStatus, SESSION_EXPIRED_TEXT, type RunKind, type RunStatus } from './domain'
-import { formatCents, formatPercent } from './format'
 import { APP_NAME } from './labels'
 import { notifyBody } from './notify-text'
 import { ROUTES } from './routes'
@@ -18,10 +17,6 @@ const REFUSED_URL_TEXT = 'refused a url outside the app'
 
 export interface DesktopNotification { title: string; body: string; url: string }
 
-export type DealSample = Pick<Item, 'title' | 'priceCents' | 'mlDiscountPct' | 'dropRatio'>
-
-export interface DealDigest { alertName: string; count: number; samples: DealSample[]; url: string }
-
 const SESSION_PROBLEMS: Partial<Record<RunStatus, string>> = {
   session_expired: SESSION_EXPIRED_TEXT,
   blocked: 'acesso bloqueado pelo Mercado Livre',
@@ -30,22 +25,6 @@ const SESSION_PROBLEMS: Partial<Record<RunStatus, string>> = {
 const FAILURES: Partial<Record<RunKind, string>> = {
   cycle: 'o ciclo falhou',
   search: 'a busca falhou',
-}
-
-function sampleLine({ title, priceCents, mlDiscountPct, dropRatio }: DealSample): string {
-  const reasons: string[] = []
-  if (mlDiscountPct && mlDiscountPct > 0) reasons.push(`${mlDiscountPct}% OFF`)
-  if (dropRatio && dropRatio > 0) reasons.push(`${formatPercent(dropRatio)} abaixo do menor preço`)
-  const why = reasons.length > 0 ? ` (${reasons.join(', ')})` : ''
-  return `${formatCents(priceCents)}${why}: ${title}`
-}
-
-export function dealDigestNotification(d: DealDigest): DesktopNotification {
-  const noun = d.count === 1 ? '1 nova oferta' : `${d.count} novas ofertas`
-  const lines = d.samples.map(sampleLine)
-  const more = d.count - d.samples.length
-  if (more > 0) lines.push(`e mais ${more}`)
-  return { title: `${noun}: ${d.alertName}`, body: lines.join('\n'), url: d.url }
 }
 
 function runProblem({ kind, status }: Pick<Run, 'kind' | 'status'>): string | undefined {

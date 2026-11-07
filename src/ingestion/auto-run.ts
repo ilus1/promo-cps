@@ -7,8 +7,7 @@ import { orphanCutoff } from './cycle-rules'
 import { holdAction } from './hold-rules'
 import { chainIdle } from './run-chain'
 import {
-  canTick, dueTimesSplit, cycleDueAt, heldNextRun, latestHold, schedulerPlan, stopHold, tickAction, wakeDelay,
-  type SchedulerInputs, type SchedulerPlan, type TickAction,
+  canTick, cycleDueAt, cycleIsDue, heldNextRun, latestHold, schedulerPlan, stopHold, wakeDelay, type SchedulerInputs, type SchedulerPlan,
 } from './schedule'
 import { schedulerInputs } from './scheduler-inputs'
 import { slotJitterMs } from './slot-jitter'
@@ -50,19 +49,16 @@ export function replanAutoRun(): void {
 }
 
 async function loadInputs(): Promise<SchedulerInputs> {
-  const [runs, searches] = await Promise.all([import('@/db/runs'), import('@/db/searches')])
-  const [lastCycle, workedCycle, login, accountWorked, expired, held, enabled] = await Promise.all([
+  const runs = await import('@/db/runs')
+  const [lastCycle, workedCycle, login, accountWorked, expired, held] = await Promise.all([
     runs.lastRun('cycle'),
     runs.lastWorkedCycleRun(),
     runs.lastStatusRun('login'),
     runs.lastWorkedAccountRun(),
     runs.lastExpiredAccountRun(),
     runs.lastHeldAccountRun(),
-    searches.listEnabledSearches(),
   ])
-  return schedulerInputs({
-    lastCycle, workedCycle, login, accountWorked, expired, held, searches: enabled,
-  })
+  return schedulerInputs({ lastCycle, workedCycle, login, accountWorked, expired, held })
 }
 
 async function sweepOrphanRuns(): Promise<void> {
@@ -110,15 +106,9 @@ export function startAutoRunScheduler(): void {
     const raw = schedulerPlan(inputs, everyHours, jitterMs)
     if (raw.pause !== null) return raw
     const hold = latestHold(state.bootHoldMs, stopHold(inputs.latestHeld, inputs.latestAccountWorked, everyHours))
-    const dues = dueTimesSplit(inputs.lastCycleStartedAt, everyHours, inputs.searches, jitterMs, inputs.lastCycleFinishedAt)
-    return {
-      pause: null,
-      nextRunAt: heldNextRun(dues.held, state.lastTickEndedAtMs, hold, dues.fresh),
-      cycleNextRunAt: heldNextRun(
-        [cycleDueAt(inputs.lastCycleStartedAt, everyHours, jitterMs, inputs.lastCycleFinishedAt)],
-        state.lastTickEndedAtMs, hold,
-      ),
-    }
+    const due = cycleDueAt(inputs.lastCycleStartedAt, everyHours, jitterMs, inputs.lastCycleFinishedAt)
+    const next = heldNextRun([due], state.lastTickEndedAtMs, hold)
+    return { pause: null, nextRunAt: next, cycleNextRunAt: next }
   }
 
   const rearm = () => {
@@ -147,26 +137,22 @@ export function startAutoRunScheduler(): void {
     }
   }
 
-  const launch = (action: TickAction, modules: Launchers): Promise<unknown> => {
-    console.log(LOG_TAG, action === 'cycle' ? 'starting cycle' : 'starting busca tick')
-    return action === 'cycle' ? modules.requestCycle() : modules.runDueBuscasTick(new Date())
-  }
-
   const tick = async () => {
     state.ticking = true
     let skipped = false
     try {
-      const [{ requestCycle }, { runDueBuscasTick }] = await Promise.all([import('./cycle'), import('./search-run')])
+      const { requestCycle } = await import('./cycle')
       const inputs = await loadInputs()
       const everyHours = env().RUN_EVERY_HOURS
       const now = new Date()
       const jitterMs = slotJitterMs(inputs.lastCycleStartedAt, everyHours)
-      const action = tickAction(now, inputs.lastCycleStartedAt, everyHours, inputs.searches, jitterMs, inputs.lastCycleFinishedAt)
-      if (action === null || !canTick(compute(inputs).nextRunAt, now, chainIdle())) {
+      const due = cycleIsDue(now, inputs.lastCycleStartedAt, everyHours, jitterMs, inputs.lastCycleFinishedAt)
+      if (!due || !canTick(compute(inputs).nextRunAt, now, chainIdle())) {
         skipped = true
         return
       }
-      await launch(action, { requestCycle, runDueBuscasTick })
+      console.log(LOG_TAG, 'starting cycle')
+      await requestCycle()
     } catch (e) {
       console.error(LOG_TAG, 'tick failed', e instanceof Error ? e.message : e)
     } finally {
@@ -210,9 +196,4 @@ export function startAutoRunScheduler(): void {
   globalThis.__promoAutoRun = handle
   void sweepOrphanRuns().then(plan)
   console.log(LOG_TAG, 'scheduler started')
-}
-
-interface Launchers {
-  requestCycle: () => Promise<unknown>
-  runDueBuscasTick: (requestedAt: Date) => Promise<unknown>
 }

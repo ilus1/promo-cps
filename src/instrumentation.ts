@@ -7,9 +7,9 @@ export async function register() {
     console.error('[auto-run] failed to start scheduler', e)
   }
   try {
-    const { startMarketCrawlers } = await import('@/ingestion/market/crawlers')
-    startMarketCrawlers()
+    const { startWatch } = await import('@/ingestion/watch/loops')
+    startWatch()
   } catch (e) {
-    console.error('[market] failed to start crawlers', e)
+    console.error('[watch] failed to start', e)
   }
 }

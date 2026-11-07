@@ -8,7 +8,7 @@ import { closeWithin, killProfileBrowser } from '../browser-close'
 import { launchChrome } from '../browser-launch'
 import { errorText } from '../errors'
 import { startXvfb } from '../xvfb'
-import type { FetchedPage } from './crawl-page'
+import type { FetchedPage } from './fetched-page'
 
 const AMAZON_PROFILE_NAME = 'amazon-profile'
 const NO_RESPONSE_STATUS = 0
@@ -20,8 +20,6 @@ const SESSION_EXPIRED = 'a sessão da Amazon passou do tempo limite'
 const SHARED_PROFILE = 'o perfil da Amazon seria o perfil do ML'
 
 export type PageLoader = (url: string, scroll: boolean) => Promise<FetchedPage>
-
-export interface AmazonSession { load: PageLoader; isOpen: () => boolean }
 
 export function amazonProfileDir(mlProfileDir: string = env().ML_PROFILE_DIR): string {
   const profileDir = path.join(path.dirname(mlProfileDir), AMAZON_PROFILE_NAME)
@@ -84,8 +82,4 @@ export function amazonPageLoader(page: Page): PageLoader {
       return { status: NO_RESPONSE_STATUS, html: '', reason: errorText(e) }
     }
   }
-}
-
-export function amazonSession(page: Page, isOpen: () => boolean): AmazonSession {
-  return { load: amazonPageLoader(page), isOpen }
 }

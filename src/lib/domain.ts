@@ -1,11 +1,7 @@
 import { CYCLE_COUNT } from './cycle-counts'
 
 export const ITEM_STATUSES = ['NOT_SEEN', 'SAVED', 'SEEN'] as const
-export type ItemStatus = (typeof ITEM_STATUSES)[number]
-export const STATUS_NOT_SEEN = ITEM_STATUSES[0]
 export const STATUS_SAVED = ITEM_STATUSES[1]
-export const STATUS_SEEN = ITEM_STATUSES[2]
-export const ALERT_STATUSES = [STATUS_NOT_SEEN, STATUS_SAVED] as const
 
 export const BASES = ['none', 'pix', 'coupon', 'pix_coupon', 'other'] as const
 export type Basis = (typeof BASES)[number]
@@ -21,25 +17,21 @@ export type CouponScope = (typeof COUPON_SCOPES)[number]
 export const COUPON_LIST_STATUSES = ['active', 'inactive', 'ended'] as const
 export type CouponListStatus = (typeof COUPON_LIST_STATUSES)[number]
 
-export const COUPON_SORTS = ['desconto', 'economia', 'minimo', 'limite', 'ofertas', 'vence'] as const
+export const COUPON_SORTS = ['desconto', 'economia', 'minimo', 'limite', 'vence'] as const
 export type CouponSort = (typeof COUPON_SORTS)[number]
 export const DEFAULT_COUPON_SORT: CouponSort = COUPON_SORTS[0]
 
 export const SOURCE_TYPES = ['coupon', 'search'] as const
-export type SourceType = (typeof SOURCE_TYPES)[number]
 export const SOURCE_COUPON = SOURCE_TYPES[0]
-export const SOURCE_SEARCH = SOURCE_TYPES[1]
 
 export const BUSCA_KINDS = ['search', 'product'] as const
-export type BuscaKind = (typeof BUSCA_KINDS)[number]
 
 export const RUN_KINDS = ['cycle', 'search', 'login'] as const
 export type RunKind = (typeof RUN_KINDS)[number]
 
 export const BLOCKED_STATUS = 'blocked'
 
-export const PRICE_CHECK_STATUSES = ['matched', 'no_match', 'failed', 'blocked'] as const
-export type PriceCheckStatus = (typeof PRICE_CHECK_STATUSES)[number]
+export const PRICE_CHECK_STATUSES = ['matched', 'no_match'] as const
 export const MATCH_CONFIDENCES = ['high', 'medium'] as const
 export type MatchConfidence = (typeof MATCH_CONFIDENCES)[number]
 
@@ -106,7 +98,6 @@ export type LastRunStatus = {
 export type MlStatus = LoginStatus & {
   verify: VerifyStatus
   cycle: CycleActivity
-  buscas: Record<string, CycleActivity>
   lastRun: LastRunStatus | null
 }
 

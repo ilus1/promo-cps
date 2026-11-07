@@ -21,7 +21,7 @@ function health(over: Partial<HealthReport> = {}): HealthReport {
     nextRunAt: null,
     runEveryHours: EVERY,
     hold: null,
-    market: { kabum: { state: 'running', blockedUntil: null }, amazon: { state: 'running', blockedUntil: null } },
+    watch: [{ retailer: 'kabum', state: 'running', blockedUntil: null }, { retailer: 'amazon', state: 'running', blockedUntil: null }],
     ...over,
   }
 }
@@ -39,9 +39,10 @@ describe('watchdogDecision', () => {
     expect(d.notifications).toEqual([])
   })
 
-  it('never notifies for blocked or stopped crawlers', () => {
-    const market = { kabum: { state: 'blocked', blockedUntil: NOW.toISOString() }, amazon: { state: 'stopped', blockedUntil: null } } as const
-    const d = watchdogDecision(health({ market }), NOW, {})
+  it('never notifies for blocked or stopped watch sources', () => {
+    const d = watchdogDecision(health({
+      watch: [{ retailer: 'kabum', state: 'blocked', blockedUntil: NOW.toISOString() }, { retailer: 'amazon', state: 'stopped', blockedUntil: null }],
+    }), NOW, {})
     expect(d.active).toEqual([])
     expect(d.notifications).toEqual([])
   })

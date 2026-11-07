@@ -8,13 +8,13 @@ export interface RequestHold { kind: HoldKind; text: string; reason: string }
 export const VPN_HOLD_TEXT = 'VPN da empresa conectada: desconecte para rodar'
 export const VPN_UNKNOWN_HOLD_TEXT = 'Não foi possível verificar a VPN: tentando de novo'
 export const MANUAL_HOLD_TEXT = 'Requisições pausadas manualmente: retome em Conta para rodar'
-export const PRICE_MANUAL_HOLD_TEXT = 'Comparação de preços pausada manualmente: retome em Conta'
+export const PRICE_MANUAL_HOLD_TEXT = 'Monitoramento pausado manualmente: retome em Conta'
 
 const HOLDS: Record<HoldKind, RequestHold> = {
   vpn: { kind: 'vpn', text: VPN_HOLD_TEXT, reason: 'VPN conectada' },
   vpn_unknown: { kind: 'vpn_unknown', text: VPN_UNKNOWN_HOLD_TEXT, reason: 'VPN não verificada' },
   manual: { kind: 'manual', text: MANUAL_HOLD_TEXT, reason: 'pausado manualmente' },
-  price_manual: { kind: 'price_manual', text: PRICE_MANUAL_HOLD_TEXT, reason: 'comparação pausada manualmente' },
+  price_manual: { kind: 'price_manual', text: PRICE_MANUAL_HOLD_TEXT, reason: 'monitoramento pausado manualmente' },
 }
 
 const VPN_HOLD: Record<VpnState, HoldKind | null> = {

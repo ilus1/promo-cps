@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest'
 import { HOUR_MS, MINUTE_MS, SCHEDULE_JITTER_MINUTES, SCHEDULER_CHECK_MS, SCHEDULER_TICK_COOLDOWN_MS } from '@/lib/constants'
 import { FIRST_CYCLE_TEXT, LOGIN_REFUSED_TEXT, SESSION_EXPIRED_TEXT } from '@/lib/domain'
 import {
-  alignedToCycle, buscaSlackMs, cycleDueAt, dueTimesSplit, jitterOffsetMs, slotRandom, canTick, heldUntil, latestHold, earliest, heldNextRun, stopHold, nextRunAt, schedulerPause, schedulerPlan, searchDueAt, tickAction, wakeDelay,
-  type SchedulerInputs,
+  cycleDueAt, cycleIsDue, jitterOffsetMs, slotRandom, canTick, heldUntil, latestHold, earliest, heldNextRun, stopHold, schedulerPause, schedulerPlan,
+  wakeDelay, type SchedulerInputs,
 } from './schedule'
 
 const at = (iso: string) => new Date(iso)
@@ -17,52 +17,10 @@ test('a never-run cycle is due immediately', () => {
   expect(cycleDueAt(null, 3)).toEqual(new Date(0))
 })
 
-test('each search is due its own interval after its last run', () => {
-  expect(searchDueAt({ lastRunAt: at('2026-10-01T09:00:00Z'), runEveryHours: 1 }))
-    .toEqual(at('2026-10-01T10:00:00Z'))
-  expect(searchDueAt({ lastRunAt: at('2026-10-01T09:00:00Z'), runEveryHours: 3 }))
-    .toEqual(at('2026-10-01T12:00:00Z'))
-})
-
-test('a never-run search is due immediately', () => {
-  expect(searchDueAt({ lastRunAt: null, runEveryHours: 3 })).toEqual(new Date(0))
-})
-
-test('the scheduler wakes for whichever search is due first, even an hourly one that ran later', () => {
-  expect(nextRunAt(at('2026-10-01T09:00:00Z'), 3, [
-    { lastRunAt: at('2026-10-01T06:00:00Z'), runEveryHours: 3 },
-    { lastRunAt: at('2026-10-01T07:30:00Z'), runEveryHours: 1 },
-  ])).toEqual(at('2026-10-01T08:30:00Z'))
-})
-
 test('earliest is the first date, and null for none', () => {
   expect(earliest([at('2026-10-01T10:00:00Z'), at('2026-10-01T09:00:00Z')])).toEqual(at('2026-10-01T09:00:00Z'))
   expect(earliest([at('2026-10-01T10:00:00Z')])).toEqual(at('2026-10-01T10:00:00Z'))
   expect(earliest([])).toBeNull()
-})
-
-describe('nextRunAt', () => {
-  const lastCycle = at('2026-10-01T09:00:00Z')
-
-  test('the cycle time when there are no searches', () => {
-    expect(nextRunAt(lastCycle, 3, [])).toEqual(at('2026-10-01T12:00:00Z'))
-  })
-
-  test('a search due before the cycle comes first', () => {
-    expect(nextRunAt(lastCycle, 3, [
-      { lastRunAt: at('2026-10-01T10:00:00Z'), runEveryHours: 1 },
-      { lastRunAt: at('2026-10-01T10:00:00Z'), runEveryHours: 6 },
-    ])).toEqual(at('2026-10-01T11:00:00Z'))
-  })
-
-  test('the cycle comes first when every search is due later', () => {
-    expect(nextRunAt(lastCycle, 3, [{ lastRunAt: at('2026-10-01T11:00:00Z'), runEveryHours: 6 }]))
-      .toEqual(at('2026-10-01T12:00:00Z'))
-  })
-
-  test('a never-run cycle is due now', () => {
-    expect(nextRunAt(null, 3, [{ lastRunAt: lastCycle, runEveryHours: 1 }])).toEqual(new Date(0))
-  })
 })
 
 describe('schedulerPause', () => {
@@ -135,28 +93,16 @@ describe('schedulerPause', () => {
   })
 })
 
-describe('tickAction', () => {
+describe('cycleIsDue', () => {
   const now = at('2026-10-01T12:00:00Z')
-  const fresh = { lastRunAt: at('2026-10-01T11:30:00Z'), runEveryHours: 1 }
 
-  test('the cycle when it is due, even with Buscas due too', () => {
-    expect(tickAction(now, at('2026-10-01T09:00:00Z'), 3, [{ lastRunAt: null, runEveryHours: 1 }])).toBe('cycle')
-    expect(tickAction(now, null, 3, [])).toBe('cycle')
-  })
-
-  test('a Busca tick when only a Busca is due, at the boundary included', () => {
-    const cycle = at('2026-10-01T11:00:00Z')
-    expect(tickAction(now, cycle, 3, [fresh, { lastRunAt: at('2026-10-01T11:00:00Z'), runEveryHours: 1 }])).toBe('busca')
-  })
-
-  test('nothing when nothing is due', () => {
-    expect(tickAction(now, at('2026-10-01T11:00:00Z'), 3, [fresh])).toBeNull()
-    expect(tickAction(now, at('2026-10-01T11:00:00Z'), 3, [])).toBeNull()
+  test('a never-run cycle is due at once', () => {
+    expect(cycleIsDue(now, null, 3)).toBe(true)
   })
 
   test('the cycle is due exactly at its boundary', () => {
-    expect(tickAction(now, at('2026-10-01T09:00:00Z'), 3, [])).toBe('cycle')
-    expect(tickAction(now, at('2026-10-01T09:00:01Z'), 3, [])).toBeNull()
+    expect(cycleIsDue(now, at('2026-10-01T09:00:00Z'), 3)).toBe(true)
+    expect(cycleIsDue(now, at('2026-10-01T09:00:01Z'), 3)).toBe(false)
   })
 })
 
@@ -166,7 +112,6 @@ describe('schedulerPlan', () => {
     firstCycleDone: true,
     lastCycleStartedAt: t1,
     lastCycleFinishedAt: at('2026-10-01T09:20:00Z'),
-    searches: [],
     latestLogin: null,
     latestWorked: { status: 'ok', at: t1 },
     latestAccountWorked: { status: 'ok', at: t1 },
@@ -189,10 +134,8 @@ describe('schedulerPlan', () => {
       .toEqual({ pause: SESSION_EXPIRED_TEXT, nextRunAt: null, cycleNextRunAt: null })
   })
 
-  test('an unpaused plan is the earliest due time', () => {
+  test('an unpaused plan is the cycle due time', () => {
     expect(schedulerPlan(base, 3)).toEqual({ pause: null, nextRunAt: at('2026-10-01T12:00:00Z'), cycleNextRunAt: at('2026-10-01T12:00:00Z') })
-    expect(schedulerPlan({ ...base, searches: [{ lastRunAt: t1, runEveryHours: 1 }] }, 3))
-      .toEqual({ pause: null, nextRunAt: at('2026-10-01T10:00:00Z'), cycleNextRunAt: at('2026-10-01T12:00:00Z') })
   })
 })
 
@@ -359,11 +302,10 @@ describe('schedule jitter', () => {
     expect(cycleDueAt(null, 3, 10 * MINUTE_MS)).toEqual(new Date(0))
   })
 
-  test('nextRunAt, tickAction and the plan use the offset', () => {
-    expect(nextRunAt(start, 3, [], 5 * MINUTE_MS)).toEqual(at('2026-10-01T12:05:00Z'))
-    expect(tickAction(at('2026-10-01T12:00:00Z'), start, 3, [], 5 * MINUTE_MS)).toBeNull()
-    expect(tickAction(at('2026-10-01T12:05:00Z'), start, 3, [], 5 * MINUTE_MS)).toBe('cycle')
-    expect(tickAction(at('2026-10-01T11:56:00Z'), start, 3, [], -5 * MINUTE_MS)).toBe('cycle')
+  test('the due check uses the offset', () => {
+    expect(cycleIsDue(at('2026-10-01T12:00:00Z'), start, 3, 5 * MINUTE_MS)).toBe(false)
+    expect(cycleIsDue(at('2026-10-01T12:05:00Z'), start, 3, 5 * MINUTE_MS)).toBe(true)
+    expect(cycleIsDue(at('2026-10-01T11:56:00Z'), start, 3, -5 * MINUTE_MS)).toBe(true)
   })
 })
 
@@ -375,69 +317,5 @@ describe('slotRandom', () => {
       expect(value).toBeLessThan(1)
       expect(slotRandom(slot)).toBe(value)
     }
-  })
-})
-
-describe('Buscas near the cycle', () => {
-  const cycleDue = at('2026-10-01T12:00:00Z')
-  const before = (ms: number) => new Date(cycleDue.getTime() - ms)
-
-  test('the slack is half the shorter of the cycle and Busca intervals', () => {
-    expect(buscaSlackMs(3, 1)).toBe(30 * MINUTE_MS)
-    expect(buscaSlackMs(3, 3)).toBe(90 * MINUTE_MS)
-    expect(buscaSlackMs(3, 24)).toBe(90 * MINUTE_MS)
-    expect(buscaSlackMs(1, 24)).toBe(30 * MINUTE_MS)
-  })
-
-  test.each([[1], [3], [24]])('a %i h Busca due less than its slack before the cycle waits for the cycle', (hours) => {
-    const slack = buscaSlackMs(3, hours)
-    expect(alignedToCycle(before(slack - 1), cycleDue, slack)).toEqual(cycleDue)
-    expect(alignedToCycle(before(1), cycleDue, slack)).toEqual(cycleDue)
-  })
-
-  test.each([[1], [3], [24]])('a %i h Busca due exactly the slack before, earlier, at or after the cycle keeps its time', (hours) => {
-    const slack = buscaSlackMs(3, hours)
-    expect(alignedToCycle(before(slack), cycleDue, slack)).toEqual(before(slack))
-    expect(alignedToCycle(before(slack + HOUR_MS), cycleDue, slack)).toEqual(before(slack + HOUR_MS))
-    expect(alignedToCycle(cycleDue, cycleDue, slack)).toEqual(cycleDue)
-    const after = new Date(cycleDue.getTime() + MINUTE_MS)
-    expect(alignedToCycle(after, cycleDue, slack)).toEqual(after)
-  })
-
-  test('a 1 h Busca still runs between cycles, a 3 h one an hour early joins the cycle', () => {
-    const start = at('2026-10-01T09:00:00Z')
-    const hourly = { lastRunAt: at('2026-10-01T10:30:00Z'), runEveryHours: 1 }
-    const threeHourly = { lastRunAt: at('2026-10-01T08:00:00Z'), runEveryHours: 3 }
-    expect(nextRunAt(start, 3, [hourly])).toEqual(at('2026-10-01T11:30:00Z'))
-    expect(nextRunAt(start, 3, [threeHourly])).toEqual(cycleDue)
-    expect(tickAction(at('2026-10-01T11:30:00Z'), start, 3, [hourly])).toBe('busca')
-    expect(tickAction(at('2026-10-01T11:30:00Z'), start, 3, [threeHourly])).toBeNull()
-  })
-})
-
-describe('Buscas never attempted', () => {
-  const start = at('2026-10-01T09:00:00Z')
-  const now = at('2026-10-01T09:30:00Z')
-  const fresh = { lastRunAt: null, runEveryHours: 3, lastStatus: null }
-  const failed = { lastRunAt: null, runEveryHours: 3, lastStatus: 'failed' }
-
-  test('splits them from the attempted ones', () => {
-    const { held, fresh: freshDues } = dueTimesSplit(start, 3, [fresh, failed])
-    expect(held).toHaveLength(2)
-    expect(freshDues).toEqual([new Date(0)])
-  })
-
-  test('skips the post-tick cooldown, an attempted failure still waits', () => {
-    const tickEnded = now.getTime()
-    const dues = dueTimesSplit(start, 3, [fresh])
-    expect(heldNextRun([], tickEnded, 0, dues.fresh)).toEqual(new Date(0))
-    const attempted = dueTimesSplit(start, 3, [failed])
-    expect(heldNextRun([...attempted.held.slice(1)], tickEnded, 0, attempted.fresh)?.getTime())
-      .toBe(tickEnded + SCHEDULER_TICK_COOLDOWN_MS)
-  })
-
-  test('still honours the boot and stop holds', () => {
-    const holdUntil = now.getTime() + HOUR_MS
-    expect(heldNextRun([], null, holdUntil, [new Date(0)])).toEqual(new Date(holdUntil))
   })
 })

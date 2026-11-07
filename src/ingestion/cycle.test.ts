@@ -8,9 +8,8 @@ import { cycleActivity, requestCycle } from './cycle'
 import { withMlBrowser } from './browser'
 import { mlHoldCheck } from './request-hold'
 import { activate } from './steps/activate'
-import { runDueBuscas } from './steps/buscas'
-import { discover } from './steps/discover'
 import { harvest } from './steps/harvest'
+import { watchMl } from './steps/watch-ml'
 import { serialized } from './run-chain'
 
 const chain = vi.hoisted(() => ({ release: (() => undefined) as () => void }))
@@ -20,14 +19,13 @@ vi.mock('@/db/runs', () => ({
   lastRun: vi.fn(), lastStatusRun: vi.fn(), startRun: vi.fn(), finishRun: vi.fn(), lastWorkedCycleRun: vi.fn(), lastHealthNotifiedAt: vi.fn(),
 }))
 vi.mock('@/db/prune', () => ({ pruneOld: vi.fn() }))
-vi.mock('@/env', () => ({ env: () => ({ ACTIVATE_PER_RUN: 20, DISCOVERY_PAGES_PER_RUN: 300, RUN_EVERY_HOURS: 3 }) }))
+vi.mock('@/env', () => ({ env: () => ({ ACTIVATE_PER_RUN: 20, RUN_EVERY_HOURS: 3 }) }))
 vi.mock('./browser', () => ({ withMlBrowser: vi.fn() }))
 vi.mock('./request-hold', () => ({ mlHoldCheck: vi.fn(async () => null) }))
 vi.mock('./after-run', () => ({ afterRun: vi.fn() }))
 vi.mock('./steps/activate', () => ({ activate: vi.fn() }))
-vi.mock('./steps/buscas', () => ({ runDueBuscas: vi.fn() }))
-vi.mock('./steps/discover', () => ({ discover: vi.fn() }))
 vi.mock('./steps/harvest', () => ({ harvest: vi.fn() }))
+vi.mock('./steps/watch-ml', () => ({ watchMl: vi.fn() }))
 vi.mock('./run-chain', () => ({
   serialized: vi.fn((job: () => Promise<unknown>) => new Promise<void>((resolve) => {
     chain.release = resolve
@@ -40,7 +38,7 @@ beforeEach(() => {
   vi.mocked(lastRun).mockResolvedValue(undefined)
   vi.mocked(lastWorkedCycleRun).mockResolvedValue(undefined)
   vi.mocked(lastHealthNotifiedAt).mockResolvedValue(null)
-  vi.mocked(pruneOld).mockResolvedValue({ items: 0, coupons: 0, runs: 0, priceChecks: 0, marketOffers: 0 })
+  vi.mocked(pruneOld).mockResolvedValue({ items: 0, coupons: 0, runs: 0 })
 })
 
 test('a second request while one is queued or running returns the same promise and queues nothing', async () => {
@@ -71,27 +69,23 @@ test('the flag resets after a failed cycle so the next request starts a new one'
   await next.catch(() => undefined)
 })
 
-describe('the cycle with Buscas', () => {
+describe('the cycle with the ML watch step', () => {
   const FULL_HARVEST = {
     allPagesLoaded: true, seen: 5, inserted: 1, skipped: 0, unparsed: 0, totalCoupons: 5, failedPages: 0,
     couponPages: [], lastError: null,
   }
-  const DISCOVERY = {
-    pages: 3, read: 3, items: 90, failed: 0, empty: 0, couponLinks: 9, cards: 90, basisOther: 0, droppedCards: 0, itemIds: [], lastError: null,
-  }
-  const BUSCAS = {
-    counts: { buscaReads: 2, buscaPages: 40, buscaItems: 7, buscaFailed: 0, buscaDropped: 0 },
-    failed: 0, lastError: null as string | null, outcomes: [],
+  const WATCH = {
+    products: 4, matched: 3, failed: 0, lastError: null as string | null,
+    counts: { watchProducts: 4, watchMatched: 3, watchFailed: 0 },
   }
 
-  async function runWith(buscas: typeof BUSCAS, discovered: object = DISCOVERY, harvested: object = FULL_HARVEST) {
+  async function runWith(watched: typeof WATCH = WATCH, harvested: object = FULL_HARVEST) {
     vi.mocked(startRun).mockResolvedValue({ id: 'run-1' } as never)
     vi.mocked(finishRun).mockImplementation(async (_id, result) => ({ id: 'run-1', ...result }) as never)
     vi.mocked(withMlBrowser).mockImplementation((async (_mode: string, fn: (page: unknown) => unknown) => fn({ on: vi.fn() })) as never)
     vi.mocked(harvest).mockResolvedValue(harvested as never)
     vi.mocked(activate).mockResolvedValue({ activated: 0, failed: 0, skipped: 0 } as never)
-    vi.mocked(runDueBuscas).mockResolvedValue(buscas as never)
-    vi.mocked(discover).mockResolvedValue(discovered as never)
+    vi.mocked(watchMl).mockResolvedValue(watched as never)
     const run = requestCycle()
     chain.release()
     const finished = await run
@@ -99,73 +93,60 @@ describe('the cycle with Buscas', () => {
     return finished
   }
 
-  test('merges the Busca counts into the cycle counts and shrinks the discovery budget by the Busca pages', async () => {
-    const run = await runWith(BUSCAS)
-    expect(run.counts).toMatchObject(BUSCAS.counts)
+  test('merges the watched product counts into the cycle counts', async () => {
+    const run = await runWith()
+    expect(run.counts).toMatchObject(WATCH.counts)
     expect(run).toMatchObject({ status: 'ok' })
-    expect(vi.mocked(discover).mock.calls[0][1]).toBe(300 - 40)
-  })
-
-  test('an empty listing is counted on its own and does not make the cycle partial', async () => {
-    const run = await runWith(BUSCAS, { ...DISCOVERY, pages: 30, read: 29, items: 900, cards: 900, empty: 1, couponLinks: 9 })
-    expect(run).toMatchObject({ status: 'ok' })
-    expect(run.counts).toMatchObject({ discoveryEmpty: 1, discoveryRead: 29, discoveryLinks: 9 })
   })
 
   test('a healthy cycle stores no warnings and asks for no notification', async () => {
-    const run = await runWith(BUSCAS)
+    const run = await runWith()
     expect(run.counts).toMatchObject({ health: 0, healthNotify: 0 })
   })
 
   test('a changed reader stores the warning mask and asks for a notification once', async () => {
-    const run = await runWith(BUSCAS, DISCOVERY, { ...FULL_HARVEST, skipped: 2 })
+    const run = await runWith(WATCH, { ...FULL_HARVEST, skipped: 2 })
     expect(run.counts.health).toBeGreaterThan(0)
     expect(run.counts.healthNotify).toBe(1)
     vi.mocked(lastWorkedCycleRun).mockResolvedValue({ counts: { health: run.counts.health } } as never)
     vi.mocked(lastHealthNotifiedAt).mockResolvedValue(new Date())
     globalThis.__promoCycle = undefined
-    const again = await runWith(BUSCAS, DISCOVERY, { ...FULL_HARVEST, skipped: 2 })
+    const again = await runWith(WATCH, { ...FULL_HARVEST, skipped: 2 })
     expect(again.counts).toMatchObject({ health: run.counts.health, healthNotify: 0 })
   })
 
   test('prunes after the run is finished, and a failing prune does not fail the cycle', async () => {
     vi.mocked(pruneOld).mockRejectedValue(new Error('db down'))
-    const run = await runWith(BUSCAS)
+    const run = await runWith()
     expect(run.status).toBe('ok')
     expect(pruneOld).toHaveBeenCalledTimes(1)
     expect(vi.mocked(finishRun).mock.invocationCallOrder[0]).toBeLessThan(vi.mocked(pruneOld).mock.invocationCallOrder[0])
   })
 
-  test('failed Buscas make the cycle partial and surface their last error', async () => {
-    const run = await runWith({ ...BUSCAS, failed: 1, lastError: 'busca falhou' })
-    expect(run).toMatchObject({ status: 'partial', error: 'busca falhou' })
+  test('failed ML watch pages make the cycle partial and surface their last error', async () => {
+    const run = await runWith({ ...WATCH, failed: 1, lastError: 'busca do ML falhou' })
+    expect(run).toMatchObject({ status: 'partial', error: 'busca do ML falhou' })
   })
 
-  test('Busca pages beyond the discovery allowance leave discovery with zero pages', async () => {
-    await runWith({ ...BUSCAS, counts: { ...BUSCAS.counts, buscaPages: 400 } })
-    expect(vi.mocked(discover).mock.calls[0][1]).toBe(0)
+  test('a harvest error wins over an ML watch error in the partial reason', async () => {
+    const run = await runWith({ ...WATCH, failed: 1, lastError: 'busca do ML falhou' }, { ...FULL_HARVEST, allPagesLoaded: false, lastError: 'cupons falharam' })
+    expect(run).toMatchObject({ status: 'partial', error: 'cupons falharam' })
   })
 
-  test('a discovery error wins over a Busca error in the partial reason', async () => {
-    const run = await runWith({ ...BUSCAS, failed: 1, lastError: 'busca falhou' }, { ...DISCOVERY, failed: 1, lastError: 'listagem falhou' })
-    expect(run).toMatchObject({ status: 'partial', error: 'listagem falhou' })
-  })
-
-  test('one load breaker is shared by the harvest, the activation, the Buscas and the discovery', async () => {
-    await runWith(BUSCAS)
+  test('one load breaker is shared by the harvest, the activation and the ML watch step', async () => {
+    await runWith()
     const breaker = vi.mocked(harvest).mock.calls[0][1]
     expect(breaker).toBeDefined()
     expect(vi.mocked(activate).mock.calls[0][4]).toBe(breaker)
-    expect(vi.mocked(runDueBuscas).mock.calls[0][2]).toBe(breaker)
-    expect(vi.mocked(discover).mock.calls[0][3]).toBe(breaker)
+    expect(vi.mocked(watchMl).mock.calls[0][1]).toBe(breaker)
   })
 
   test('activation gets its limit when the harvest saw coupons and none when it saw zero', async () => {
-    await runWith(BUSCAS)
+    await runWith()
     expect(vi.mocked(activate).mock.calls[0][1]).toBe(20)
     vi.mocked(activate).mockClear()
     globalThis.__promoCycle = undefined
-    await runWith(BUSCAS, DISCOVERY, { ...FULL_HARVEST, seen: 0, totalCoupons: 0 })
+    await runWith(WATCH, { ...FULL_HARVEST, seen: 0, totalCoupons: 0 })
     expect(vi.mocked(activate).mock.calls[0][1]).toBe(0)
   })
 })
@@ -176,10 +157,7 @@ describe('ending vanished coupons', () => {
     couponPages: [], lastError: null,
   }
   const PREVIOUS = { startedAt: new Date('2026-11-03T04:00:00Z'), counts: { fullHarvest: 1 } }
-  const NO_BUSCAS = { counts: {}, failed: 0, lastError: null, outcomes: [] }
-  const DISCOVERY = {
-    pages: 0, read: 0, items: 0, failed: 0, empty: 0, couponLinks: 0, cards: 0, basisOther: 0, droppedCards: 0, itemIds: [], lastError: null,
-  }
+  const NO_WATCH = { products: 0, matched: 0, failed: 0, lastError: null, counts: {} }
 
   async function cycle(harvested: object, endable: number, previous: object = PREVIOUS) {
     vi.mocked(lastRun).mockResolvedValue(previous as never)
@@ -190,8 +168,7 @@ describe('ending vanished coupons', () => {
     vi.mocked(withMlBrowser).mockImplementation((async (_mode: string, fn: (page: unknown) => unknown) => fn({ on: vi.fn() })) as never)
     vi.mocked(harvest).mockResolvedValue(harvested as never)
     vi.mocked(activate).mockResolvedValue({ activated: 0, failed: 0, skipped: 0 } as never)
-    vi.mocked(runDueBuscas).mockResolvedValue(NO_BUSCAS as never)
-    vi.mocked(discover).mockResolvedValue(DISCOVERY as never)
+    vi.mocked(watchMl).mockResolvedValue(NO_WATCH as never)
     const run = requestCycle()
     chain.release()
     const finished = await run

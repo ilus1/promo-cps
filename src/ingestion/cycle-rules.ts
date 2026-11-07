@@ -44,11 +44,6 @@ export function activationLimit(harvestSeen: number, limit: number): number {
   return harvestSeen > 0 ? limit : 0
 }
 
-export function discoveryBudget(perRun: number, buscaPages: number | undefined): number {
-  const used = buscaPages !== undefined && Number.isFinite(buscaPages) && buscaPages > 0 ? buscaPages : 0
-  return Math.max(0, perRun - used)
-}
-
 export function stoppedSince(runs: readonly (Pick<Run, 'status' | 'finishedAt'> & { counts?: Run['counts'] } | undefined)[], since: Date): boolean {
   return runs.some((run) => run?.finishedAt != null
     && run.finishedAt.getTime() > since.getTime()

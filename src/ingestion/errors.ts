@@ -27,10 +27,6 @@ export function holdStop(hold: RequestHold): RunStop {
   return new RunStop('partial', hold.reason, { counts: { [CYCLE_COUNT.held]: 1 } })
 }
 
-export function isHeldCounts(counts: Record<string, number> | undefined): boolean {
-  return counts?.[CYCLE_COUNT.held] === 1
-}
-
 export function firstLine(e: unknown): string {
   return (e instanceof Error ? e.message : String(e)).split('\n')[0]
 }

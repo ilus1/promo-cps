@@ -18,7 +18,6 @@ const base: RecordedAccount = {
   accountWorked: OLD_CYCLE,
   expired: undefined,
   held: undefined,
-  searches: [],
 }
 
 const pauseOf = (recorded: RecordedAccount) => schedulerPlan(schedulerInputs(recorded), EVERY_HOURS).pause
@@ -63,7 +62,7 @@ describe('a Busca that loaded is fair evidence only for lifting a block', () => 
   test('nothing recorded: no cycle, login, worked, expired or blocked input', () => {
     expect(schedulerInputs({
       lastCycle: undefined, workedCycle: undefined, login: undefined, accountWorked: undefined,
-      expired: undefined, held: undefined, searches: [],
+      expired: undefined, held: undefined,
     })).toMatchObject({
       firstCycleDone: false, lastCycleStartedAt: null, lastCycleFinishedAt: null, latestLogin: null, latestWorked: null,
       latestAccountWorked: null, latestExpired: null, latestHeld: null,

@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'vitest'
 import { DAY_MS } from './constants'
 import {
-  cycleHealth, healthBannerText, healthCodes, healthLine, healthMask, HEALTH_CODES, HEALTH_PREFIX, HEALTH_TEXT, reminderToleranceMs, shouldNotifyHealth,
+  cycleHealth, healthBannerText, healthCodes, healthLine, healthMask, HEALTH_CODES, HEALTH_MIN_WATCH_PAGES, HEALTH_PREFIX, HEALTH_TEXT, reminderToleranceMs,
+  shouldNotifyHealth,
   type HealthCode,
 } from './cycle-health'
 
 const HEALTHY = {
   seen: 100, totalCoupons: 100, skipped: 0, unparsed: 0,
-  discoveryPages: 10, discoveryRead: 10, discoveredItems: 200, discoveryCards: 200, discoveryFailed: 0, discoveryEmpty: 0,
-  droppedCards: 0, discoveryLinks: 50, discoveryBasisOther: 0,
+  watchPages: 10, watchCards: 200, watchFailed: 0, watchEmpty: 0, watchDropped: 0,
 }
 const health = (changes: Record<string, number>): HealthCode[] => cycleHealth({ ...HEALTHY, ...changes })
 
@@ -39,33 +39,28 @@ describe('cycleHealth', () => {
     expect(health({ seen: 0, totalCoupons: 0, unparsed: 3 })).not.toContain('unparsed')
   })
 
-  test('fewer than 20 items per listing read', () => {
-    expect(health({ discoveryCards: 200 })).toEqual([])
-    expect(health({ discoveryCards: 199 })).toEqual(['fewItems'])
-    expect(health({ discoveryRead: 0, discoveryCards: 0, discoveryLinks: 0 })).toEqual([])
+  test('dropped cards over 5% of the cards the ML watch step read', () => {
+    expect(health({ watchDropped: 10 })).toEqual([])
+    expect(health({ watchDropped: 11 })).toEqual(['dropped'])
+    expect(health({ watchCards: 0, watchDropped: 4 })).toEqual([])
   })
 
-  test('dropped cards over 5% of discovered items', () => {
-    expect(health({ droppedCards: 10 })).toEqual([])
-    expect(health({ droppedCards: 11 })).toEqual(['dropped'])
-    expect(health({ discoveryCards: 0, discoveryRead: 0, discoveryLinks: 0, droppedCards: 4 })).toEqual([])
+  test('failed ML watch pages over 10% of the pages read, once enough pages were read', () => {
+    expect(health({ watchFailed: 1 })).toEqual([])
+    expect(health({ watchFailed: 2 })).toEqual(['listings'])
+    expect(health({ watchPages: HEALTH_MIN_WATCH_PAGES - 1, watchFailed: 5 })).toEqual([])
+    expect(health({ watchPages: 0, watchCards: 0, watchFailed: 1 })).toEqual([])
   })
 
-  test('failed plus empty listings over 10% of discovery pages', () => {
-    expect(health({ discoveryFailed: 1 })).toEqual([])
-    expect(health({ discoveryFailed: 1, discoveryEmpty: 1 })).toEqual(['listings'])
-    expect(health({ discoveryFailed: 2 })).toEqual(['listings'])
-    expect(health({ discoveryPages: 0, discoveryRead: 0, discoveryCards: 0, discoveryLinks: 0, discoveryFailed: 1 })).toEqual([])
+  test('empty results are normal, unless every page of a decent-size cycle came back empty', () => {
+    expect(health({ watchEmpty: 9, watchFailed: 1 })).toEqual([])
+    expect(health({ watchPages: 3, watchEmpty: 3, watchCards: 0 })).toEqual([])
+    expect(health({ watchPages: HEALTH_MIN_WATCH_PAGES, watchEmpty: HEALTH_MIN_WATCH_PAGES, watchCards: 0 })).toEqual(['listings'])
   })
 
-  test('no coupon links although listing pages were read', () => {
-    expect(health({ discoveryLinks: 1 })).toEqual([])
-    expect(health({ discoveryLinks: 0 })).toEqual(['noLinks'])
-  })
-
-  test('basis other over 5% of discovered items', () => {
-    expect(health({ discoveryBasisOther: 10 })).toEqual([])
-    expect(health({ discoveryBasisOther: 11 })).toEqual(['basisOther'])
+  test('the retired discovery warnings never fire, even on old discovery counts', () => {
+    const legacy = { discoveryRead: 10, discoveryCards: 1, discoveryLinks: 0, discoveryBasisOther: 100, discoveryPages: 10, discoveryFailed: 10 }
+    expect(health(legacy)).toEqual([])
   })
 
   test('the code order is fixed, so the list only grows at the end', () => {
@@ -73,7 +68,7 @@ describe('cycleHealth', () => {
   })
 
   test('several warnings come in a fixed order', () => {
-    expect(health({ skipped: 2, discoveryBasisOther: 100, seen: 1 })).toEqual(['fewCoupons', 'skipped', 'basisOther'])
+    expect(health({ skipped: 2, watchDropped: 100, seen: 1 })).toEqual(['fewCoupons', 'skipped', 'dropped'])
   })
 
   test('negative and non-numeric counts count as zero', () => {

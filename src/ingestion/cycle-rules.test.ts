@@ -2,7 +2,7 @@ import type { Run } from '@/db/schema'
 import { describe, expect, it } from 'vitest'
 import { ENDING_MIN_CAP, RUN_DEADLINE_MS } from '@/lib/constants'
 import {
-  activationLimit, cycleStatus, discoveryBudget, endingCutoff, endingDecision, endingLimit, endingRefusedReason,
+  activationLimit, cycleStatus, endingCutoff, endingDecision, endingLimit, endingRefusedReason,
   isMainFrameNavigation, joinReasons, orphanCutoff, partialReason, stoppedSince,
 } from './cycle-rules'
 
@@ -90,15 +90,6 @@ describe('partialReason', () => {
 
   it('is undefined when there is nothing to say', () => {
     expect(partialReason(harvest, null)).toBeUndefined()
-  })
-})
-
-describe('discoveryBudget', () => {
-  it.each([
-    [300, 0, 300], [300, 40, 260], [300, 300, 0], [300, 301, 0], [300, undefined, 300],
-    [300, -5, 300], [300, Number.NaN, 300], [0, 10, 0], [0, undefined, 0],
-  ])('perRun %j with %j Busca pages -> %j', (perRun, used, expected) => {
-    expect(discoveryBudget(perRun, used)).toBe(expected)
   })
 })
 

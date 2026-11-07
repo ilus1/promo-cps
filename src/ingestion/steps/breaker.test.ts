@@ -121,3 +121,27 @@ describe('clickBreaker', () => {
     expect(() => breaker.saw('unanswered')).toThrow(UNANSWERED_CLICKS_STOP)
   })
 })
+
+describe('loadBreaker uncounted loads', () => {
+  const failing = () => Promise.reject(new Error('page props missing'))
+
+  it('reports a failed load without counting it toward the consecutive-load stop', async () => {
+    const breaker = loadBreaker()
+    for (let i = 0; i < MAX_CONSECUTIVE_LOAD_FAILURES + 1; i += 1) {
+      await expect(breaker.loadUncounted(failing)).resolves.toEqual({ ok: false, error: 'page props missing' })
+    }
+    for (let i = 0; i < MAX_CONSECUTIVE_LOAD_FAILURES - 1; i += 1) await breaker.load(failing)
+    await expect(breaker.load(failing)).rejects.toThrow()
+  })
+
+  it('still stops on a wall, a captcha, an expired session or a hold', async () => {
+    await expect(loadBreaker().loadUncounted(() => Promise.reject(new RunStop('blocked', 'captcha')))).rejects.toThrow('captcha')
+    const expired = await stopOf(loadBreaker().loadUncounted(() => Promise.reject(new RunStop('session_expired', 'login'))))
+    expect(expired.status).toBe('session_expired')
+    const work = vi.fn(ok(1))
+    await expect(loadBreaker(async () => ({ kind: 'manual', text: 'x', reason: 'pausado manualmente' }) as const).loadUncounted(work)).rejects.toThrow('pausado manualmente')
+    expect(work).not.toHaveBeenCalled()
+    const hold = { kind: 'vpn', text: 'x', reason: 'VPN conectada' } as const
+    await expect(loadBreaker(async () => hold).loadUncounted(ok(1))).rejects.toThrow('VPN conectada')
+  })
+})

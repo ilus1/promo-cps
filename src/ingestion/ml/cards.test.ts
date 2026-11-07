@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import listing from './__fixtures__/listing.json'
-import { cardsOfPage, findPolycards, LISTING_RESULTS_MISSING, mergeCards, parseCard, type Polycard } from './cards'
+import { cardsOfResults, findPolycards, mergeCards, parseCard, type Polycard } from './cards'
 
 const ITEM_URL = 'www.mercadolivre.com.br/item/p/MLB9'
 const ITEM_PARAMS = '?pdp_filters=item_id%3AMLB1'
@@ -307,44 +307,32 @@ describe('mergeCards', () => {
   })
 })
 
-describe('cardsOfPage', () => {
-  it('reads the fixture listing', () => {
-    const read = cardsOfPage(listing)
+describe('cardsOfResults', () => {
+  it('reads the fixture listing results', () => {
+    const read = cardsOfResults(listing.initialState.results)
     expect(read.cards).toHaveLength(3)
     expect(read).toMatchObject({ found: 3, dropped: 0 })
   })
 
   it('merges a card listed twice and counts every polycard found', () => {
     const card = polycard([titleComponent(), priceComponent(10)])
-    const read = cardsOfPage({ initialState: { results: [{ polycard: card }, { polycard: card }] } })
+    const read = cardsOfResults([{ polycard: card }, { polycard: card }])
     expect(read.cards).toHaveLength(1)
     expect(read).toMatchObject({ found: 2, dropped: 0 })
   })
 
   it('counts polycards that do not parse', () => {
-    const read = cardsOfPage({ initialState: { results: [{ polycard: {} }, { polycard: polycard([titleComponent(), priceComponent(10)]) }] } })
+    const read = cardsOfResults([{ polycard: {} }, { polycard: polycard([titleComponent(), priceComponent(10)]) }])
     expect(read).toMatchObject({ found: 2, dropped: 1 })
     expect(read.cards).toHaveLength(1)
   })
 
   it('reads an empty results list without failing', () => {
-    expect(cardsOfPage({ initialState: { results: [] } })).toEqual({ cards: [], found: 0, dropped: 0 })
+    expect(cardsOfResults([])).toEqual({ cards: [], found: 0, dropped: 0 })
   })
 
   it('ignores a carousel nested inside a result', () => {
     const card = polycard([titleComponent(), priceComponent(10)])
-    const read = cardsOfPage({ initialState: { results: [{ polycard: card, carousel: [{ polycard: card }] }] } })
-    expect(read).toMatchObject({ found: 1 })
-  })
-
-  it('ignores polycards outside initialState.results', () => {
-    const card = polycard([titleComponent(), priceComponent(10)])
-    const read = cardsOfPage({ initialState: { results: [], recommendations: [{ polycard: card }] } })
-    expect(read.cards).toEqual([])
-  })
-
-  it('throws when the results are missing', () => {
-    expect(() => cardsOfPage({ initialState: {} })).toThrow(LISTING_RESULTS_MISSING)
-    expect(() => cardsOfPage(null)).toThrow(LISTING_RESULTS_MISSING)
+    expect(cardsOfResults([{ polycard: card, carousel: [{ polycard: card }] }])).toMatchObject({ found: 1 })
   })
 })

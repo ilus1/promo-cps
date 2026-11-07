@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { ZodError } from 'zod'
 import { env } from '@/env'
-import { HTTP_BAD_REQUEST, HTTP_CONFLICT, HTTP_FORBIDDEN, HTTP_INTERNAL_ERROR, HTTP_NOT_FOUND, HTTP_UNPROCESSABLE } from './http-status'
+import { HTTP_BAD_REQUEST, HTTP_CONFLICT, HTTP_FORBIDDEN, HTTP_INTERNAL_ERROR, HTTP_NOT_FOUND } from './http-status'
 import { isLocalRequest, isSafeMethod } from './local-origin'
 
 export function withApi<A extends unknown[]>(
@@ -30,8 +30,4 @@ export function notFound(): Response {
 
 export function conflict(error: string): Response {
   return NextResponse.json({ error }, { status: HTTP_CONFLICT })
-}
-
-export function unprocessable(error: string): Response {
-  return NextResponse.json({ error }, { status: HTTP_UNPROCESSABLE })
 }

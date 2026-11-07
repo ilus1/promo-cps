@@ -7,7 +7,6 @@ import type { ClickResponse } from '../ml/activate-click'
 export const MAX_CONSECUTIVE_LOAD_FAILURES = 3
 export const MAX_UNANSWERED_CLICKS = 2
 export const MAX_UNPARSED_PAGES_IN_ROW = 3
-export const MAX_LISTING_FAILURES_IN_ROW = 10
 export const UNANSWERED_CLICKS_STOP = `O Mercado Livre não respondeu a ${MAX_UNANSWERED_CLICKS} ativações seguidas`
 
 export type Loaded<T> = { ok: true; value: T } | { ok: false; error: string }
@@ -32,6 +31,7 @@ export function failureTally(): FailureTally {
 
 export interface LoadBreaker {
   load<T>(work: () => Promise<T>): Promise<Loaded<T>>
+  loadUncounted<T>(work: () => Promise<T>): Promise<Loaded<T>>
   checkHold(): Promise<void>
 }
 
@@ -59,6 +59,15 @@ export function loadBreaker(holdCheck?: () => Promise<RequestHold | null>): Load
         if (consecutive >= MAX_CONSECUTIVE_LOAD_FAILURES) {
           throw new RunStop('failed', `${LOAD_FAILURE_TEXT}: ${errorText(e)}`, { cause: e, counts: { [CYCLE_COUNT.loadBreaker]: 1 } })
         }
+        return { ok: false, error: errorText(e) }
+      }
+    },
+    async loadUncounted(work) {
+      await checkHold()
+      try {
+        return { ok: true, value: await work() }
+      } catch (e) {
+        if (isRunStop(e)) throw e
         return { ok: false, error: errorText(e) }
       }
     },

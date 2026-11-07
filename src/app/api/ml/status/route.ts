@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { lastRun } from '@/db/runs'
 import { cycleActivity } from '@/ingestion/cycle'
-import { activeBuscas } from '@/ingestion/search-run'
 import { loginStatus } from '@/ingestion/login'
 import { verifyStatus } from '@/ingestion/verify'
 import type { MlStatus } from '@/lib/domain'
@@ -13,7 +12,6 @@ export const GET = withApi(async () => {
     ...loginStatus(),
     verify: verifyStatus(),
     cycle: cycleActivity(),
-    buscas: activeBuscas(),
     lastRun: run
       ? {
           status: run.status,

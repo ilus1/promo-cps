@@ -1,6 +1,6 @@
 import type { Page } from 'playwright'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { discoveryTargets } from '@/db/coupons'
+import { verifyTargets } from '@/db/coupons'
 import { ML_COUPONS_URL, VERIFY_TIMEOUT_MS } from '@/lib/constants'
 import { serialized } from './run-chain'
 import { VERIFY_CRASHED_ERROR, observeVerify, startVerify, verifyStatus, watchVerify } from './verify'
@@ -15,7 +15,7 @@ vi.mock('node:timers/promises', () => ({
     clock.onSleep()
   }),
 }))
-vi.mock('@/db/coupons', () => ({ discoveryTargets: vi.fn() }))
+vi.mock('@/db/coupons', () => ({ verifyTargets: vi.fn() }))
 const hold = vi.hoisted(() => ({ current: null as null | { kind: string; text: string; reason: string } }))
 vi.mock('./request-hold', () => ({ mlHoldCheck: vi.fn(async () => hold.current) }))
 vi.mock('./run-chain', () => ({
@@ -102,7 +102,7 @@ beforeEach(() => {
   hold.current = null
   globalThis.__promoVerify = undefined
   vi.clearAllMocks()
-  vi.mocked(discoveryTargets).mockResolvedValue([])
+  vi.mocked(verifyTargets).mockResolvedValue([])
   vi.spyOn(Date, 'now').mockImplementation(() => clock.now)
   vi.spyOn(console, 'info').mockImplementation(() => undefined)
 })
@@ -178,7 +178,7 @@ describe('startVerify', () => {
     await runQueuedJob()
     expect(verifyStatus()).toEqual({ state: 'failed', error: 'Requisições pausadas manualmente: retome em Conta para rodar' })
     expect(withMlBrowser).not.toHaveBeenCalled()
-    expect(discoveryTargets).not.toHaveBeenCalled()
+    expect(verifyTargets).not.toHaveBeenCalled()
   })
 
   it('is a no-op while queued or waiting', async () => {
@@ -204,7 +204,7 @@ describe('startVerify', () => {
   })
 
   it('stores only the first line of a database failure and launches nothing', async () => {
-    vi.mocked(discoveryTargets).mockRejectedValueOnce(new Error('connect ECONNREFUSED\nstack line'))
+    vi.mocked(verifyTargets).mockRejectedValueOnce(new Error('connect ECONNREFUSED\nstack line'))
     const { withMlBrowser } = await import('./browser')
     startVerify()
     await runQueuedJob()
@@ -213,7 +213,7 @@ describe('startVerify', () => {
   })
 
   it('redacts query strings from a stored failure', async () => {
-    vi.mocked(discoveryTargets).mockRejectedValueOnce(new Error('goto https://a.com/x?token=SECRET failed'))
+    vi.mocked(verifyTargets).mockRejectedValueOnce(new Error('goto https://a.com/x?token=SECRET failed'))
     startVerify()
     await runQueuedJob()
     expect(verifyStatus()).toEqual({ state: 'failed', error: 'goto https://a.com/x failed' })
@@ -227,7 +227,7 @@ describe('startVerify', () => {
   })
 
   it('opens the first target listing url with one commit-only goto', async () => {
-    vi.mocked(discoveryTargets).mockResolvedValueOnce([{ listingUrl: LISTING }] as never)
+    vi.mocked(verifyTargets).mockResolvedValueOnce([{ listingUrl: LISTING }] as never)
     const page = new FakePage(WALL)
     page.closed = true
     await runVerify(page)

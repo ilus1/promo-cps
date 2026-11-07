@@ -17,7 +17,6 @@ const schema = z.object({
   RUN_EVERY_HOURS: z.coerce.number().min(1).default(3),
   PAGE_DELAY_MS: z.coerce.number().int().nonnegative().default(1500),
   ACTIVATE_PER_RUN: z.coerce.number().int().nonnegative().default(20),
-  DISCOVERY_PAGES_PER_RUN: z.coerce.number().int().nonnegative().default(300),
   VPN_HOLD_NAMES: z.string().default('ca-DC-ipsec-vpn').transform(parseHoldNames),
 })
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { chunks, lastByKey } from './batch'
+import { lastByKey } from './batch'
 
 describe('lastByKey', () => {
   it('keeps one row per key, the last one seen, in first-seen order', () => {
@@ -8,14 +8,5 @@ describe('lastByKey', () => {
   })
   it('returns an empty list for no rows', () => {
     expect(lastByKey([], String)).toEqual([])
-  })
-})
-
-describe('chunks', () => {
-  it('splits into slices of at most size', () => {
-    expect(chunks([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]])
-  })
-  it('returns no slices for no rows', () => {
-    expect(chunks([], 3)).toEqual([])
   })
 })

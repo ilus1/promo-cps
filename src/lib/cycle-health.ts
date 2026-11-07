@@ -7,6 +7,7 @@ export const HEALTH_MAX_UNPARSED_PERCENT = 5
 export const HEALTH_MIN_ITEMS_PER_PAGE = 20
 export const HEALTH_MAX_DROPPED_PERCENT = 5
 export const HEALTH_MAX_FAILED_LISTINGS_PERCENT = 10
+export const HEALTH_MIN_WATCH_PAGES = 10
 export const HEALTH_MAX_BASIS_OTHER_PERCENT = 5
 export const HEALTH_NOTIFY_EVERY_MS = DAY_MS
 export const HEALTH_PREFIX = 'O leitor do Mercado Livre pode ter mudado'
@@ -17,7 +18,7 @@ export const HEALTH_TEXT = {
   unparsed: `mais de ${HEALTH_MAX_UNPARSED_PERCENT}% dos cupons não reconhecidos`,
   fewItems: `menos de ${HEALTH_MIN_ITEMS_PER_PAGE} ofertas por listagem lida`,
   dropped: `mais de ${HEALTH_MAX_DROPPED_PERCENT}% dos produtos descartados`,
-  listings: `mais de ${HEALTH_MAX_FAILED_LISTINGS_PERCENT}% das listagens falharam ou vieram vazias`,
+  listings: `mais de ${HEALTH_MAX_FAILED_LISTINGS_PERCENT}% das buscas do monitoramento falharam, ou todas vieram vazias`,
   noLinks: 'nenhum vínculo de cupom gravado',
   basisOther: `mais de ${HEALTH_MAX_BASIS_OTHER_PERCENT}% das ofertas com base de preço desconhecida`,
 } as const
@@ -27,6 +28,8 @@ export type HealthCode = keyof typeof HEALTH_TEXT
 export const HEALTH_CODES = Object.keys(HEALTH_TEXT) as readonly HealthCode[]
 
 type Counts = Readonly<Record<string, number | undefined>>
+
+const RETIRED = false
 
 function count(counts: Counts, key: string): number {
   const value = counts[key]
@@ -40,20 +43,20 @@ function overPercent(part: number, whole: number, percent: number): boolean {
 export function cycleHealth(counts: Counts): HealthCode[] {
   const seen = count(counts, CYCLE_COUNT.seen)
   const total = count(counts, CYCLE_COUNT.totalCoupons)
-  const pages = count(counts, CYCLE_COUNT.discoveryPages)
-  const read = count(counts, CYCLE_COUNT.discoveryRead)
-  const cards = count(counts, CYCLE_COUNT.discoveryCards)
+  const pages = count(counts, CYCLE_COUNT.watchPages)
+  const cards = count(counts, CYCLE_COUNT.watchCards)
+  const enoughPages = pages >= HEALTH_MIN_WATCH_PAGES
   const warnings: Record<HealthCode, boolean> = {
     fewCoupons: counts[CYCLE_COUNT.seen] === 0 || (total > 0 && seen * PERCENT_BASE < total * HEALTH_MIN_SEEN_PERCENT),
     skipped: count(counts, CYCLE_COUNT.skipped) > 0,
     unparsed: overPercent(count(counts, CYCLE_COUNT.unparsed), seen, HEALTH_MAX_UNPARSED_PERCENT),
-    fewItems: read > 0 && cards < read * HEALTH_MIN_ITEMS_PER_PAGE,
-    dropped: overPercent(count(counts, CYCLE_COUNT.droppedCards), cards, HEALTH_MAX_DROPPED_PERCENT),
-    listings: overPercent(
-      count(counts, CYCLE_COUNT.discoveryFailed) + count(counts, CYCLE_COUNT.discoveryEmpty), pages, HEALTH_MAX_FAILED_LISTINGS_PERCENT,
+    fewItems: RETIRED,
+    dropped: overPercent(count(counts, CYCLE_COUNT.watchDropped), cards, HEALTH_MAX_DROPPED_PERCENT),
+    listings: enoughPages && (
+      overPercent(count(counts, CYCLE_COUNT.watchFailed), pages, HEALTH_MAX_FAILED_LISTINGS_PERCENT) || count(counts, CYCLE_COUNT.watchEmpty) === pages
     ),
-    noLinks: read > 0 && count(counts, CYCLE_COUNT.discoveryLinks) === 0,
-    basisOther: overPercent(count(counts, CYCLE_COUNT.discoveryBasisOther), cards, HEALTH_MAX_BASIS_OTHER_PERCENT),
+    noLinks: RETIRED,
+    basisOther: RETIRED,
   }
   return HEALTH_CODES.filter((code) => warnings[code])
 }

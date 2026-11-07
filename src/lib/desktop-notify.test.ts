@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-  STDERR_TAIL_CHARS, dealDigestNotification, notifySendArgs, sendDesktopNotification,
+  STDERR_TAIL_CHARS, notifySendArgs, sendDesktopNotification,
   healthNotification, sessionNotification,
 } from './desktop-notify'
 
@@ -10,46 +10,7 @@ vi.mock('node:child_process', () => ({ spawn }))
 vi.mock('@/env', () => ({ env: () => ({ PORT: 8510 }) }))
 
 const baseUrl = 'http://127.0.0.1:8510'
-
-const digest = {
-  alertName: 'notebooks',
-  count: 5,
-  samples: [
-    { title: 'Notebook Acer Aspire 5', priceCents: 458800, mlDiscountPct: 47, dropRatio: null },
-    { title: 'Notebook Dell <i5> & SSD', priceCents: 329990, mlDiscountPct: 10, dropRatio: 0.12 },
-    { title: 'Notebook Lenovo', priceCents: 279900, mlDiscountPct: null, dropRatio: 0.125 },
-  ],
-  url: `${baseUrl}/?busca=b1&descontoMin=10`,
-}
-
-describe('dealDigestNotification', () => {
-  it('title counts and names the alert; body lists samples plus the rest; Abrir opens the view', () => {
-    expect(dealDigestNotification(digest)).toEqual({
-      title: '5 novas ofertas: notebooks',
-      body: [
-        'R$ 4.588 (47% OFF): Notebook Acer Aspire 5',
-        'R$ 3.299,90 (10% OFF, 12% abaixo do menor preço): Notebook Dell <i5> & SSD',
-        'R$ 2.799 (13% abaixo do menor preço): Notebook Lenovo',
-        'e mais 2',
-      ].join('\n'),
-      url: digest.url,
-    })
-  })
-
-  it('singular, and no rest line when every offer is listed', () => {
-    const one = { ...digest, count: 1, samples: [digest.samples[0]] }
-    expect(dealDigestNotification(one)).toMatchObject({
-      title: '1 nova oferta: notebooks',
-      body: 'R$ 4.588 (47% OFF): Notebook Acer Aspire 5',
-    })
-  })
-
-  it('no parentheses without a discount or a drop', () => {
-    const plain = { title: 'Notebook', priceCents: 458800, mlDiscountPct: 0, dropRatio: 0 }
-    expect(dealDigestNotification({ ...digest, count: 1, samples: [plain] }).body)
-      .toBe('R$ 4.588: Notebook')
-  })
-})
+const appUrl = `${baseUrl}/produtos/1`
 
 describe('sessionNotification', () => {
   it.each([
@@ -96,7 +57,7 @@ describe('healthNotification', () => {
 
 describe('notifySendArgs', () => {
   it('waits for a click on the default action and escapes markup in the body', () => {
-    const n = { title: '5 novas ofertas: <notebooks>', body: 'Dell <i5> & SSD', url: digest.url }
+    const n = { title: '5 novas ofertas: <notebooks>', body: 'Dell <i5> & SSD', url: appUrl }
     expect(notifySendArgs(n)).toEqual([
       '--app-name=Promo CPS', '--action=default=Abrir', '--wait', '--',
       '5 novas ofertas: <notebooks>', 'Dell &lt;i5&gt; &amp; SSD',
@@ -104,13 +65,13 @@ describe('notifySendArgs', () => {
   })
 
   it('doubles backslashes in the body only, since notify-send unescapes the body alone', () => {
-    const n = { title: 'C:\\ofertas \\n', body: 'Cabo \\ USB \\n & <x>', url: digest.url }
+    const n = { title: 'C:\\ofertas \\n', body: 'Cabo \\ USB \\n & <x>', url: appUrl }
     expect(notifySendArgs(n).slice(-2)).toEqual(['C:\\ofertas \\n', 'Cabo \\\\ USB \\\\n &amp; &lt;x&gt;'])
   })
 })
 
 describe('sendDesktopNotification', () => {
-  const n = { title: 'a', body: 'b', url: digest.url }
+  const n = { title: 'a', body: 'b', url: appUrl }
   const fakeChild = () => Object.assign(new EventEmitter(), {
     stdout: new EventEmitter(), stderr: new EventEmitter(), unref: vi.fn(),
   })

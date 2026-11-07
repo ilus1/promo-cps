@@ -5,17 +5,9 @@ import { safeMlUrl } from '@/lib/ml-url'
 import { isRecord } from '@/lib/records'
 import { basisFromComplement } from './basis'
 import type { ObservedCard } from './observed-card'
-import { INITIAL_STATE_KEY, RESULTS_KEY } from './page-keys'
 import { cents, integer, records, text, thumbnailOf } from './readers'
 
 const POLYCARD_KEY = 'polycard'
-export const LISTING_RESULTS_MISSING = 'Listagem sem resultados no estado da página'
-
-export class ListingResultsMissing extends Error {
-  constructor() {
-    super(LISTING_RESULTS_MISSING)
-  }
-}
 const PAD_FLAG = 'true'
 const URL_SCHEME = 'https://'
 const CLICK_TRACKER_HOST = `click1.${ML_HOST}`
@@ -233,11 +225,4 @@ export function cardsOfResults(results: readonly unknown[]): ListingCards {
   const polycards = results.flatMap((entry): Polycard[] => (isRecord(entry) && isRecord(entry[POLYCARD_KEY]) ? [entry[POLYCARD_KEY]] : []))
   const parsed = polycards.map(parseCard).filter((card): card is ObservedCard => card !== null)
   return { cards: mergeCards(parsed), found: polycards.length, dropped: polycards.length - parsed.length }
-}
-
-export function cardsOfPage(pageProps: unknown): ListingCards {
-  const initialState = isRecord(pageProps) ? pageProps[INITIAL_STATE_KEY] : undefined
-  const results = isRecord(initialState) ? initialState[RESULTS_KEY] : undefined
-  if (!Array.isArray(results)) throw new ListingResultsMissing()
-  return cardsOfResults(results)
 }

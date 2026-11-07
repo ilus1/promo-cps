@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { DAY_MS, MARKET_OFFER_PRUNE_DAYS, PRICE_CHECK_PRUNE_DAYS } from './constants'
+import { DAY_MS } from './constants'
 import { PRUNE_BATCH, PRUNE_LOCK_TIMEOUT_MS, PRUNE_MAX_BATCHES, pruneAnotherBatch, PRUNE_COUPON_DAYS, PRUNE_ITEM_DAYS, PRUNE_RUN_DAYS, pruneCutoffs, pruneLine } from './prune-rules'
 
 const now = new Date('2026-11-03T12:00:00Z')
@@ -9,8 +9,6 @@ test('each cutoff is its own number of days before now', () => {
   expect(now.getTime() - cutoffs.items.getTime()).toBe(PRUNE_ITEM_DAYS * DAY_MS)
   expect(now.getTime() - cutoffs.coupons.getTime()).toBe(PRUNE_COUPON_DAYS * DAY_MS)
   expect(now.getTime() - cutoffs.runs.getTime()).toBe(PRUNE_RUN_DAYS * DAY_MS)
-  expect(now.getTime() - cutoffs.priceChecks.getTime()).toBe(PRICE_CHECK_PRUNE_DAYS * DAY_MS)
-  expect(now.getTime() - cutoffs.marketOffers.getTime()).toBe(MARKET_OFFER_PRUNE_DAYS * DAY_MS)
 })
 
 test('the ages keep items longest after coupons and runs longest of all', () => {
@@ -18,10 +16,8 @@ test('the ages keep items longest after coupons and runs longest of all', () => 
   expect(PRUNE_ITEM_DAYS).toBeLessThan(PRUNE_RUN_DAYS)
 })
 
-test('the log line names the five counts', () => {
-  expect(pruneLine({ items: 1, coupons: 2, runs: 3, priceChecks: 4, marketOffers: 5 })).toBe(
-    '1 item(ns), 2 cupom(ns), 3 execução(ões), 4 verificação(ões) de preço, 5 oferta(s) de mercado',
-  )
+test('the log line names the three counts', () => {
+  expect(pruneLine({ items: 1, coupons: 2, runs: 3 })).toBe('1 item(ns), 2 cupom(ns), 3 execução(ões)')
 })
 
 test('another batch only after a full batch, and never past the per-cycle limit', () => {
