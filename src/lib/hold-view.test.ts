@@ -35,7 +35,7 @@ describe('holdBanner', () => {
 
   it('names the manual holds', () => {
     expect(holdBanner(state({ requestsPaused: true }))).toBe('Em espera: requisições pausadas manualmente.')
-    expect(holdBanner(state({ priceChecksPaused: true }))).toBe('Em espera: comparação de preços pausada manualmente.')
+    expect(holdBanner(state({ priceChecksPaused: true }))).toBe('Em espera: monitoramento pausado manualmente.')
   })
 })
 
@@ -43,7 +43,7 @@ describe('holdChipText', () => {
   it('is VPN for the VPN hold, Pausado for a manual one, and nothing otherwise', () => {
     expect(holdChipText(state({ vpn: 'connected' }))).toBe('Em espera: VPN')
     expect(holdChipText(state({ requestsPaused: true }))).toBe('Pausado')
-    expect(holdChipText(state({ priceChecksPaused: true }))).toBe('Comparação pausada')
+    expect(holdChipText(state({ priceChecksPaused: true }))).toBe('Monitoramento pausado')
     expect(holdChipText(state({ vpn: 'error' }))).toBe('Em espera: VPN não verificada')
     expect(holdChipText(state())).toBeNull()
   })
@@ -62,7 +62,7 @@ describe('priceToggleNote', () => {
     expect(priceToggleNote(state({ vpn: 'connected' }))).toBe('em espera pela VPN')
     expect(priceToggleNote(state({ requestsPaused: true }))).toBe('em espera: requisições pausadas')
     expect(priceChecksToggle(false, priceToggleNote(state({ requestsPaused: true }))).state)
-      .toBe('Comparação de preços: ativa (em espera: requisições pausadas)')
+      .toBe('Monitoramento: ativo (em espera: requisições pausadas)')
   })
 
   it('has no note when nothing holds the worker, and the price pause alone is not a note', () => {
@@ -74,15 +74,15 @@ describe('priceToggleNote', () => {
 describe('toggles', () => {
   it('note the VPN hold on an active toggle only', () => {
     expect(requestsToggle(false, 'em espera pela VPN').state).toBe('Requisições: ativas (em espera pela VPN)')
-    expect(priceChecksToggle(false, 'em espera pela VPN').state).toBe('Comparação de preços: ativa (em espera pela VPN)')
+    expect(priceChecksToggle(false, 'em espera pela VPN').state).toBe('Monitoramento: ativo (em espera pela VPN)')
     expect(requestsToggle(true, 'em espera pela VPN').state).toBe('Requisições: pausadas')
   })
 
   it('flip the action with the state', () => {
     expect(requestsToggle(false)).toEqual({ state: 'Requisições: ativas', action: 'Pausar requisições' })
     expect(requestsToggle(true)).toEqual({ state: 'Requisições: pausadas', action: 'Retomar requisições' })
-    expect(priceChecksToggle(false)).toEqual({ state: 'Comparação de preços: ativa', action: 'Pausar comparação de preços' })
-    expect(priceChecksToggle(true)).toEqual({ state: 'Comparação de preços: pausada', action: 'Retomar comparação de preços' })
+    expect(priceChecksToggle(false)).toEqual({ state: 'Monitoramento: ativo', action: 'Pausar monitoramento' })
+    expect(priceChecksToggle(true)).toEqual({ state: 'Monitoramento: pausado', action: 'Retomar monitoramento' })
   })
 })
 

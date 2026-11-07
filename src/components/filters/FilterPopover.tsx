@@ -88,7 +88,7 @@ export function FilterPopover({
   )
 }
 
-export function CheckIcon() {
+function CheckIcon() {
   return (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0">
       <path d="M20 6 9 17l-5-5" />
@@ -107,35 +107,6 @@ export function useDraftPopover<T>(
     setOpen(next)
   }
   return { open, onOpenChange, draft, setDraft, close: () => onOpenChange(false) }
-}
-
-export function OptionList({
-  options, value, onSelect,
-}: {
-  options: { value: string; label: string }[]
-  value: string
-  onSelect: (value: string) => void
-}) {
-  return (
-    <ul className="-mx-1 flex max-h-72 flex-col overflow-y-auto">
-      {options.map((o) => {
-        const selected = o.value === value
-        return (
-          <li key={o.value}>
-            <button
-              type="button"
-              onClick={() => onSelect(o.value)}
-              aria-pressed={selected}
-              className={`flex w-full items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-left text-sm transition-colors hover:bg-[#f4f2ec] ${selected ? 'font-medium text-[var(--color-brand-ink)]' : 'text-[var(--color-ink)]'}`}
-            >
-              <span className="min-w-0 break-words">{o.label}</span>
-              {selected && <CheckIcon />}
-            </button>
-          </li>
-        )
-      })}
-    </ul>
-  )
 }
 
 export function PanelFooter({ onClear, onDone }: { onClear: () => void; onDone: () => void }) {

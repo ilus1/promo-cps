@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { formatCount } from './format'
-import { liveRunIds, runCountItems, runDurationMs, runShowsPages, runStatusText, runTone, suggestsVerification } from './run-view'
+import { liveRunIds, RUN_ERROR_MAX_CHARS, runCountItems, runDurationMs, runErrorView, runShowsPages, runStatusText, runTone, suggestsVerification } from './run-view'
 
 const now = new Date('2026-11-02T12:00:00Z')
 
@@ -103,6 +103,15 @@ describe('runCountItems', () => {
     expect(runCountItems({ kind: 'cycle', counts: { fullHarvest: 0 } })).toEqual([{ label: 'leitura completa', value: 'não' }])
   })
 
+  it('labels the watched-product counts of a new cycle after the harvest and activation counts', () => {
+    expect(runCountItems({ kind: 'cycle', counts: { watchFailed: 1, seen: 1931, watchProducts: 4, watchMatched: 3 } })).toEqual([
+      { label: 'cupons lidos', value: formatCount(1931) },
+      { label: 'produtos monitorados', value: '4' },
+      { label: 'anúncios do ML encontrados', value: '3' },
+      { label: 'falhas no monitoramento', value: '1' },
+    ])
+  })
+
   it('is empty for an empty counts object and for non-cycle runs', () => {
     expect(runCountItems({ kind: 'cycle', counts: {} })).toEqual([])
     expect(runCountItems({ kind: 'login', counts: { seen: 3, buscaReads: 1 } })).toEqual([])
@@ -141,5 +150,36 @@ describe('suggestsVerification', () => {
     [null, false],
   ] as const)('%j -> %s', (run, expected) => {
     expect(suggestsVerification(run)).toBe(expected)
+  })
+})
+
+describe('runErrorView', () => {
+  it('shows a short one-line error as it is, with nothing to expand', () => {
+    expect(runErrorView('deadlock detected (40P01)')).toEqual({ short: 'deadlock detected (40P01)', full: null })
+  })
+
+  it('cuts a long line to the limit, ellipsis included, and keeps the whole text to expand', () => {
+    const error = `Failed query: insert into "items" ${'($1, $2, $3), '.repeat(100)}`
+    const view = runErrorView(error)
+    expect(view?.short.length).toBeLessThanOrEqual(RUN_ERROR_MAX_CHARS)
+    expect(view?.short.endsWith('...')).toBe(true)
+    expect(error.trim().startsWith(view?.short.slice(0, -3) ?? '')).toBe(true)
+    expect(view?.full).toBe(error.trim())
+  })
+
+  it('a line exactly at the limit is not cut', () => {
+    const error = 'x'.repeat(RUN_ERROR_MAX_CHARS)
+    expect(runErrorView(error)).toEqual({ short: error, full: null })
+  })
+
+  it('shows only the first line of a multi-line error and keeps every line to expand', () => {
+    const error = 'Failed query: insert into "items"\nparams: 1,2,3\r\ncause: deadlock'
+    expect(runErrorView(error)).toEqual({ short: 'Failed query: insert into "items"', full: error })
+  })
+
+  it('has nothing to show for a missing, empty or blank error', () => {
+    expect(runErrorView(null)).toBeNull()
+    expect(runErrorView('')).toBeNull()
+    expect(runErrorView('  \n ')).toBeNull()
   })
 })

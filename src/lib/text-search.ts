@@ -1,9 +1,9 @@
 import { SEARCH_TEXT_MAX } from './constants'
 import { str } from './query-params'
+import { storableText } from './storable-text'
 
 export const ACCENTED_LETTERS = 'áàâãäéèêëíìîïóòôõöúùûüçñÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇÑ'
 export const PLAIN_LETTERS = 'aaaaaeeeeiiiiooooouuuucnAAAAAEEEEIIIIOOOOOUUUUCN'
-const NUL_CHARS = /\0/g
 const WHITESPACE_RUNS = /\s+/g
 const REGEX_SPECIALS = /[.*+?^${}()|[\]\\]/g
 const WHITESPACE = /\s+/
@@ -43,7 +43,7 @@ export function nfc<T>(value: T): T {
 }
 
 export function normalizeSearchText(raw: string): string {
-  return raw.replace(NUL_CHARS, '').replace(WHITESPACE_RUNS, ' ').trim().slice(0, SEARCH_TEXT_MAX).trim()
+  return storableText(raw).replace(WHITESPACE_RUNS, ' ').trim().slice(0, SEARCH_TEXT_MAX).toWellFormed().trim()
 }
 
 export function searchTextOf(raw: string | string[] | undefined): string | undefined {

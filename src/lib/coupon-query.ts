@@ -6,7 +6,7 @@ import {
   type CouponListStatus, type CouponScope, type CouponSort, type FilterableKind,
 } from './domain'
 import { FIRST_PAGE, PAGE_PARAM, pageFromParams } from './paging'
-import { centsFromReais, lookup, num, searchParamsToRecord, str, wholePercent, type QueryParams } from './query-params'
+import { centsFromReais, lookup, num, str, wholePercent, type QueryParams } from './query-params'
 import { ROUTES } from './routes'
 
 export type CouponParams = QueryParams
@@ -25,8 +25,6 @@ export const SCOPE_PARAM: Record<CouponScope, string> = {
 
 export const FILTERABLE_KINDS = COUPON_KINDS.filter((kind): kind is FilterableKind => kind !== 'unparsed')
 
-const WITH_OFFERS_ON = '1'
-
 export const CLEARED_COUPON_FILTERS = {
   status: undefined,
   scope: undefined,
@@ -35,7 +33,6 @@ export const CLEARED_COUPON_FILTERS = {
   minimumMaxCents: undefined,
   limitMinCents: undefined,
   discountMin: undefined,
-  withOffers: undefined,
   text: undefined,
 } satisfies Record<keyof CouponFilters, undefined>
 
@@ -63,7 +60,6 @@ export function parseCouponQuery(sp: CouponParams): CouponQuery {
     minimumMaxCents: centsFromReais(sp.minimoMax) || undefined,
     limitMinCents: limitMinOf(sp.limiteMin),
     discountMin: wholePercent(num(sp.descontoMin)),
-    withOffers: str(sp.comOfertas) === WITH_OFFERS_ON ? true : undefined,
     text: searchTextOf(sp.q),
     order: COUPON_SORTS.find((sort) => sort === order) ?? DEFAULT_COUPON_SORT,
     page: pageFromParams(sp),
@@ -80,24 +76,9 @@ function couponFilterParams(next: CouponFilters): URLSearchParams {
   if (next.limitMinCents) params.set('limiteMin', String(next.limitMinCents / CENTS_PER_REAL))
   const discountMin = wholePercent(next.discountMin)
   if (discountMin) params.set('descontoMin', String(discountMin))
-  if (next.withOffers) params.set('comOfertas', WITH_OFFERS_ON)
   const text = next.text && normalizeSearchText(next.text)
   if (text) params.set('q', text)
   return params
-}
-
-export function couponFilterQuery(query: CouponFilters): string {
-  return couponFilterParams(query).toString()
-}
-
-export function couponFiltersOf(rawQuery: string): CouponQuery {
-  return parseCouponQuery(searchParamsToRecord(new URLSearchParams(rawQuery)))
-}
-
-export function canonicalCouponFilterQuery(rawQuery: string | undefined): string | undefined {
-  if (!rawQuery) return undefined
-  const filters = couponFiltersOf(rawQuery)
-  return hasCouponFilters(filters) ? couponFilterQuery(filters) : undefined
 }
 
 export function couponHref(query: CouponQuery, changes: Partial<CouponQuery> = {}): string {

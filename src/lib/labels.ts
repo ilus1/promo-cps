@@ -1,15 +1,14 @@
-import { TRIVIAL_SAVING_CENTS } from './constants'
+import { TRIVIAL_SAVING_CENTS, WATCH_LOW_WINDOW_DAYS } from './constants'
 import { CYCLE_COUNT, type CycleCountKey } from './cycle-counts'
 import type {
-  BuscaKind, CouponListStatus, CouponScope, CouponSort, FilterableKind, ItemStatus, LoginDisplayState, LoginState, RunKind, RunRowStatus, RunStatus, VerifyState,
+  CouponListStatus, CouponScope, CouponSort, FilterableKind, LoginDisplayState, LoginState, RunKind, RunRowStatus, RunStatus, VerifyState,
 } from './domain'
-import type { DealSort } from './deal-query'
-import type { Retailer } from './market/types'
-import { formatCents, formatCount } from './format'
+import type { EanSource, MatchKind, WatchAlertKind, WatchRetailer } from './watch/types'
+import { capitalized, formatCents, formatCount } from './format'
 
 export const APP_NAME = 'Promo CPS'
-export const DELETE_LABEL = 'Excluir'
 export const ML_ACCOUNT_LABEL = 'Mercado Livre'
+export const NO_VALUE = '-'
 export const NO_EXPIRY_TEXT = 'sem validade'
 export const YES_TEXT = 'sim'
 export const NO_TEXT = 'não'
@@ -34,43 +33,17 @@ export const DISCOUNT_AT_MINIMUM_LABEL = 'Desconto na compra mínima'
 export const MINIMUM_MAX_LABEL = 'Compra mínima até'
 export const LIMIT_MIN_LABEL = 'Limite a partir de'
 export const DISCOUNT_MIN_LABEL = 'Desconto mínimo'
-export const SAVING_MIN_LABEL = 'Economia mínima'
-export const SAVING_PERCENT_FILTER_LABEL = `${SAVING_MIN_LABEL} (%)`
-export const SAVING_REAIS_FILTER_LABEL = `${SAVING_MIN_LABEL} (R$)`
-export const SAVING_TOTAL_LABEL = 'Economia total'
-export const PRICE_DROPPED_SINCE_SEEN_LABEL = 'Preço caiu desde que você viu'
-export const COUPON_PRICE_LABEL = 'Preço com cupom'
-export const COUPON_PART_LABEL = 'Cupom'
-export const SELLER_DISCOUNT_LABEL = 'desconto do vendedor'
-export const ESTIMATED_TEXT = 'estimado'
-const HINT_IN_LISTING_SUFFIX = ' no anúncio'
-export const HINT_LINE_LABEL = `${COUPON_PART_LABEL}${HINT_IN_LISTING_SUFFIX}`
-export const HINT_PRICE_LINE_LABEL = `${COUPON_PRICE_LABEL}${HINT_IN_LISTING_SUFFIX}`
-export const BELOW_MINIMUM_TEXT = 'abaixo do pedido mínimo'
-export const HINT_UNKNOWN_TERMS_TEXT = 'condições não informadas'
-export const DEAL_SORT_LABEL: Record<DealSort, string> = {
-  desconto: 'Maior desconto do ML',
-  queda: 'Maior queda real',
-  preco: 'Menor preço',
-  recentes: 'Mais recentes',
-  economia: `Maior ${SAVING_TOTAL_LABEL.toLowerCase()} (%)`,
-  economiaReais: `Maior ${SAVING_TOTAL_LABEL.toLowerCase()} (R$)`,
-  economiaCupom: 'Maior economia do cupom (R$)',
-  economiaReal: 'Maior economia real (R$)',
-}
 
 export const COUPON_SORT_LABEL: Record<CouponSort, string> = {
   desconto: `Maior ${DISCOUNT_AT_MINIMUM_LABEL.toLowerCase()}`,
   economia: 'Maior economia máxima',
   minimo: 'Menor compra mínima',
   limite: 'Maior limite',
-  ofertas: 'Mais ofertas ligadas',
   vence: 'Vence primeiro',
 }
 
 export const TRIVIAL_SAVING_NOTE = `Cupons que economizam menos de ${formatCents(TRIVIAL_SAVING_CENTS)} aparecem no fim.`
 export const UNCAPPED_TEXT = 'sem limite'
-export const OFFERS_OF_SET_LABEL = 'Ver ofertas destes cupons'
 
 export const LOGIN_STATE_LABEL: Record<LoginState, string> = {
   idle: 'Não iniciado',
@@ -125,23 +98,6 @@ export const LOGIN_DISPLAY_LABEL: Record<LoginDisplayState, string> = {
 
 export const RUN_RUNNING_TEXT = 'em andamento'
 
-export const ITEM_TAB_LABEL: Record<ItemStatus, string> = {
-  NOT_SEEN: 'Novos',
-  SAVED: 'Salvos',
-  SEEN: 'Vistos',
-}
-
-export const CYCLE_BANNER_TEXT = {
-  session_expired: 'A sessão do Mercado Livre expirou no último ciclo. Entre de novo em Conta para continuar.',
-  blocked: 'O Mercado Livre bloqueou o acesso no último ciclo. Veja os detalhes em Conta.',
-  failed: 'O último ciclo falhou. Veja os detalhes em Conta.',
-} as const satisfies Partial<Record<RunStatus, string>>
-
-export const BUSCA_KIND_LABEL: Record<BuscaKind, string> = {
-  search: 'Busca',
-  product: 'Produto',
-}
-
 export const SKIPPED_ENTRIES_LABEL = 'entradas ignoradas'
 export const SKIPPED_ENTRY_LABEL = 'entrada ignorada'
 
@@ -168,6 +124,17 @@ export const CYCLE_COUNT_LABELS: ReadonlyArray<readonly [CycleCountKey, string]>
   [CYCLE_COUNT.discoveredItems, 'itens'],
 ]
 
+export const WATCH_COUNT_LABELS: ReadonlyArray<readonly [CycleCountKey, string]> = [
+  [CYCLE_COUNT.watchProducts, 'produtos monitorados'],
+  [CYCLE_COUNT.watchMatched, 'anúncios do ML encontrados'],
+  [CYCLE_COUNT.watchFailed, 'falhas no monitoramento'],
+  [CYCLE_COUNT.watchPages, 'páginas do monitoramento'],
+  [CYCLE_COUNT.watchEmpty, 'buscas do monitoramento sem resultados'],
+  [CYCLE_COUNT.watchCards, 'cards lidos no monitoramento'],
+  [CYCLE_COUNT.watchDropped, 'cards descartados no monitoramento'],
+  [CYCLE_COUNT.watchSkipped, 'produtos sem busca no ML'],
+]
+
 export const BUSCA_COUNT_LABELS: ReadonlyArray<readonly [CycleCountKey, string]> = [
   [CYCLE_COUNT.buscaReads, 'buscas lidas'],
   [CYCLE_COUNT.buscaPages, 'páginas de buscas'],
@@ -178,66 +145,26 @@ export const BUSCA_COUNT_LABELS: ReadonlyArray<readonly [CycleCountKey, string]>
 ]
 
 export const OPENS_IN_NEW_TAB_TEXT = '(abre em nova aba)'
-export const BUSCA_NO_RESULTS_TEXT = 'nenhum resultado no ML'
-export const BUSCA_LAST_READ_TEXT = 'Última leitura'
-export const BUSCA_NO_READ_TEXT = 'ainda sem leitura'
-export const BUSCA_STOPPED_TEXT = 'Última tentativa interrompida'
-export const BUSCA_NAME_REQUIRED_TEXT = 'Informe um nome para a Busca.'
-export const BUSCA_URL_REQUIRED_TEXT = 'Informe a URL.'
-export const BUSCA_DUPLICATE_TEXT = 'Esta URL ou termo já está cadastrado em outra Busca.'
-export const BUSCA_CREATE_FAILED_TEXT = 'Não foi possível criar a Busca.'
-export const BUSCA_UPDATE_FAILED_TEXT = 'Não foi possível salvar a alteração.'
-export const BUSCA_DELETE_FAILED_TEXT = 'Não foi possível excluir a Busca.'
-export const BUSCA_GONE_TEXT = 'Esta Busca não existe mais. A lista foi atualizada.'
-export const BUSCA_NEVER_RUN_TEXT = 'Ainda não executada.'
-export const BUSCA_URL_HELP_TEXT = 'Cole a URL de uma busca do Mercado Livre com seus filtros, ou de um produto. Também dá para digitar só o termo, como "fone bluetooth"; o nome fica igual ao termo se você não preencher.'
-export const buscaFollowText = (q: string) => `Seguir '${q}' no ML`
-export const BUSCA_TERM_PARAM = 'termo'
 
-export function buscaNameRangeText(max: number): string {
-  return `O nome deve ter de 1 a ${max} caracteres.`
-}
-
-export const ALERT_ACTIVE_TEXT = 'Alerta ativo'
-export const ALERT_ADD_TEXT = 'Alertar'
-export const ALERT_NAME_LABEL = 'Nome do alerta'
-export const ALERT_NAME_REQUIRED_TEXT = 'Informe um nome para o alerta.'
-export const ALERT_DUPLICATE_TEXT = 'Já existe um alerta com estes filtros.'
-export const ALERT_CREATE_FAILED_TEXT = 'Não foi possível salvar o alerta.'
-export const ALERT_DELETE_FAILED_TEXT = 'Não foi possível excluir o alerta.'
-export const ALERT_HELP_TEXT = 'Receba uma notificação no desktop quando surgirem ofertas novas ou mais baratas com estes filtros.'
-export const ALERTS_EMPTY_TEXT = 'Nenhum alerta salvo. Em Ofertas, escolha os filtros e use Alertar para ser avisado de ofertas novas.'
-export const ALERTS_EMPTY_ACTION_TEXT = 'Ir para Ofertas'
-export const ALERT_BUSCA_GONE_TEXT = 'Esta Busca não existe mais.'
-export const ALERT_BUSCA_REMOVED_TEXT = 'A Busca deste alerta foi removida: o alerta não dispara mais.'
-export const ALERT_NO_FILTERS_TEXT = 'Todas as ofertas'
-export const ALERT_SORT_NOTE = 'A ordenação não é salva no alerta.'
-
-export const SELLER_LABEL = 'Vendido por'
-export const NO_LINKED_OFFERS_TEXT = 'nenhuma oferta lida ainda'
-export const COUPON_PREVIEWS_LABEL = 'Produtos do cupom'
-
-export const INFLATED_BADGE_LABEL = 'Desconto inflado'
-export const OUTSIDE_ML_LABEL = 'Fora do ML'
-export const REAL_SAVING_LABEL = 'Economia real'
-export const NO_REAL_SAVING_LABEL = 'Sem economia real'
-export const POSSIBLE_EQUIVALENT_LABEL = 'Possível equivalente fora do ML'
-export const CHEAPER_SIBLING_LABEL = 'Mais barato em outro anúncio'
-export const NEVER_PRACTICED_LABEL = "preço 'de' nunca praticado"
-export const COMPARE_LINKS_LABEL = 'Comparar'
-export const COMPARE_NOW_LABEL = 'Comparar agora'
-export const COMPARE_BUSY_LABEL = 'Comparando...'
-export const COMPARE_FAILED_TEXT = 'Não foi possível comparar agora.'
-export const COMPARE_GONE_TEXT = 'Esta oferta não existe mais.'
-export const SHOW_INFLATED_LABEL = 'Mostrar ocultos'
-export const PRICE_COMPARE_PANEL_LABEL = 'Comparação de preços'
 export const BUSCAPE_LABEL = 'Buscapé'
-export const GOOGLE_SHOPPING_LABEL = 'Google Shopping'
 export const AMAZON_LABEL = 'Amazon'
-export const MAGALU_LABEL = 'Magalu'
 export const KABUM_LABEL = 'Kabum'
-export const SITE_LABEL: Record<Retailer, string> = { kabum: KABUM_LABEL, amazon: AMAZON_LABEL }
-export const NO_EQUIVALENT_TEXT = `sem equivalente na ${KABUM_LABEL} ou ${AMAZON_LABEL}`
-export const AMAZON_QUEUED_TEXT = `busca na ${AMAZON_LABEL} na fila`
-export const AMAZON_SEARCHED_LABEL = `${AMAZON_LABEL} buscada`
-export const ONLY_VERIFIED_LABEL = 'Só verificados'
+export const AMERICANAS_LABEL = 'Americanas'
+export const WATCH_STORE_LABEL: Record<WatchRetailer, string> = {
+  ml: ML_ACCOUNT_LABEL, amazon: AMAZON_LABEL, kabum: KABUM_LABEL, americanas: AMERICANAS_LABEL, buscape: BUSCAPE_LABEL,
+}
+export const MATCH_KIND_LABEL: Record<MatchKind, string> = { barcode: 'código de barras', auto: 'automático', link: 'link' }
+export const EAN_SOURCE_LABEL: Record<EanSource, string> = { manual: 'digitado', link: 'do link', americanas: 'da Americanas' }
+export const WATCH_STORE_OF_LABEL: Record<WatchRetailer, string> = {
+  ml: `do ${ML_ACCOUNT_LABEL}`, amazon: `da ${AMAZON_LABEL}`, kabum: `da ${KABUM_LABEL}`, americanas: `da ${AMERICANAS_LABEL}`, buscape: `do ${BUSCAPE_LABEL}`,
+}
+export const WATCH_STORE_IN_LABEL: Record<WatchRetailer, string> = {
+  ml: `no ${ML_ACCOUNT_LABEL}`, amazon: `na ${AMAZON_LABEL}`, kabum: `na ${KABUM_LABEL}`, americanas: `na ${AMERICANAS_LABEL}`, buscape: `no ${BUSCAPE_LABEL}`,
+}
+export const LOW_WINDOW_TEXT = `menor preço em ${WATCH_LOW_WINDOW_DAYS} dias`
+export const WATCH_ALERT_KIND_LABEL: Record<WatchAlertKind, string> = { target: 'preço alvo', low_30d: LOW_WINDOW_TEXT, drop: 'queda de preço' }
+export const PRODUCTS_LABEL = 'Produtos'
+export const AUTO_CHECKS_OFF_TEXT = 'verificações automáticas desligadas (AUTO_RUN=off)'
+export const AUTO_CHECKS_OFF_LABEL = capitalized(AUTO_CHECKS_OFF_TEXT)
+export const BACK_TO_PRODUCTS_LABEL = `Voltar para ${PRODUCTS_LABEL}`
+export const MONITOR_PANEL_LABEL = 'Monitoramento'

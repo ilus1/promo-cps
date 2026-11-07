@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { countCoupons, countValidCoupons, listCoupons } from '@/db/coupons'
 import { AppHeader } from '@/components/AppHeader'
-import { PrioritizeButton } from '@/components/PrioritizeButton'
 import { CouponFilterBar } from '@/components/CouponFilterBar'
 import { CouponRow } from '@/components/CouponRow'
 import { EmptyCard } from '@/components/EmptyCard'
@@ -9,14 +8,11 @@ import { Pagination } from '@/components/Pagination'
 import { PAGE_SIZE } from '@/lib/constants'
 import { EMPTY_ACTION_LABEL, emptyState } from '@/lib/coupon-empty'
 import {
-  CLEARED_COUPON_FILTERS, couponFilterQuery, couponHref, FILTERABLE_KINDS, hasCouponFilters, parseCouponQuery, type CouponParams,
+  CLEARED_COUPON_FILTERS, couponHref, FILTERABLE_KINDS, hasCouponFilters, parseCouponQuery, type CouponParams,
 } from '@/lib/coupon-query'
-import { offersByCouponSetHref } from '@/lib/deal-query'
 import { COUPON_LIST_STATUSES, COUPON_SCOPES } from '@/lib/domain'
 import { couponCountLine } from '@/lib/coupon-count'
-import {
-  COUPON_KIND_LABEL, COUPON_SCOPE_LABEL, COUPON_STATUS_LABEL, ML_ACCOUNT_LABEL, OFFERS_OF_SET_LABEL,
-} from '@/lib/labels'
+import { COUPON_KIND_LABEL, COUPON_SCOPE_LABEL, COUPON_STATUS_LABEL, ML_ACCOUNT_LABEL } from '@/lib/labels'
 import { ROUTES } from '@/lib/routes'
 
 export const dynamic = 'force-dynamic'
@@ -64,8 +60,6 @@ export default async function CuponsPage({ searchParams }: { searchParams: Promi
   const filtered = hasCouponFilters(query)
   const overall = coupons.length === 0 && total === 0 && filtered ? await countCoupons({}, now) : total
   const empty = emptyState({ shown: coupons.length, total, filtered, overall })
-  const filterQuery = couponFilterQuery(query)
-  const showSetActions = filtered && query.status !== 'ended'
   const emptyHref = {
     'first-page': couponHref(query, { page: 1 }),
     account: ROUTES.account,
@@ -130,19 +124,12 @@ export default async function CuponsPage({ searchParams }: { searchParams: Promi
           </ChipGroup>
         </CouponFilterBar>
 
-        {showSetActions && (
-          <div className="mb-5 flex flex-wrap items-start gap-x-3 gap-y-2">
-            <Link href={offersByCouponSetHref(filterQuery)} className="btn btn-ghost">{OFFERS_OF_SET_LABEL}</Link>
-            <PrioritizeButton key={filterQuery} query={filterQuery} />
-          </div>
-        )}
-
         {empty ? (
           <EmptyCard text={empty.text} action={{ href: emptyHref[empty.action], label: EMPTY_ACTION_LABEL[empty.action] }} />
         ) : (
           <ul className="flex flex-col gap-3">
             {coupons.map((coupon) => (
-              <CouponRow key={coupon.campaignId} coupon={coupon} now={now} text={query.text} />
+              <CouponRow key={coupon.campaignId} coupon={coupon} />
             ))}
           </ul>
         )}

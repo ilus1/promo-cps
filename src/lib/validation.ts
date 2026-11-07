@@ -1,56 +1,54 @@
 import { z } from 'zod'
-import { ALERT_NAME_MAX, ALERT_QUERY_MAX } from './alert-rules'
-import { BUSCA_NAME_MAX } from './busca-rules'
-import { RUN_EVERY_HOURS_OPTIONS } from './constants'
-import { classifyBuscaInput, classifyMlUrl } from './ml-url'
+import { storableCents } from './market/pages'
+import { validEan } from './watch/ean'
+import {
+  nameOrLinkIssue, UNKNOWN_LINK_TEXT, URL_LIKE, WATCH_DROP_MAX, WATCH_DROP_MIN, WATCH_INPUT_MAX, WATCH_NAME_MAX,
+} from './watch/input-rules'
+import { parseProductLink } from './watch/links'
+import type { ProductLink } from './watch/types'
 
-export const RUN_EVERY_HOURS_INVALID = `runEveryHours deve ser um de ${RUN_EVERY_HOURS_OPTIONS.join(', ')}`
 export const PATCH_EMPTY = 'Informe ao menos um campo'
+export const INVALID_EAN = 'Código de barras inválido.'
+export const INVALID_CENTS = 'Preço inválido.'
 
-const name = z.string().trim().min(1).max(BUSCA_NAME_MAX)
+export interface WatchInput { name: string; link: ProductLink | null }
 
-function classifiedUrl(classify: typeof classifyMlUrl) {
-  return z.string().transform((input, ctx) => {
-    const classified = classify(input)
-    if ('error' in classified) {
-      ctx.addIssue({ code: 'custom', message: classified.error })
-      return z.NEVER
-    }
-    return classified
-  })
-}
+const plainName = z.string().trim().min(1).max(WATCH_NAME_MAX).refine((name) => !URL_LIKE.test(name), { message: UNKNOWN_LINK_TEXT })
 
-const mlUrl = classifiedUrl(classifyMlUrl)
-const typedOrUrl = classifiedUrl(classifyBuscaInput)
-
-const runEveryHours = z.number().refine(
-  (hours) => RUN_EVERY_HOURS_OPTIONS.some((option) => option === hours),
-  { message: RUN_EVERY_HOURS_INVALID },
-)
-
-const fields = { name, url: mlUrl, runEveryHours, enabled: z.boolean() }
-
-export const CreateBusca = z.strictObject({
-  name: fields.name,
-  url: typedOrUrl,
-  runEveryHours: fields.runEveryHours.optional(),
-  enabled: fields.enabled.optional(),
+const nameOrLink = z.string().trim().min(1).max(WATCH_INPUT_MAX).transform((input, ctx): WatchInput => {
+  const link = parseProductLink(input)
+  if (link) return { name: link.url, link }
+  const issue = nameOrLinkIssue(input)
+  if (issue) {
+    ctx.addIssue({ code: 'custom', message: issue })
+    return z.NEVER
+  }
+  return { name: input, link: null }
 })
 
-export const UpdateBusca = z.strictObject({
-  name: fields.name.optional(),
-  url: fields.url.optional(),
-  runEveryHours: fields.runEveryHours.optional(),
-  enabled: fields.enabled.optional(),
+const ean = z.string().transform((raw, ctx) => {
+  const code = validEan(raw)
+  if (code === null) {
+    ctx.addIssue({ code: 'custom', message: INVALID_EAN })
+    return z.NEVER
+  }
+  return code
+})
+
+const cents = z.number().refine(storableCents, { message: INVALID_CENTS })
+const dropPercent = z.number().int().min(WATCH_DROP_MIN).max(WATCH_DROP_MAX)
+
+export const CreateWatch = z.strictObject({
+  nameOrLink,
+  ean: ean.optional(),
+  targetPriceCents: cents.optional(),
+  dropPercent: dropPercent.optional(),
+})
+
+export const UpdateWatch = z.strictObject({
+  name: plainName.optional(),
+  ean: ean.nullable().optional(),
+  targetPriceCents: cents.nullable().optional(),
+  dropPercent: dropPercent.optional(),
+  active: z.boolean().optional(),
 }).refine((patch) => Object.values(patch).some((value) => value !== undefined), { message: PATCH_EMPTY })
-
-export const CreateAlert = z.strictObject({
-  name: z.string().trim().min(1).max(ALERT_NAME_MAX),
-  query: z.string().max(ALERT_QUERY_MAX),
-})
-
-const COUPON_QUERY_MAX = ALERT_QUERY_MAX
-
-export const PrioritizeCoupons = z.strictObject({
-  query: z.string().max(COUPON_QUERY_MAX),
-})

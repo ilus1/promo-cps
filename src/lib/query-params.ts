@@ -1,4 +1,5 @@
 import { CENTS_PER_REAL, MAX_DISCOUNT_PERCENT } from './constants'
+import { storableText } from './storable-text'
 
 const INT4_MAX = 2147483647
 const UUID_SHAPE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -8,15 +9,6 @@ export function isUuid(v: string): boolean {
 }
 
 export type QueryParams = Record<string, string | string[] | undefined>
-
-export function searchParamsToRecord(params: URLSearchParams): QueryParams {
-  const out: QueryParams = {}
-  for (const key of new Set(params.keys())) {
-    const values = params.getAll(key)
-    out[key] = values.length > 1 ? values : values[0]
-  }
-  return out
-}
 
 export function lookup<K extends string>(map: Record<K, string>, keys: readonly K[], value: string | undefined): K | undefined {
   return keys.find((key) => map[key] === value)
@@ -29,7 +21,8 @@ export function num(v: string | string[] | undefined): number | undefined {
 }
 
 export function str(v: string | string[] | undefined): string | undefined {
-  return typeof v === 'string' && v !== '' ? v : undefined
+  const text = typeof v === 'string' ? storableText(v) : ''
+  return text !== '' ? text : undefined
 }
 
 export function centsFromReais(v: string | string[] | undefined): number | undefined {

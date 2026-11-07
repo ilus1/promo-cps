@@ -5,8 +5,6 @@ import { StatusBadge } from '@/components/StatusBadge'
 import { RunNowButton } from '@/components/RunNowButton'
 import { RunsList } from '@/components/RunsList'
 import { VerifyButton } from '@/components/VerifyButton'
-import { inflatedItemCount } from '@/db/deals'
-import { priceCheckSummary } from '@/db/price-checks'
 import { accountRuns } from '@/db/request-runs'
 import { recentRuns } from '@/db/runs'
 import { autoRunStatus } from '@/ingestion/auto-run'
@@ -15,30 +13,28 @@ import { runningKinds } from '@/ingestion/recorded-run'
 import { HoldToggles } from '@/components/HoldToggles'
 import { REQUESTS_LABEL } from '@/lib/hold-view'
 import { holdState } from '@/ingestion/request-hold'
-import { marketStatus } from '@/ingestion/market/crawlers'
 import { loginStatus } from '@/ingestion/login'
 import { loginDisplay } from '@/ingestion/login-display'
 import { verifyStatus } from '@/ingestion/verify'
 import { isLoginInProgress } from '@/lib/domain'
 import { autoRunView } from '@/lib/auto-run-view'
-import { ML_ACCOUNT_LABEL, PRICE_COMPARE_PANEL_LABEL } from '@/lib/labels'
-import { marketPanel } from '@/lib/market/view'
-import { priceCheckPanel } from '@/lib/price-check-view'
+import { ML_ACCOUNT_LABEL, MONITOR_PANEL_LABEL } from '@/lib/labels'
 import { suggestsVerification } from '@/lib/run-view'
+import { watchStatus } from '@/ingestion/watch/loops'
+import { monitorPanel } from '@/lib/watch/view'
 
 export const dynamic = 'force-dynamic'
 
 export default async function ContaPage() {
   const now = new Date()
-  const [{ cycle, finishedCycle, workedCycle, expiredRun, login: lastLogin }, runs, checks, inflatedNow, market, hold] = await Promise.all([
-    accountRuns(), recentRuns(), priceCheckSummary(now), inflatedItemCount(now), marketStatus(now), holdState(now),
+  const [{ cycle, finishedCycle, workedCycle, expiredRun, login: lastLogin }, runs, watch, hold] = await Promise.all([
+    accountRuns(), recentRuns(), watchStatus(now), holdState(now),
   ])
   const live = loginStatus()
   const activity = cycleActivity()
   const login = loginDisplay(live, lastLogin, workedCycle, expiredRun)
   const auto = autoRunView(autoRunStatus(), now)
-  const crawlers = marketPanel(market, now)
-  const comparison = priceCheckPanel(checks, inflatedNow, now)
+  const monitor = monitorPanel(watch, now)
   const active = runningKinds()
   if (isLoginInProgress(live.state)) active.add('login')
   return (
@@ -48,7 +44,7 @@ export default async function ContaPage() {
         <div className="mb-5">
           <h1 className="text-2xl font-semibold tracking-tight">Conta</h1>
           <p className="mt-0.5 text-sm text-[var(--color-ink-soft)]">
-            Login do Mercado Livre usado para ler seus cupons e ofertas.
+            Login do Mercado Livre usado para ler seus cupons e os preços dos produtos monitorados no ML.
           </p>
         </div>
 
@@ -83,22 +79,19 @@ export default async function ContaPage() {
 
         <section className="card mt-5 p-5">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-[var(--color-ink-soft)]">
-            {PRICE_COMPARE_PANEL_LABEL}
+            {MONITOR_PANEL_LABEL}
           </h2>
+          <div className="mb-4 flex flex-col gap-1 border-b border-[var(--color-line)] pb-4 text-sm text-[var(--color-ink-soft)]">
+            {monitor.summary.map((line) => <p key={line}>{line}</p>)}
+          </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {crawlers.sites.map((site) => (
-              <div key={site.site} role="status" aria-labelledby={`crawler-${site.site}`} className="flex flex-col gap-1 text-sm text-[var(--color-ink-soft)]">
-                <h3 id={`crawler-${site.site}`} className="font-semibold text-[var(--color-ink)]">{site.label}</h3>
-                <p className={site.alert ? 'font-medium text-[var(--color-amber)]' : undefined}>{site.state}</p>
-                {site.lines.map((line) => <p key={line}>{line}</p>)}
+            {monitor.sources.map((source) => (
+              <div key={source.retailer} className="flex flex-col gap-1 text-sm text-[var(--color-ink-soft)]">
+                <h3 className="font-semibold text-[var(--color-ink)]">{source.label}</h3>
+                <p className={source.alert ? 'font-medium text-[var(--color-amber)]' : undefined}>{source.state}</p>
+                {source.lines.map((line) => <p key={line} className="break-words">{line}</p>)}
               </div>
             ))}
-          </div>
-          <div className="mt-4 flex flex-col gap-1 border-t border-[var(--color-line)] pt-4 text-sm text-[var(--color-ink-soft)]">
-            {crawlers.coverage && <p>{crawlers.coverage}</p>}
-            <p>{comparison.last}</p>
-            <p>{comparison.counts}</p>
-            <p>{comparison.inflated}</p>
           </div>
         </section>
 

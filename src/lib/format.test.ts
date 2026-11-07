@@ -1,9 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { DAY_MS, HOUR_MS, MINUTE_MS } from './constants'
-import { discountThresholdRatio, formatAgo, formatCents, formatCount, formatDate, formatDayMonth, formatDayMonthTime, formatDuration, formatPercent, formatPercentOneDecimal, formatPrice, savingThresholdRatio, formatWholeReais, relativeTime } from './format'
+import { capitalized, discountThresholdRatio, formatAgo, formatCents, formatCount, formatDate, formatDayMonthTime, formatDuration, formatPercent, formatPrice, formatWholeReais, relativeTime } from './format'
 
 const now = new Date('2026-11-01T12:00:00Z')
 const ago = (ms: number) => new Date(now.getTime() - ms)
+
+describe('capitalized', () => {
+  it('upper-cases only the first letter, accents included', () => {
+    expect(capitalized('verificações desligadas')).toBe('Verificações desligadas')
+    expect(capitalized('ótimo')).toBe('Ótimo')
+    expect(capitalized('')).toBe('')
+  })
+})
 
 describe('formatPrice', () => {
   it('whole reais grouped pt-BR style, centavos with two digits', () => {
@@ -55,13 +63,6 @@ describe('formatAgo', () => {
   })
   it('agora for a time ahead of now', () => {
     expect(formatAgo(new Date(now.getTime() + HOUR_MS), now)).toBe('agora')
-  })
-})
-
-describe('formatDayMonth', () => {
-  it('prints day and month in the app time zone', () => {
-    expect(formatDayMonth(new Date('2026-11-02T15:00:00Z'))).toBe('02/11')
-    expect(formatDayMonth(new Date('2026-11-03T02:00:00Z'))).toBe('02/11')
   })
 })
 
@@ -118,41 +119,6 @@ describe('discountThresholdRatio', () => {
 
   it('half a percent below the value is the threshold', () => {
     expect(discountThresholdRatio(91)).toBe(0.905)
-  })
-})
-
-describe('formatPercentOneDecimal', () => {
-  it('shows one decimal with the pt-BR comma', () => {
-    expect(formatPercentOneDecimal(0.5753)).toBe('57,5%')
-    expect(formatPercentOneDecimal(0.5696)).toBe('57,0%')
-    expect(formatPercentOneDecimal(0.5)).toBe('50,0%')
-    expect(formatPercentOneDecimal(1)).toBe('100,0%')
-    expect(formatPercentOneDecimal(0)).toBe('0,0%')
-  })
-})
-
-describe('savingThresholdRatio', () => {
-  it('a whole N passes from N minus a twentieth of a percent', () => {
-    expect(savingThresholdRatio(57)).toBeCloseTo(0.5695, 10)
-    expect(savingThresholdRatio(100)).toBeCloseTo(0.9995, 10)
-  })
-
-  it.each([0.0295, 0.4295, 0.4995, 0.5695, 0.5696, 0.57, 0.5749, 0.8, 0.0501, 1])('a ratio shown as N,0% or more passes the filter N, and %s agrees with what is shown', (ratio) => {
-    const shownWhole = Math.floor(Number(formatPercentOneDecimal(ratio).replace('%', '').replace(',', '.')))
-    expect(ratio).toBeGreaterThanOrEqual(savingThresholdRatio(shownWhole))
-    expect(ratio).toBeLessThan(savingThresholdRatio(shownWhole + 1))
-  })
-
-  it('a ratio shown below N,0% fails the filter N', () => {
-    expect(formatPercentOneDecimal(0.5694)).toBe('56,9%')
-    expect(0.5694).toBeLessThan(savingThresholdRatio(57))
-  })
-})
-
-describe('savingThresholdRatio at exact boundaries', () => {
-  it.each([[0.0295, 3], [0.4295, 43], [0.4995, 50]])('%s shows %i,0%% and passes the filter %i', (ratio, whole) => {
-    expect(formatPercentOneDecimal(ratio)).toBe(`${whole},0%`)
-    expect(ratio).toBeGreaterThanOrEqual(savingThresholdRatio(whole))
   })
 })
 

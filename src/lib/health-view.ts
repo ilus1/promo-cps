@@ -1,17 +1,18 @@
-import type { CrawlerState, CrawlerStatus, Retailer } from './market/types'
 import type { HoldKind, RequestHold } from './request-hold'
+import type { WatchRetailer, WatchSourceState, WatchSourceStatus } from './watch/types'
 
 export interface HealthCycle {
   startedAt: string
   status: string | null
 }
 
-export interface HealthCrawler {
-  state: CrawlerState
+export interface HealthSource {
+  retailer: WatchRetailer
+  state: WatchSourceState
   blockedUntil: string | null
 }
 
-export type CrawlerHealthInput = Pick<CrawlerStatus, 'state' | 'blockedUntil'>
+export type SourceHealthInput = Pick<WatchSourceStatus, 'retailer' | 'state' | 'blockedUntil'>
 
 export interface HealthReport {
   schedulerEnabled: boolean
@@ -21,7 +22,7 @@ export interface HealthReport {
   nextRunAt: string | null
   runEveryHours: number
   hold: { kind: HoldKind; text: string } | null
-  market: Record<Retailer, HealthCrawler> | null
+  watch: HealthSource[] | null
 }
 
 export interface HealthInputs {
@@ -32,11 +33,11 @@ export interface HealthInputs {
   nextRunAt: Date | null
   runEveryHours: number
   hold: RequestHold | null
-  market: Record<Retailer, CrawlerHealthInput> | null
+  watch: SourceHealthInput[] | null
 }
 
-function crawlerHealth(crawler: CrawlerHealthInput): HealthCrawler {
-  return { state: crawler.state, blockedUntil: crawler.blockedUntil?.toISOString() ?? null }
+function sourceHealth(source: SourceHealthInput): HealthSource {
+  return { retailer: source.retailer, state: source.state, blockedUntil: source.blockedUntil?.toISOString() ?? null }
 }
 
 export function healthReport(inputs: HealthInputs): HealthReport {
@@ -49,6 +50,6 @@ export function healthReport(inputs: HealthInputs): HealthReport {
     nextRunAt: inputs.nextRunAt?.toISOString() ?? null,
     runEveryHours: inputs.runEveryHours,
     hold: inputs.hold ? { kind: inputs.hold.kind, text: inputs.hold.text } : null,
-    market: inputs.market ? { kabum: crawlerHealth(inputs.market.kabum), amazon: crawlerHealth(inputs.market.amazon) } : null,
+    watch: inputs.watch?.map(sourceHealth) ?? null,
   }
 }

@@ -36,20 +36,20 @@ test('a huge window is capped so the date stays valid', () => {
 })
 
 describe('new filters', () => {
-  test('reads reais as cents, percent as a whole number, flag and sort', () => {
+  test('reads reais as cents, percent as a whole number and the sort', () => {
     expect(parseCouponQuery({
-      minimoMax: '100', limiteMin: '12.5', descontoMin: '30.2', comOfertas: '1', ordem: 'minimo',
+      minimoMax: '100', limiteMin: '12.5', descontoMin: '30.2', ordem: 'minimo',
     })).toMatchObject({
-      minimumMaxCents: 10000, limitMinCents: 1250, discountMin: 31, withOffers: true, order: 'minimo',
+      minimumMaxCents: 10000, limitMinCents: 1250, discountMin: 31, order: 'minimo',
     })
   })
 
   test('zero, empty, negative and invalid mean no filter', () => {
     const q = parseCouponQuery({
-      minimoMax: '0', limiteMin: '', descontoMin: '-5', comOfertas: '0', q: '   ', ordem: 'bogus',
+      minimoMax: '0', limiteMin: '', descontoMin: '-5', q: '   ', ordem: 'bogus',
     })
     expect(q).toEqual(none)
-    expect(parseCouponQuery({ minimoMax: 'x', limiteMin: '0.004', descontoMin: '0', comOfertas: 'true' })).toEqual(none)
+    expect(parseCouponQuery({ minimoMax: 'x', limiteMin: '0.004', descontoMin: '0' })).toEqual(none)
   })
 
   test('a discount above 100 is capped and repeated params are dropped', () => {
@@ -84,13 +84,16 @@ describe('new filters', () => {
   test('changing the sort or a new filter resets the page', () => {
     const on = parseCouponQuery({ status: 'ativo', pagina: '4' })
     expect(couponHref(on, { order: 'limite' })).toBe('/cupons?status=ativo&ordem=limite')
-    expect(couponHref(on, { withOffers: true })).toBe('/cupons?status=ativo&comOfertas=1')
+    expect(couponHref(on, { discountMin: 20 })).toBe('/cupons?status=ativo&descontoMin=20')
   })
 
   test('hasCouponFilters ignores the sort and the page', () => {
     expect(hasCouponFilters(parseCouponQuery({ ordem: 'limite', pagina: '2' }))).toBe(false)
     expect(hasCouponFilters(parseCouponQuery({ q: 'x' }))).toBe(true)
-    expect(hasCouponFilters(parseCouponQuery({ comOfertas: '1' }))).toBe(true)
+  })
+
+  test('an old link with the removed linked-offers filter lists every coupon', () => {
+    expect(parseCouponQuery({ comOfertas: '1' })).toEqual(none)
   })
 
   test('clearing keeps the sort and drops every filter', () => {
@@ -102,7 +105,6 @@ describe('new filters', () => {
     ['minimoMax', { minimumMaxCents: 1999 }],
     ['limiteMin', { limitMinCents: 500 }],
     ['descontoMin', { discountMin: 40 }],
-    ['comOfertas', { withOffers: true }],
     ['q', { text: 'loja & cia' }],
     ...COUPON_SORTS.map((order): [string, Partial<CouponQuery>] => [`ordem ${order}`, { order }]),
   ])('round-trips %s', (_name, changes) => {
@@ -152,4 +154,9 @@ describe('couponHref', () => {
     const params = Object.fromEntries(new URL(href, 'http://x').searchParams)
     expect(parseCouponQuery(params)).toEqual({ ...none, ...changes })
   })
+})
+
+test('a NUL in the Cupons q is dropped, and a q of only NUL is no text filter', () => {
+  expect(parseCouponQuery({ q: 'fone\u0000 jbl' }).text).toBe('fone jbl')
+  expect(parseCouponQuery({ q: '\u0000' }).text).toBeUndefined()
 })

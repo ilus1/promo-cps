@@ -2,11 +2,12 @@ import type { Run } from '@/db/schema'
 import { formatCount, formatDateTime, formatDuration } from '@/lib/format'
 import type { RunKind } from '@/lib/domain'
 import { RUN_KIND_LABEL } from '@/lib/labels'
-import { liveRunIds, runCountItems, runDurationMs, runShowsPages, runStatusText, runTone } from '@/lib/run-view'
+import { liveRunIds, runCountItems, runDurationMs, runErrorView, runShowsPages, runStatusText, runTone } from '@/lib/run-view'
 import { StatusBadge } from './StatusBadge'
 
 const NO_RUNS_TEXT = 'Nenhuma execução registrada ainda.'
 const NO_DURATION = 'sem duração'
+const FULL_ERROR_LABEL = 'Ver erro completo'
 
 export function RunsList({ runs, active }: { runs: Run[]; active: ReadonlySet<RunKind> }) {
   if (runs.length === 0) return <p className="text-sm text-[var(--color-ink-soft)]">{NO_RUNS_TEXT}</p>
@@ -16,6 +17,7 @@ export function RunsList({ runs, active }: { runs: Run[]; active: ReadonlySet<Ru
       {runs.map((run) => {
         const duration = runDurationMs(run)
         const counts = runCountItems(run)
+        const error = runErrorView(run.error)
         return (
           <li key={run.id} className="flex flex-col gap-1.5 py-3 first:pt-0 last:pb-0">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -43,7 +45,13 @@ export function RunsList({ runs, active }: { runs: Run[]; active: ReadonlySet<Ru
                 </div>
               ))}
             </dl>
-            {run.error && <p className="break-words text-[13px] text-[var(--color-danger)]">{run.error}</p>}
+            {error && <p className="break-words text-[13px] text-[var(--color-danger)]">{error.short}</p>}
+            {error?.full && (
+              <details className="text-[13px] text-[var(--color-ink-soft)]">
+                <summary className="cursor-pointer underline">{FULL_ERROR_LABEL}</summary>
+                <pre className="mt-1 whitespace-pre-wrap break-words font-mono text-[12px]">{error.full}</pre>
+              </details>
+            )}
           </li>
         )
       })}

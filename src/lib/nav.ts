@@ -1,5 +1,9 @@
-import { ROUTES } from './routes'
+import { PRODUCT_PATH, ROUTES } from './routes'
+
+function within(pathname: string, path: string): boolean {
+  return pathname === path || pathname.startsWith(`${path}/`)
+}
 
 export function isActivePath(pathname: string, href: string): boolean {
-  return href === ROUTES.offers ? pathname === href : pathname === href || pathname.startsWith(`${href}/`)
+  return href === ROUTES.products ? pathname === href || within(pathname, PRODUCT_PATH) : within(pathname, href)
 }

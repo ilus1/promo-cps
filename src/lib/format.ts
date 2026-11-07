@@ -1,17 +1,11 @@
 import { CENTS_PER_REAL, DAY_MS, PERCENT_BASE, HOUR_MS, MINUTE_MS, SECOND_MS } from './constants'
 
 const HALF_PERCENT = 0.5
-const THOUSANDTHS_PER_PERCENT = 1000
-const HALF_TENTH_IN_THOUSANDTHS = 50
-const THOUSANDTHS_PER_WHOLE = THOUSANDTHS_PER_PERCENT * PERCENT_BASE
 const LOCALE = 'pt-BR'
 export const TIME_ZONE = 'America/Sao_Paulo'
 const JUST_NOW = 'agora'
 const SOON = 'em instantes'
 const PERCENT = new Intl.NumberFormat(LOCALE, { style: 'percent', maximumFractionDigits: 0 })
-const PERCENT_ONE_DECIMAL = new Intl.NumberFormat(LOCALE, {
-  style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1,
-})
 const DATE = new Intl.DateTimeFormat(LOCALE, { dateStyle: 'short', timeZone: TIME_ZONE })
 const DAY_MONTH = new Intl.DateTimeFormat(LOCALE, { day: '2-digit', month: '2-digit', timeZone: TIME_ZONE })
 const TIME = new Intl.DateTimeFormat(LOCALE, { hour: '2-digit', minute: '2-digit', timeZone: TIME_ZONE })
@@ -32,14 +26,6 @@ export function formatCents(cents: number): string {
 
 export function formatPercent(ratio: number): string {
   return PERCENT.format(ratio)
-}
-
-export function formatPercentOneDecimal(ratio: number): string {
-  return PERCENT_ONE_DECIMAL.format(ratio)
-}
-
-export function savingThresholdRatio(wholePercent: number): number {
-  return (wholePercent * THOUSANDTHS_PER_PERCENT - HALF_TENTH_IN_THOUSANDTHS) / THOUSANDTHS_PER_WHOLE
 }
 
 export function discountThresholdRatio(wholePercent: number): number {
@@ -70,16 +56,16 @@ export function formatDate(date: Date): string {
   return DATE.format(date)
 }
 
-export function formatDayMonth(date: Date): string {
-  return DAY_MONTH.format(date)
-}
-
 export function formatDayMonthTime(date: Date): string {
   return `${DAY_MONTH.format(date)} ${TIME.format(date)}`
 }
 
 export function formatDateTime(date: Date): string {
   return DATE_TIME.format(date)
+}
+
+export function capitalized(text: string): string {
+  return `${text.charAt(0).toUpperCase()}${text.slice(1)}`
 }
 
 export function formatCount(n: number): string {

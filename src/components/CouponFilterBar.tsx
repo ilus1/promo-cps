@@ -6,14 +6,14 @@ import { CENTS_PER_REAL, SEARCH_TEXT_MAX } from '@/lib/constants'
 import { EMPTY_ACTION_LABEL } from '@/lib/coupon-empty'
 import { CLEARED_COUPON_FILTERS, couponHref, hasCouponFilters, type CouponQuery } from '@/lib/coupon-query'
 import { COUPON_SORTS, DEFAULT_COUPON_SORT } from '@/lib/domain'
-import { activeCouponLabels, COUPON_WITH_OFFERS_LABEL } from '@/lib/filter-labels'
+import { activeCouponLabels } from '@/lib/filter-labels'
 import { formatWholeReais } from '@/lib/format'
 import {
   COUPON_SORT_LABEL, DISCOUNT_AT_MINIMUM_LABEL, DISCOUNT_MIN_LABEL, LIMIT_MIN_LABEL, MINIMUM_MAX_LABEL, TRIVIAL_SAVING_NOTE,
 } from '@/lib/labels'
 import { normalizeSearchText } from '@/lib/text-search'
 import { centsFromReais } from '@/lib/query-params'
-import { ANY, NumberFilter, optionalNumber, TextFilter, Toggle } from './filters/controls'
+import { ANY, NumberFilter, optionalNumber, TextFilter } from './filters/controls'
 
 const MINIMUM_PRESETS = [20, 50, 100, 200, 500] as const
 const LIMIT_PRESETS = [5, 10, 20, 50, 100] as const
@@ -74,7 +74,6 @@ export function CouponFilterBar({ query, children }: { query: CouponQuery; child
           format={(n) => `${n}%`}
           onApply={(raw) => go({ discountMin: optionalNumber(raw) })}
         />
-        <Toggle label={COUPON_WITH_OFFERS_LABEL} on={Boolean(query.withOffers)} onChange={(on) => go({ withOffers: on || undefined })} />
       </div>
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-line)] pt-3">

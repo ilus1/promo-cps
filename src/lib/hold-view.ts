@@ -1,11 +1,11 @@
 import { HTTP_CONFLICT } from './http-status'
-import { PRICE_COMPARE_PANEL_LABEL } from './labels'
+import { MONITOR_PANEL_LABEL } from './labels'
 import type { HoldState } from './request-hold'
 
 export const HOLD_PREFIX = 'Em espera'
 export const VPN_CHIP_TEXT = `${HOLD_PREFIX}: VPN`
 export const PAUSED_CHIP_TEXT = 'Pausado'
-export const PRICE_PAUSED_CHIP_TEXT = 'Comparação pausada'
+export const PRICE_PAUSED_CHIP_TEXT = 'Monitoramento pausado'
 export const VPN_TOGGLE_NOTE = 'em espera pela VPN'
 export const REQUESTS_PAUSED_TOGGLE_NOTE = 'em espera: requisições pausadas'
 export const VPN_UNKNOWN_TOGGLE_NOTE = 'em espera: VPN não verificada'
@@ -21,7 +21,7 @@ export function holdBanner(state: HoldState): string | null {
   }
   if (state.hold?.kind === 'vpn_unknown') return VPN_UNCHECKABLE_TEXT
   if (state.hold?.kind === 'manual') return `${HOLD_PREFIX}: requisições pausadas manualmente.`
-  if (state.hold?.kind === 'price_manual') return `${HOLD_PREFIX}: comparação de preços pausada manualmente.`
+  if (state.hold?.kind === 'price_manual') return `${HOLD_PREFIX}: monitoramento pausado manualmente.`
   return null
 }
 
@@ -63,8 +63,8 @@ export function requestsToggle(paused: boolean, heldBy: string | null = null): H
 
 export function priceChecksToggle(paused: boolean, heldBy: string | null = null): HoldToggleView {
   return {
-    state: toggleState(PRICE_COMPARE_PANEL_LABEL, paused, ['ativa', 'pausada'], heldBy),
-    action: paused ? 'Retomar comparação de preços' : 'Pausar comparação de preços',
+    state: toggleState(MONITOR_PANEL_LABEL, paused, ['ativo', 'pausado'], heldBy),
+    action: paused ? 'Retomar monitoramento' : 'Pausar monitoramento',
   }
 }
 

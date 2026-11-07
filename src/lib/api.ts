@@ -1,13 +1,11 @@
-import { HTTP_BAD_REQUEST, HTTP_CONFLICT, HTTP_NOT_FOUND, HTTP_UNPROCESSABLE } from '@/lib/http-status'
-import {
-  ALERT_BUSCA_GONE_TEXT, ALERT_CREATE_FAILED_TEXT, ALERT_DELETE_FAILED_TEXT, ALERT_DUPLICATE_TEXT, ALERT_NAME_REQUIRED_TEXT,
-  APP_UNREACHABLE_TEXT, BUSCA_DELETE_FAILED_TEXT, BUSCA_GONE_TEXT, BUSCA_UPDATE_FAILED_TEXT, COMPARE_FAILED_TEXT, COMPARE_GONE_TEXT,
-} from '@/lib/labels'
+import { HTTP_NOT_FOUND } from '@/lib/http-status'
+import { APP_UNREACHABLE_TEXT } from '@/lib/labels'
 import { failureText, HOLD_CHANGE_FAILED_TEXT } from '@/lib/hold-view'
-import type { BulkSeenRequest } from '@/lib/bulk-seen'
-import { buscaNameOf, createFailure, type BuscaDraft, type BuscaFormErrors } from '@/lib/busca-view'
-import type { CycleActivity, ItemStatus, LoginStatus, MlStatus, VerifyStatus } from '@/lib/domain'
-import type { CompareResponse } from '@/lib/market/types'
+import type { CycleActivity, LoginStatus, MlStatus, VerifyStatus } from '@/lib/domain'
+import {
+  conflictText, LISTING_GONE_TEXT, LISTING_REMOVE_FAILED_TEXT, WATCH_GONE_TEXT, WATCH_REFRESH_FAILED_TEXT, WATCH_SAVE_FAILED_TEXT,
+  WATCH_STOP_FAILED_TEXT, watchCreateFailure, type SettingsPatch, type WatchFormErrors, type WatchRequest,
+} from '@/lib/watch/view'
 
 const JSON_HEADERS = { 'content-type': 'application/json' }
 const CONFIRM_BODY = { confirm: true }
@@ -22,13 +20,11 @@ async function ensureOk(res: Response, failure: string): Promise<void> {
   throw new Error(failureText(failure, res.status, error))
 }
 
-async function postConfirmed<T>(
-  path: string, failure: string, check: (res: Response, failure: string) => void | Promise<void> = ensureOk,
-): Promise<T> {
+async function postConfirmed<T>(path: string, failure: string): Promise<T> {
   const res = await fetch(path, {
     method: 'POST', headers: JSON_HEADERS, body: JSON.stringify(CONFIRM_BODY),
   })
-  await check(res, failure)
+  await ensureOk(res, failure)
   return res.json()
 }
 
@@ -50,153 +46,64 @@ export async function fetchMlStatus(): Promise<MlStatus> {
   return res.json()
 }
 
-const ITEM_STATUS_FAILED = 'Falha ao atualizar a oferta'
-
-export async function requestItemStatus(id: string, status: ItemStatus): Promise<void> {
-  const res = await fetch(`/api/items/${encodeURIComponent(id)}`, {
-    method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify({ status }),
-  })
-  await ensureOk(res, ITEM_STATUS_FAILED)
-}
-
-const BULK_SEEN_FAILED = 'Falha ao marcar as ofertas como vistas'
-
-export async function requestBulkSeen(target: BulkSeenRequest): Promise<number> {
-  const res = await fetch('/api/items/seen', {
-    method: 'POST', headers: JSON_HEADERS, body: JSON.stringify(target),
-  })
-  await ensureOk(res, BULK_SEEN_FAILED)
-  return (await res.json()).marked
-}
-
-export class BuscaGoneError extends Error {
-  constructor() {
-    super(BUSCA_GONE_TEXT)
-    this.name = 'BuscaGoneError'
-  }
-}
-
-export class BuscaRequestError extends Error {
+export class WatchGoneError extends Error {
   constructor(message: string) {
     super(message)
-    this.name = 'BuscaRequestError'
+    this.name = 'WatchGoneError'
   }
 }
 
-const BUSCAS_PATH = '/api/searches'
-const BUSCA_RUN_FAILED = 'Falha ao iniciar a execução da Busca'
+export class WatchRequestError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'WatchRequestError'
+  }
+}
 
-function ensureBuscaOk(res: Response, failure: string): void {
+export function watchErrorText(e: unknown): string {
+  return e instanceof WatchRequestError || e instanceof WatchGoneError ? e.message : APP_UNREACHABLE_TEXT
+}
+
+const WATCH_PATH = '/api/watch'
+const LISTINGS_PATH = `${WATCH_PATH}/listings`
+
+function productPath(id: string): string {
+  return `${WATCH_PATH}/${encodeURIComponent(id)}`
+}
+
+async function ensureWatchOk(res: Response, failure: string, gone: string = WATCH_GONE_TEXT): Promise<void> {
   if (res.ok) return
-  throw res.status === HTTP_NOT_FOUND ? new BuscaGoneError() : new BuscaRequestError(failure)
+  if (res.status === HTTP_NOT_FOUND) throw new WatchGoneError(gone)
+  throw new WatchRequestError(conflictText(res.status, await res.json().catch(() => null)) ?? failure)
 }
 
-export function buscaErrorText(e: unknown): string {
-  return e instanceof BuscaRequestError ? e.message : APP_UNREACHABLE_TEXT
+export type WatchCreateResult = { ok: true; id: string | null; started: boolean } | { ok: false; errors: WatchFormErrors }
+
+export async function createWatch(request: WatchRequest): Promise<WatchCreateResult> {
+  const res = await fetch(WATCH_PATH, { method: 'POST', headers: JSON_HEADERS, body: JSON.stringify(request) })
+  const body = await res.json().catch(() => null)
+  if (!res.ok) return { ok: false, errors: watchCreateFailure(res.status, body) }
+  return { ok: true, id: typeof body?.id === 'string' ? body.id : null, started: body?.started !== false }
 }
 
-export async function createBusca(draft: BuscaDraft): Promise<BuscaFormErrors | null> {
-  const res = await fetch(BUSCAS_PATH, {
-    method: 'POST', headers: JSON_HEADERS,
-    body: JSON.stringify({ name: buscaNameOf(draft), url: draft.url.trim() }),
-  })
-  if (res.ok) return null
-  return createFailure(res.status, await res.json().catch(() => null))
+export async function saveWatchSettings(id: string, patch: SettingsPatch): Promise<void> {
+  const res = await fetch(productPath(id), { method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify(patch) })
+  await ensureWatchOk(res, WATCH_SAVE_FAILED_TEXT)
 }
 
-export async function updateBusca(id: string, patch: { enabled?: boolean; runEveryHours?: number }): Promise<void> {
-  const res = await fetch(`${BUSCAS_PATH}/${encodeURIComponent(id)}`, {
-    method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify(patch),
-  })
-  ensureBuscaOk(res, BUSCA_UPDATE_FAILED_TEXT)
+export async function stopWatching(id: string): Promise<void> {
+  const res = await fetch(productPath(id), { method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify({ active: false }) })
+  await ensureWatchOk(res, WATCH_STOP_FAILED_TEXT)
 }
 
-export async function deleteBusca(id: string): Promise<void> {
-  const res = await fetch(`${BUSCAS_PATH}/${encodeURIComponent(id)}`, { method: 'DELETE' })
-  ensureBuscaOk(res, BUSCA_DELETE_FAILED_TEXT)
+export async function requestWatchRefresh(id: string): Promise<void> {
+  const res = await fetch(`${productPath(id)}/refresh`, { method: 'POST' })
+  await ensureWatchOk(res, WATCH_REFRESH_FAILED_TEXT)
 }
 
-async function ensureBuscaRunOk(res: Response, failure: string): Promise<void> {
-  if (res.status === HTTP_CONFLICT) {
-    const error = (await res.json().catch(() => null))?.error
-    if (error) throw new BuscaRequestError(error)
-  }
-  ensureBuscaOk(res, failure)
-}
-
-export function requestBuscaRun(id: string): Promise<CycleActivity> {
-  return postConfirmed(`${BUSCAS_PATH}/${encodeURIComponent(id)}/run`, BUSCA_RUN_FAILED, ensureBuscaRunOk)
-}
-
-const ALERTS_PATH = '/api/alerts'
-
-export class AlertRequestError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'AlertRequestError'
-  }
-}
-
-export function alertErrorText(e: unknown): string {
-  return e instanceof AlertRequestError ? e.message : APP_UNREACHABLE_TEXT
-}
-
-const ALERT_CREATE_ERRORS: Record<number, string> = {
-  [HTTP_BAD_REQUEST]: ALERT_NAME_REQUIRED_TEXT,
-  [HTTP_CONFLICT]: ALERT_DUPLICATE_TEXT,
-  [HTTP_UNPROCESSABLE]: ALERT_BUSCA_GONE_TEXT,
-}
-
-export async function saveAlert(name: string, query: string): Promise<void> {
-  const res = await fetch(ALERTS_PATH, {
-    method: 'POST', headers: JSON_HEADERS, body: JSON.stringify({ name, query }),
-  })
-  if (!res.ok) throw new AlertRequestError(ALERT_CREATE_ERRORS[res.status] ?? ALERT_CREATE_FAILED_TEXT)
-}
-
-export async function removeAlert(id: string): Promise<void> {
-  const res = await fetch(`${ALERTS_PATH}/${encodeURIComponent(id)}`, { method: 'DELETE' })
-  if (!res.ok && res.status !== HTTP_NOT_FOUND) throw new AlertRequestError(ALERT_DELETE_FAILED_TEXT)
-}
-
-const PRIORITY_PATH = '/api/coupons/priority'
-const PRIORITY_FAILED = 'Falha ao priorizar os cupons'
-
-export type PriorityResult = { prioritized: number; cycleNextRunAt: string | null; pause: string | null; running: boolean }
-
-export class PriorityRequestError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'PriorityRequestError'
-  }
-}
-
-export function priorityErrorText(e: unknown): string {
-  return e instanceof PriorityRequestError ? e.message : APP_UNREACHABLE_TEXT
-}
-
-export async function requestPriority(query: string): Promise<PriorityResult> {
-  const res = await fetch(PRIORITY_PATH, { method: 'POST', headers: JSON_HEADERS, body: JSON.stringify({ query }) })
-  if (!res.ok) throw new PriorityRequestError(PRIORITY_FAILED)
-  return res.json()
-}
-
-export class CompareRequestError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'CompareRequestError'
-  }
-}
-
-export function compareErrorText(e: unknown): string {
-  return e instanceof CompareRequestError ? e.message : APP_UNREACHABLE_TEXT
-}
-
-export async function requestCompare(id: string): Promise<CompareResponse> {
-  const res = await fetch(`/api/items/${encodeURIComponent(id)}/compare`, { method: 'POST' })
-  if (res.status === HTTP_NOT_FOUND) throw new CompareRequestError(COMPARE_GONE_TEXT)
-  if (!res.ok) throw new CompareRequestError(COMPARE_FAILED_TEXT)
-  return res.json()
+export async function removeWatchListing(id: string): Promise<void> {
+  const res = await fetch(`${LISTINGS_PATH}/${encodeURIComponent(id)}`, { method: 'DELETE' })
+  await ensureWatchOk(res, LISTING_REMOVE_FAILED_TEXT, LISTING_GONE_TEXT)
 }
 
 export class HoldRequestError extends Error {

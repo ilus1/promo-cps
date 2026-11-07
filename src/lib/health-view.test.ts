@@ -9,7 +9,7 @@ const BASE: HealthInputs = {
   nextRunAt: new Date('2026-11-03T11:10:00.000Z'),
   runEveryHours: 3,
   hold: null,
-  market: { kabum: { state: 'running', blockedUntil: null }, amazon: { state: 'waiting', blockedUntil: null } },
+  watch: [{ retailer: 'kabum', state: 'running', blockedUntil: null }, { retailer: 'amazon', state: 'waiting', blockedUntil: null }],
 }
 
 describe('healthReport', () => {
@@ -22,7 +22,7 @@ describe('healthReport', () => {
       nextRunAt: '2026-11-03T11:10:00.000Z',
       runEveryHours: 3,
       hold: null,
-      market: { kabum: { state: 'running', blockedUntil: null }, amazon: { state: 'waiting', blockedUntil: null } },
+      watch: [{ retailer: 'kabum', state: 'running', blockedUntil: null }, { retailer: 'amazon', state: 'waiting', blockedUntil: null }],
     })
   })
 
@@ -61,24 +61,28 @@ describe('healthReport', () => {
     expect(healthReport({ ...BASE, hold }).hold).toEqual({ kind: 'price_manual', text: 'Comparação pausada' })
   })
 
-  it('carries each crawler state and its block end as an ISO string', () => {
+  it('carries each source state and its block end as an ISO string', () => {
     const blockedUntil = new Date('2026-11-04T18:15:00.000Z')
-    const report = healthReport({ ...BASE, market: { kabum: { state: 'held', blockedUntil: null }, amazon: { state: 'blocked', blockedUntil } } })
-    expect(report.market).toEqual({
-      kabum: { state: 'held', blockedUntil: null },
-      amazon: { state: 'blocked', blockedUntil: '2026-11-04T18:15:00.000Z' },
+    const report = healthReport({
+      ...BASE, watch: [{ retailer: 'kabum', state: 'held', blockedUntil: null }, { retailer: 'amazon', state: 'blocked', blockedUntil }],
     })
+    expect(report.watch).toEqual([
+      { retailer: 'kabum', state: 'held', blockedUntil: null },
+      { retailer: 'amazon', state: 'blocked', blockedUntil: '2026-11-04T18:15:00.000Z' },
+    ])
   })
 
-  it('reports no crawler states when the market status could not be read', () => {
-    const report = healthReport({ ...BASE, market: null })
-    expect(report.market).toBeNull()
+  it('reports no source states when the watch status could not be read', () => {
+    const report = healthReport({ ...BASE, watch: null })
+    expect(report.watch).toBeNull()
     expect(report.pause).toBeNull()
     expect(report.lastCycle).toEqual({ startedAt: '2026-11-03T08:00:00.000Z', status: 'ok' })
   })
 
-  it('a blocked crawler never becomes the scheduler pause', () => {
-    const market = { kabum: { state: 'blocked', blockedUntil: new Date('2026-11-04T18:15:00.000Z') }, amazon: { state: 'stopped', blockedUntil: null } } as const
-    expect(healthReport({ ...BASE, market }).pause).toBeNull()
+  it('a blocked source never becomes the scheduler pause', () => {
+    const watch = [
+      { retailer: 'kabum', state: 'blocked', blockedUntil: new Date('2026-11-04T18:15:00.000Z') }, { retailer: 'amazon', state: 'stopped', blockedUntil: null },
+    ] as const
+    expect(healthReport({ ...BASE, watch: [...watch] }).pause).toBeNull()
   })
 })

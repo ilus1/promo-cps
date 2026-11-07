@@ -2,7 +2,7 @@ import type { BadgeTone } from './badge-tone'
 import { CYCLE_COUNT, type CycleCountKey } from './cycle-counts'
 import { RUN_INTERRUPTED_TEXT, type RunKind, type RunRowStatus } from './domain'
 import { formatCount } from './format'
-import { BUSCA_COUNT_LABELS, NO_TEXT, YES_TEXT, CYCLE_COUNT_LABELS, RUN_ROW_STATUS_LABEL, RUN_RUNNING_TEXT } from './labels'
+import { BUSCA_COUNT_LABELS, NO_TEXT, YES_TEXT, CYCLE_COUNT_LABELS, RUN_ROW_STATUS_LABEL, RUN_RUNNING_TEXT, WATCH_COUNT_LABELS } from './labels'
 
 export type RunLike = {
   kind: RunKind
@@ -16,9 +16,12 @@ export type RunLike = {
 const GOOD_STATUSES: readonly RunRowStatus[] = ['ok', 'logged_in']
 const IN_BETWEEN_STATUSES: readonly RunRowStatus[] = ['partial', 'unconfirmed']
 const WALL_TEXT = /captcha|\/gz\/account-verification/i
+export const RUN_ERROR_MAX_CHARS = 200
+const ELLIPSIS = '...'
+const LINE_BREAK = /\r?\n/
 
 const COUNT_LABELS_BY_KIND: Record<RunKind, ReadonlyArray<readonly [CycleCountKey, string]>> = {
-  cycle: [...CYCLE_COUNT_LABELS, ...BUSCA_COUNT_LABELS],
+  cycle: [...CYCLE_COUNT_LABELS, ...WATCH_COUNT_LABELS, ...BUSCA_COUNT_LABELS],
   search: BUSCA_COUNT_LABELS.filter(([key]) => key !== CYCLE_COUNT.buscaPages),
   login: [],
 }
@@ -72,4 +75,14 @@ export function runShowsPages(run: Pick<RunLike, 'kind'>): boolean {
 
 export function suggestsVerification(run: Pick<RunLike, 'status' | 'error'> | null): boolean {
   return run?.status === 'blocked' && run.error !== null && WALL_TEXT.test(run.error)
+}
+
+export interface RunErrorView { short: string; full: string | null }
+
+export function runErrorView(error: string | null): RunErrorView | null {
+  const full = error?.trim() ?? ''
+  if (full === '') return null
+  const line = full.split(LINE_BREAK)[0].trimEnd()
+  const short = line.length <= RUN_ERROR_MAX_CHARS ? line : `${line.slice(0, RUN_ERROR_MAX_CHARS - ELLIPSIS.length).trimEnd()}${ELLIPSIS}`
+  return { short, full: short === full ? null : full }
 }

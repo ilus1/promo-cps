@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { decimalDraft, digitsDraft } from './number-draft'
-import { dealFiltersFromParams } from './deal-query'
+import { parseCouponQuery } from './coupon-query'
 
 describe('digitsDraft', () => {
   it('keeps only digits', () => {
@@ -24,6 +24,6 @@ describe('decimalDraft', () => {
   })
 
   it('a price draft reads back as the same centavos', () => {
-    expect(dealFiltersFromParams({ precoMax: decimalDraft('499,9') }).priceMaxCents).toBe(49990)
+    expect(parseCouponQuery({ minimoMax: decimalDraft('499,9') }).minimumMaxCents).toBe(49990)
   })
 })

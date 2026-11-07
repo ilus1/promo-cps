@@ -57,8 +57,8 @@ export function PanelLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function TextInput({
-  value, onChange, label, maxLength, autoFocus = false, describedBy,
-}: { value: string; onChange: (v: string) => void; label: string; maxLength: number; autoFocus?: boolean; describedBy?: string }) {
+  value, onChange, label, maxLength,
+}: { value: string; onChange: (v: string) => void; label: string; maxLength: number }) {
   return (
     <input
       type="text"
@@ -66,8 +66,6 @@ export function TextInput({
       onChange={(e) => onChange(e.target.value)}
       maxLength={maxLength}
       aria-label={label}
-      autoFocus={autoFocus}
-      aria-describedby={describedBy}
       className="field py-2 text-[13px]"
     />
   )

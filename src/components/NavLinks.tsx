@@ -3,13 +3,12 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { isActivePath } from '@/lib/nav'
+import { PRODUCTS_LABEL } from '@/lib/labels'
 import { ROUTES } from '@/lib/routes'
 
 const LINKS = [
-  { href: ROUTES.offers, label: 'Ofertas' },
+  { href: ROUTES.products, label: PRODUCTS_LABEL },
   { href: ROUTES.coupons, label: 'Cupons' },
-  { href: ROUTES.searches, label: 'Buscas' },
-  { href: ROUTES.alerts, label: 'Alertas' },
   { href: ROUTES.account, label: 'Conta' },
 ]
 

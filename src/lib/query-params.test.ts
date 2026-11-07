@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { centsFromReais, isUuid, num, searchParamsToRecord, str } from './query-params'
+import { centsFromReais, isUuid, num, str } from './query-params'
 
 test('num parses non-negative finite numbers', () => {
   expect(num('0')).toBe(0)
@@ -30,6 +30,12 @@ test('str returns a non-empty string or undefined', () => {
   expect(str(['a'])).toBeUndefined()
 })
 
+test('str removes NUL and lone surrogates, and a param made only of NUL is absent', () => {
+  expect(str('MLB\u00001055')).toBe('MLB1055')
+  expect(str('\u0000')).toBeUndefined()
+  expect(str('a\ud83d')).toBe('a\ufffd')
+})
+
 test('centsFromReais turns a reais param into whole centavos', () => {
   expect(centsFromReais('500')).toBe(50000)
   expect(centsFromReais('4588.9')).toBe(458890)
@@ -52,7 +58,3 @@ test('isUuid accepts only the hyphenated uuid shape', () => {
   expect(isUuid('0b9d0c52-1c3f-4a56-9a0e-5d8c7c4b2f11; drop')).toBe(false)
 })
 
-test('searchParamsToRecord keeps single values as strings and repeated keys as arrays', () => {
-  expect(searchParamsToRecord(new URLSearchParams('busca=b1&categoria=A&categoria=B')))
-    .toEqual({ busca: 'b1', categoria: ['A', 'B'] })
-})

@@ -24,7 +24,7 @@ export function RunNowButton({ initial }: { initial: CycleActivity }) {
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-line)] pt-4">
         <p className="max-w-md text-[13px] text-[var(--color-ink-soft)]">
-          Lê os cupons, ativa alguns e descobre as ofertas de cada um. O navegador roda oculto.
+          Lê os cupons, ativa alguns e atualiza o preço dos produtos monitorados no Mercado Livre. O navegador roda oculto.
         </p>
         <RunButton busy={busy} onClick={start} />
       </div>
