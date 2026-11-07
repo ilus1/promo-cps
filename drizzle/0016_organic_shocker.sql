@@ -1,0 +1,1 @@
+ALTER TABLE "price_checks" DROP COLUMN "reason";

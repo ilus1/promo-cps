@@ -1,7 +1,5 @@
 import { getTableColumns, sql, type SQL } from 'drizzle-orm'
 import type { PgColumn, PgTable } from 'drizzle-orm/pg-core'
-import { REALERT_MIN_DROP_CENTS } from '@/lib/constants'
-import { BASIS_POINTS, REALERT_KEEP_BASIS_POINTS } from '@/lib/price-drop'
 
 type ColumnsOf<T extends PgTable> = T['_']['columns']
 
@@ -37,9 +35,4 @@ export function textArray(values: readonly string[]): SQL {
 
 export function matchesAllWords(value: PgColumn | SQL, regexes: readonly string[]): SQL {
   return sql`${value} ~* all (${textArray(regexes)})`
-}
-
-export function meaningfulDrop(price: SQL | PgColumn, reference: SQL | PgColumn): SQL {
-  return sql`(${price}::bigint * ${BASIS_POINTS}::int <= ${reference}::bigint * ${REALERT_KEEP_BASIS_POINTS}::int
-    and ${price} <= ${reference} - ${REALERT_MIN_DROP_CENTS}::int)`
 }

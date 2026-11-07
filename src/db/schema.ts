@@ -2,10 +2,13 @@ import {
   boolean, doublePrecision, integer, jsonb, numeric, pgTable, primaryKey, serial, text, timestamp,
   uuid, index, uniqueIndex,
 } from 'drizzle-orm/pg-core'
+import { sql } from 'drizzle-orm'
 import {
   BASES, BUSCA_KINDS, COUPON_KINDS, ITEM_STATUSES, MATCH_CONFIDENCES, PRICE_CHECK_STATUSES, RUN_KINDS, RUN_ROW_STATUSES, SOURCE_TYPES,
 } from '../lib/domain'
 import { OFFER_SOURCES, PAGE_KINDS, RETAILERS } from '../lib/market/types'
+import { WATCH_DROP_PERCENT_DEFAULT } from '../lib/constants'
+import { EAN_SOURCES, MATCH_KINDS, WATCH_ALERT_KINDS, WATCH_RETAILERS } from '../lib/watch/types'
 import { checkKeyOf } from './check-key'
 
 const ts = (name: string) => timestamp(name, { withTimezone: true })
@@ -145,7 +148,6 @@ export const priceChecks = pgTable('price_checks', {
   storeCount: integer('store_count'),
   offers: jsonb('offers').$type<PriceOffer[]>().notNull().default([]),
   sourceUrl: text('source_url').notNull(),
-  reason: text('reason'),
 }, (t) => [index('price_checks_checked_idx').on(t.checkedAt)])
 
 export type Coupon = typeof coupons.$inferSelect
@@ -206,3 +208,62 @@ export const crawlerState = pgTable('crawler_state', {
   lastError: text('last_error'),
   updatedAt: ts('updated_at').notNull().defaultNow(),
 })
+
+export const NO_MERCHANT = ''
+
+export const watchedProducts = pgTable('watched_products', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  name: text('name').notNull(),
+  query: text('query').notNull(),
+  ean: text('ean'),
+  eanSource: text('ean_source', { enum: EAN_SOURCES }),
+  targetPriceCents: integer('target_price_cents'),
+  dropPercent: integer('drop_percent').notNull().default(WATCH_DROP_PERCENT_DEFAULT),
+  active: boolean('active').notNull().default(true),
+  createdAt: ts('created_at').notNull().defaultNow(),
+  resolvedAt: ts('resolved_at'),
+}, (t) => [index('watched_products_active_resolved_idx').on(t.active, t.resolvedAt)])
+
+export const watchedListings = pgTable('watched_listings', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  productId: uuid('product_id').notNull().references(() => watchedProducts.id, { onDelete: 'cascade' }),
+  retailer: text('retailer', { enum: WATCH_RETAILERS }).notNull(),
+  merchant: text('merchant').notNull().default(NO_MERCHANT),
+  merchantKey: text('merchant_key').notNull().default(NO_MERCHANT),
+  ref: text('ref').notNull(),
+  url: text('url').notNull(),
+  title: text('title').notNull(),
+  match: text('match', { enum: MATCH_KINDS }).notNull(),
+  removed: boolean('removed').notNull().default(false),
+  priceCents: integer('price_cents'),
+  listPriceCents: integer('list_price_cents'),
+  finalCents: integer('final_cents'),
+  inStock: boolean('in_stock'),
+  checkedAt: ts('checked_at'),
+  unavailableSince: ts('unavailable_since'),
+  lastError: text('last_error'),
+  createdAt: ts('created_at').notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex('watched_listings_key_idx').on(t.productId, t.retailer, t.ref, t.merchantKey),
+  uniqueIndex('watched_listings_live_idx').on(t.productId, t.retailer, t.merchantKey).where(sql`${t.removed} = false`),
+  index('watched_listings_due_idx').on(t.retailer, t.checkedAt),
+])
+
+export const listingPriceSegments = pgTable('listing_price_segments', {
+  id: serial('id').primaryKey(),
+  listingId: uuid('listing_id').notNull().references(() => watchedListings.id, { onDelete: 'cascade' }),
+  priceCents: integer('price_cents').notNull(),
+  finalCents: integer('final_cents').notNull(),
+  firstSeenAt: ts('first_seen_at').notNull(),
+  lastSeenAt: ts('last_seen_at').notNull(),
+  endedAt: ts('ended_at'),
+}, (t) => [index('listing_segments_listing_idx').on(t.listingId, t.lastSeenAt)])
+
+export const watchAlerts = pgTable('watch_alerts', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  productId: uuid('product_id').notNull().references(() => watchedProducts.id, { onDelete: 'cascade' }),
+  kind: text('kind', { enum: WATCH_ALERT_KINDS }).notNull(),
+  priceCents: integer('price_cents').notNull(),
+  listingId: uuid('listing_id').references(() => watchedListings.id, { onDelete: 'set null' }),
+  sentAt: ts('sent_at').notNull(),
+}, (t) => [uniqueIndex('watch_alerts_once_idx').on(t.productId, t.kind, t.priceCents)])

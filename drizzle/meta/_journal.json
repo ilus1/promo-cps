@@ -113,6 +113,20 @@
       "when": 1793832922133,
       "tag": "0015_soft_brood",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1793844770154,
+      "tag": "0016_organic_shocker",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1793989486671,
+      "tag": "0017_lowly_excalibur",
+      "breakpoints": true
     }
   ]
 }
