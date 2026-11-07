@@ -22,10 +22,6 @@ export function cleanTitle(title: string): string[] {
   return foldedWords(folded).filter((word) => !FILLER_WORDS.has(word)).slice(0, COMPARE_QUERY_MAX_WORDS)
 }
 
-export function rawTitleWords(title: string): string[] {
-  return foldedWords(foldAccents(title).toLowerCase()).slice(0, COMPARE_QUERY_MAX_WORDS)
-}
-
 export function compareQuery(title: string): string {
   return cleanTitle(title).join(' ')
 }

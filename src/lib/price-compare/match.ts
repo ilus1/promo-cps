@@ -25,14 +25,6 @@ export type PriceBand = {
   maxCents: number
 }
 
-export type TitleTerms = {
-  tokens: string[]
-  nameWords: string[]
-  modelWords: string[]
-  hardSizes: string[]
-  numbers: string[]
-}
-
 type TitleParts = {
   sequence: string[]
   words: Set<string>
@@ -467,24 +459,6 @@ function secondLowOf(accepted: MarketCard[], marketStore: string | null): number
 
 function noMatch(): Match {
   return { confidence: null, offers: [], marketLowCents: null, marketStore: null, secondLowCents: null, storeCount: 0 }
-}
-
-function ungluedNamesOf(token: string): string[] {
-  return [...GENERIC_TITLE_WORDS]
-    .filter((generic) => token.length > generic.length && token.startsWith(generic))
-    .map((generic) => token.slice(generic.length))
-}
-
-export function titleTerms(text: string): TitleTerms {
-  const parts = titleParts(text)
-  const words = [...parts.words]
-  return {
-    tokens: [...new Set([...words, ...words.flatMap(ungluedNamesOf)])],
-    nameWords: nameWordsOf(parts),
-    modelWords: [...parts.modelWords],
-    hardSizes: hardSizesOf(parts),
-    numbers: [...parts.numbers],
-  }
 }
 
 export function matchCandidates(mlTitle: string, mlFinalCents: number, cards: MarketCard[]): Match {
