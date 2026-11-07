@@ -1,5 +1,5 @@
 import {
-  and, asc, count, eq, gt, gte, inArray, isNotNull, isNull, lt, lte, or, sql, type SQL,
+  and, asc, count, desc, eq, gt, inArray, isNotNull, isNull, lt, lte, or, sql, type SQL,
 } from 'drizzle-orm'
 import type { PgColumn } from 'drizzle-orm/pg-core'
 import {
@@ -9,23 +9,20 @@ import { lastByKey } from '@/lib/batch'
 import {
   ACTIVATION_RETRY_HOURS, DAY_MS, HOUR_MS, MAX_DISCOUNT_PERCENT, ML_IMAGE_HOST, PAGE_SIZE, PERCENT_BASE, TRIVIAL_SAVING_CENTS, UNCAPPED_FROM_CENTS,
 } from '@/lib/constants'
-import { discoveryRotation } from '@/lib/coupon-order'
-import { COUPON_PREVIEW_FETCH_LIMIT, type CouponPreview } from '@/lib/coupon-preview'
 import {
-  COUPON_LIST_STATUSES, DEFAULT_COUPON_SORT, SOURCE_COUPON, type ActivationOutcome, type CouponKind, type CouponListStatus,
+  COUPON_LIST_STATUSES, DEFAULT_COUPON_SORT, type ActivationOutcome, type CouponKind, type CouponListStatus,
   type CouponScope, type CouponSort,
 } from '@/lib/domain'
-import { freshSince } from '@/lib/freshness'
 import { discountThresholdRatio } from '@/lib/format'
 import { pageOffset } from '@/lib/paging'
+import { storableFields, storableJson, storableText } from '@/lib/storable-text'
 import { escapeRegex, nfc, normalizeSearchText, wordRegexes } from '@/lib/text-search'
 import { db } from './client'
-import { coupons, itemSources, type Coupon } from './schema'
+import { coupons, type Coupon } from './schema'
 import { columnsWithout, conflictUpdates, excluded, matchesAllWords, OVERWRITE, type OnConflict } from './sql'
 
 export type CouponSummary = Omit<Coupon, 'raw'>
-export type DiscoveryTarget = CouponSummary & { listingUrl: string }
-export type CouponListRow = CouponSummary & { listStatus: CouponListStatus; linkedItems: number; previews: CouponPreview[] }
+export type CouponListRow = CouponSummary & { listStatus: CouponListStatus }
 
 export interface CouponFilters {
   status?: CouponListStatus
@@ -35,11 +32,11 @@ export interface CouponFilters {
   minimumMaxCents?: number
   limitMinCents?: number
   discountMin?: number
-  withOffers?: boolean
   text?: string
 }
 
 const summaryColumns = columnsWithout(coupons, 'raw')
+const VERIFY_TARGETS = 1
 
 const PARSED_UPDATES = {
   title: OVERWRITE,
@@ -84,21 +81,6 @@ function listStatusOf(now: Date): SQL<CouponListStatus> {
   const conditions = listStatusConditions(now)
   const branches = COUPON_LIST_STATUSES.map((status) => sql`when ${conditions[status]} then ${status}`)
   return sql<CouponListStatus>`case ${sql.join(branches, sql` `)} end`
-}
-
-export function freshCouponLink(now: Date): SQL {
-  return and(eq(itemSources.sourceType, SOURCE_COUPON), gte(itemSources.lastSeenAt, freshSince(now))) as SQL
-}
-
-export function freshLinkToLiveCoupon(now: Date): SQL {
-  return and(freshCouponLink(now), liveCoupon(now)) as SQL
-}
-
-export function linkedItemsCount(now: Date): SQL<number> {
-  return sql<number>`(select count(*)::int from ${itemSources} where ${and(
-    freshCouponLink(now),
-    eq(itemSources.sourceId, coupons.campaignId),
-  )})`
 }
 
 const PERCENT_BASE_FLOAT = sql`${PERCENT_BASE}::float8`
@@ -146,19 +128,11 @@ function effectiveLimitSql(): SQL<number | null> {
   end)`
 }
 
+export const COUPON_TEXT_ITEMS_LIMIT = 20
 const IMAGE_URL_ON_ML_HOST = `^https?://${escapeRegex(ML_IMAGE_HOST)}([/?#]|$)`
 
 function previewItemsSql(): SQL {
   return sql`(case when jsonb_typeof(${coupons.raw} -> 'items') = 'array' then ${coupons.raw} -> 'items' else '[]'::jsonb end)`
-}
-
-function previewsSql(): SQL<CouponPreview[]> {
-  return sql<CouponPreview[]>`coalesce((
-    select json_agg(json_build_object('imageUrl', preview.item ->> 'image_url', 'altText', coalesce(preview.item ->> 'alt_text', ''))
-      order by preview.ord)
-    from jsonb_array_elements(${previewItemsSql()}) with ordinality as preview(item, ord)
-    where preview.ord <= ${COUPON_PREVIEW_FETCH_LIMIT}::int
-  ), '[]'::json)`
 }
 
 function searchableTextSql(): SQL {
@@ -166,7 +140,7 @@ function searchableTextSql(): SQL {
   return sql`concat_ws(' ', ${coupons.title}, case when ${coupons.isStore} then ${storeName} end, (
     select string_agg(preview.item ->> 'alt_text', ' ')
     from jsonb_array_elements(${previewItemsSql()}) with ordinality as preview(item, ord)
-    where preview.ord <= ${COUPON_PREVIEW_FETCH_LIMIT}::int and preview.item ->> 'image_url' ~* ${IMAGE_URL_ON_ML_HOST}
+    where preview.ord <= ${COUPON_TEXT_ITEMS_LIMIT}::int and preview.item ->> 'image_url' ~* ${IMAGE_URL_ON_ML_HOST}
   ))`
 }
 
@@ -182,22 +156,26 @@ export function filterConditions(f: CouponFilters, now: Date): SQL[] {
   if (f.minimumMaxCents) conds.push(sql`coalesce(${coupons.minPaymentCents}, 0) <= ${f.minimumMaxCents}`)
   if (f.limitMinCents) conds.push(sql`${effectiveLimitSql()} >= ${f.limitMinCents}`)
   if (f.discountMin) conds.push(sql`${discountAtMinimumSql()} >= ${discountThresholdRatio(f.discountMin)}::float8`)
-  if (f.withOffers) conds.push(sql`${linkedItemsCount(now)} > 0`)
   const text = f.text ? normalizeSearchText(f.text) : ''
   const regexes = wordRegexes(text)
   if (regexes.length > 0) conds.push(matchesAllWords(searchableTextSql(), regexes))
   return conds
 }
 
+export function couponRow(parsed: ParsedCoupon, raw: RawCoupon, seenAt: Date) {
+  const clean = storableFields(parsed)
+  return {
+    ...clean, title: nfc(clean.title), scopeLabel: nfc(clean.scopeLabel), raw: storableJson(nfc(raw)), firstSeenAt: seenAt, lastSeenAt: seenAt, endedAt: null,
+  }
+}
+
 export async function upsertCoupons(
   rows: { parsed: ParsedCoupon; raw: RawCoupon }[], seenAt: Date,
 ): Promise<{ inserted: number }> {
-  const unique = lastByKey(rows, (r) => r.parsed.campaignId)
+  const unique = lastByKey(rows.map(({ parsed, raw }) => couponRow(parsed, raw, seenAt)), (row) => row.campaignId)
   if (unique.length === 0) return { inserted: 0 }
   const written = await db.insert(coupons)
-    .values(unique.map(({ parsed, raw }) => ({
-      ...parsed, title: nfc(parsed.title), scopeLabel: nfc(parsed.scopeLabel), raw: nfc(raw), firstSeenAt: seenAt, lastSeenAt: seenAt, endedAt: null,
-    })))
+    .values(unique)
     .onConflictDoUpdate({
       target: coupons.campaignId,
       set: { ...conflictUpdates(coupons, HARVEST_UPDATES), listingUrl: keepActiveListingUrl, endedAt: null },
@@ -260,37 +238,18 @@ export async function recordActivation(campaignId: string, outcome: ActivationOu
   await db.update(coupons)
     .set(outcome.ok
       ? { activationTriedAt: at, activationError: null, status: COUPON_STATUS_ACTIVE }
-      : { activationTriedAt: at, activationError: outcome.error })
+      : { activationTriedAt: at, activationError: storableText(outcome.error) })
     .where(eq(coupons.campaignId, campaignId))
 }
 
-function hasListingUrl(c: CouponSummary): c is DiscoveryTarget {
-  return c.listingUrl !== null
-}
+export interface VerifyTarget { listingUrl: string }
 
-export async function discoveryTargets(limit: number | undefined, now: Date): Promise<DiscoveryTarget[]> {
-  const rows = await db.select(summaryColumns).from(coupons)
+export async function verifyTargets(now: Date): Promise<VerifyTarget[]> {
+  const rows = await db.select({ listingUrl: coupons.listingUrl }).from(coupons)
     .where(and(liveCoupon(now), isNotNull(coupons.listingUrl)))
-    .orderBy(asc(coupons.campaignId))
-  return discoveryRotation(rows.filter(hasListingUrl), limit)
-}
-
-export async function markDiscoveryAttempt(campaignIds: string[], at: Date, succeeded: boolean): Promise<void> {
-  if (campaignIds.length === 0) return
-  const stamps = succeeded ? { discoveryTriedAt: at, lastDiscoveredAt: at } : { discoveryTriedAt: at }
-  await db.update(coupons).set(stamps).where(inArray(coupons.campaignId, campaignIds))
-}
-
-export function prioritizeWhere(filters: CouponFilters, now: Date): SQL {
-  return and(liveCoupon(now), isNotNull(coupons.listingUrl), ...filterConditions(filters, now)) as SQL
-}
-
-export async function prioritizeCoupons(filters: CouponFilters, now: Date): Promise<number> {
-  const prioritized = await db.update(coupons)
-    .set({ discoveryPriorityAt: now })
-    .where(prioritizeWhere(filters, now))
-    .returning({ campaignId: coupons.campaignId })
-  return prioritized.length
+    .orderBy(desc(coupons.lastSeenAt), asc(coupons.campaignId))
+    .limit(VERIFY_TARGETS)
+  return rows.flatMap((row) => (row.listingUrl === null ? [] : [{ listingUrl: row.listingUrl }]))
 }
 
 export function couponOrderBy(sort: CouponSort, now: Date): SQL[] {
@@ -300,7 +259,6 @@ export function couponOrderBy(sort: CouponSort, now: Date): SQL[] {
     economia: [sql`${maxSavingSql()} desc nulls first`, sql`${discount} desc nulls last`],
     minimo: [sql`coalesce(${coupons.minPaymentCents}, 0) asc`],
     limite: [sql`${effectiveLimitSql()} desc nulls last`],
-    ofertas: [sql`${linkedItemsCount(now)} desc`],
     vence: [sql`${coupons.expiresAt} asc nulls last`],
   }
   return [asc(endedOrExpired(now)), sql`(${discount} is null) asc`, ...keys[sort], asc(coupons.campaignId)]
@@ -309,7 +267,7 @@ export function couponOrderBy(sort: CouponSort, now: Date): SQL[] {
 export async function listCoupons(
   opts: CouponFilters & { page: number; order?: CouponSort }, now: Date,
 ): Promise<CouponListRow[]> {
-  return db.select({ ...summaryColumns, listStatus: listStatusOf(now), linkedItems: linkedItemsCount(now), previews: previewsSql() })
+  return db.select({ ...summaryColumns, listStatus: listStatusOf(now) })
     .from(coupons)
     .where(and(...filterConditions(opts, now)))
     .orderBy(...couponOrderBy(opts.order ?? DEFAULT_COUPON_SORT, now))

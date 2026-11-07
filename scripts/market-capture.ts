@@ -2,8 +2,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { amazonPageLoader, withAmazonBrowser } from '@/ingestion/market/amazon-browser'
-import type { FetchedPage } from '@/ingestion/market/crawl-page'
-import { fetchKabumPage } from '@/ingestion/market/kabum-client'
+import type { FetchedPage } from '@/ingestion/market/fetched-page'
+import { fetchMarketPage } from '@/ingestion/market/http-client'
 import { vpnCheck } from '@/ingestion/vpn-guard'
 import { AMAZON_ORIGIN, KABUM_ORIGIN } from '@/lib/constants'
 import {
@@ -92,7 +92,7 @@ function summarize(site: Retailer, url: string, fetched: FetchedPage): PageSumma
 }
 
 async function capture(site: Retailer, url: string): Promise<FetchedPage> {
-  if (site === 'kabum') return fetchKabumPage(url)
+  if (site === 'kabum') return fetchMarketPage(url)
   return withAmazonBrowser((page) => amazonPageLoader(page)(url, isBestsellerDepartment(url)))
 }
 

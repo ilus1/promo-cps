@@ -1,4 +1,4 @@
-import { CENTS_PER_REAL, KABUM_ORIGIN, KABUM_PAGE_SIZE, KABUM_SITEMAP_EXCLUDED, SECOND_MS } from '../constants'
+import { CENTS_PER_REAL, KABUM_ORIGIN, KABUM_SITEMAP_EXCLUDED, SECOND_MS } from '../constants'
 import { HTTP_OK } from '../http-status'
 import { decodeEntities } from './html'
 import { failed, statusFailure, storableOffers } from './pages'
@@ -35,7 +35,7 @@ type KabumMeta = {
 } | null | undefined
 
 type KabumCatalog = { products: unknown[]; meta: KabumMeta }
-type NextData = { props?: { pageProps?: { data?: unknown } } } | null
+type NextData = { props?: { pageProps?: Record<string, unknown> | null } } | null
 type PageData = { catalogServer?: { data?: unknown; meta?: KabumMeta } } | null
 
 const NEXT_DATA = /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/
@@ -142,10 +142,21 @@ function offerOf(product: KabumProduct, now: Date): MarketOffer | null {
   }
 }
 
-function catalogOf(script: string): KabumCatalog | string {
+export function kabumPageProps(html: string): Record<string, unknown> | string {
+  const script = html.match(NEXT_DATA)?.[1]
+  if (!script) return NO_NEXT_DATA
   const nextData = jsonOf(script) as NextData | undefined
   if (nextData === undefined) return BAD_JSON
-  const data = nextData?.props?.pageProps?.data
+  return nextData?.props?.pageProps ?? {}
+}
+
+export function kabumProductOffer(product: unknown, now: Date): MarketOffer | null {
+  if (!isProduct(product) || isOpenBox(product)) return null
+  return storableOffers([offerOf(product, now)])[0] ?? null
+}
+
+function catalogOf(pageProps: Record<string, unknown>): KabumCatalog | string {
+  const data = pageProps.data
   const pageData = (typeof data === 'string' ? jsonOf(data) : data) as PageData | undefined
   if (typeof data === 'string' && pageData === undefined) return BAD_JSON
   const catalog = pageData?.catalogServer
@@ -178,16 +189,12 @@ export function parseKabumSitemapIndex(status: number, xml: string): string[] | 
   return departments.length > 0 ? departments : null
 }
 
-export function kabumListingUrl(slug: string, page: number): string {
-  return `${KABUM_ORIGIN}/${slug}?page_number=${page}&page_size=${KABUM_PAGE_SIZE}`
-}
-
 export function parseKabumListing(status: number, html: string, url: string, now: Date): ParsedPage<KabumPageExtra> {
   const failure = statusFailure(status)
   if (failure) return failure
-  const script = html.match(NEXT_DATA)?.[1]
-  if (!script) return failed('unknown', NO_NEXT_DATA)
-  const catalog = catalogOf(script)
+  const pageProps = kabumPageProps(html)
+  if (typeof pageProps === 'string') return failed('unknown', pageProps)
+  const catalog = catalogOf(pageProps)
   if (typeof catalog === 'string') return failed('unknown', catalog)
   if (catalog.products.length === 0) return failed('empty', NO_PRODUCTS)
   const comparable = catalog.products.filter((product) => !isProduct(product) || !isOpenBox(product))

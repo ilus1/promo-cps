@@ -2,8 +2,7 @@ import { and, eq, inArray, isNotNull, lt, ne, notExists, notInArray, or, sql } f
 import { SOURCE_COUPON, STATUS_SAVED } from '@/lib/domain'
 import { PRUNE_BATCH, PRUNE_LOCK_TIMEOUT_MS, pruneAnotherBatch, pruneCutoffs, type PruneCounts } from '@/lib/prune-rules'
 import { db, type Tx } from './client'
-import { pruneOffers } from './market-offers'
-import { coupons, itemSources, items, priceChecks, runs } from './schema'
+import { coupons, itemSources, items, runs } from './schema'
 
 function limitLocks(tx: Tx) {
   return tx.execute(sql.raw(`set local lock_timeout = ${PRUNE_LOCK_TIMEOUT_MS}`))
@@ -54,16 +53,6 @@ export async function pruneOld(now: Date): Promise<PruneCounts> {
     const prunedRuns = await tx.delete(runs)
       .where(and(lt(runs.startedAt, cutoffs.runs), notInArray(runs.id, latestPerKind)))
       .returning({ id: runs.id })
-    const prunedChecks = await tx.delete(priceChecks)
-      .where(lt(priceChecks.checkedAt, cutoffs.priceChecks))
-      .returning({ key: priceChecks.key })
-    const prunedOffers = await pruneOffers(now, tx)
-    return {
-      items: prunedItems,
-      coupons: prunedCoupons.length,
-      runs: prunedRuns.length,
-      priceChecks: prunedChecks.length,
-      marketOffers: prunedOffers,
-    }
+    return { items: prunedItems, coupons: prunedCoupons.length, runs: prunedRuns.length }
   })
 }

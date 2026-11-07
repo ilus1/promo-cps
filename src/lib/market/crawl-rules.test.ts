@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { DAY_MS, HOUR_MS, KABUM_PAGE_INTERVAL_MS, KABUM_PAGE_JITTER_MS, KABUM_PASS_DAYS, MINUTE_MS } from '../constants'
+import { DAY_MS, HOUR_MS, MINUTE_MS, WATCH_HTTP_INTERVAL_MS, WATCH_HTTP_JITTER_MS } from '../constants'
 import {
-  BACKOFF_STEPS_MS, dayKey, healthAfterPage, kabumNextPassAt, kabumPassDue, nextBackoff, pageDelayMs, pageOutcome, pagesToday,
-  unknownStreakBlocks, withinBudget,
+  BACKOFF_STEPS_MS, dayKey, healthAfterPage, nextBackoff, pageDelayMs, pageOutcome, pagesToday, unknownStreakBlocks,
 } from './crawl-rules'
 import { PAGE_KINDS } from './types'
 
@@ -41,32 +40,11 @@ describe('dayKey and pagesToday', () => {
   })
 })
 
-describe('withinBudget', () => {
-  it('allows pages below the budget only', () => {
-    expect(withinBudget(999, 1000)).toBe(true)
-    expect(withinBudget(1000, 1000)).toBe(false)
-    expect(withinBudget(1001, 1000)).toBe(false)
-  })
-})
-
 describe('pageDelayMs', () => {
   it('adds up to the jitter to the interval', () => {
-    expect(pageDelayMs(KABUM_PAGE_INTERVAL_MS, KABUM_PAGE_JITTER_MS, 0)).toBe(KABUM_PAGE_INTERVAL_MS)
-    expect(pageDelayMs(KABUM_PAGE_INTERVAL_MS, KABUM_PAGE_JITTER_MS, 0.5)).toBe(KABUM_PAGE_INTERVAL_MS + KABUM_PAGE_JITTER_MS / 2)
-    expect(pageDelayMs(KABUM_PAGE_INTERVAL_MS, KABUM_PAGE_JITTER_MS, 0.99999)).toBe(KABUM_PAGE_INTERVAL_MS + KABUM_PAGE_JITTER_MS - 1)
-  })
-})
-
-describe('kabumPassDue', () => {
-  const started = new Date(NOW.getTime() - KABUM_PASS_DAYS * DAY_MS)
-  it('is due with no pass yet', () => {
-    expect(kabumPassDue(null, NOW)).toBe(true)
-    expect(kabumNextPassAt(null)).toBeNull()
-  })
-  it('is due 3 days after the last pass started, not 1 ms before', () => {
-    expect(kabumNextPassAt(started)).toEqual(NOW)
-    expect(kabumPassDue(started, NOW)).toBe(true)
-    expect(kabumPassDue(new Date(started.getTime() + 1), NOW)).toBe(false)
+    expect(pageDelayMs(WATCH_HTTP_INTERVAL_MS, WATCH_HTTP_JITTER_MS, 0)).toBe(WATCH_HTTP_INTERVAL_MS)
+    expect(pageDelayMs(WATCH_HTTP_INTERVAL_MS, WATCH_HTTP_JITTER_MS, 0.5)).toBe(WATCH_HTTP_INTERVAL_MS + WATCH_HTTP_JITTER_MS / 2)
+    expect(pageDelayMs(WATCH_HTTP_INTERVAL_MS, WATCH_HTTP_JITTER_MS, 0.99999)).toBe(WATCH_HTTP_INTERVAL_MS + WATCH_HTTP_JITTER_MS - 1)
   })
 })
 

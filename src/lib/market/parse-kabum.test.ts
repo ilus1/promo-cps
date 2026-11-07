@@ -1,10 +1,16 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { KABUM_DEPARTMENTS, KABUM_PAGE_SIZE, KABUM_SITEMAP_EXCLUDED } from '../constants'
-import { kabumListingUrl, kabumSitemapIndexUrl, parseKabumListing, parseKabumSitemapIndex } from './parse-kabum'
+import { KABUM_SITEMAP_EXCLUDED } from '../constants'
+import { kabumSitemapIndexUrl, parseKabumListing, parseKabumSitemapIndex } from './parse-kabum'
 
 const URL = 'https://www.kabum.com.br/celular-smartphone/smartphones?page_number=1&page_size=60'
+const LIVE_DEPARTMENTS = [
+  'hardware', 'perifericos', 'computadores', 'seguranca', 'gamer', 'eletroportateis', 'automacao',
+  'esporte-e-lazer', 'brinquedos', 'geek', 'projetores', 'conectividade', 'tv', 'audio', 'eletrodomesticos',
+  'tablets-ipads-e-e-readers', 'telefonia-fixa', 'energia', 'escritorio', 'celular-smartphone', 'espaco-gamer',
+  'ar-e-ventilacao', 'cameras-e-drones', 'casa-inteligente', 'moda', 'robotica',
+]
 const NOW = new Date('2026-11-04T21:00:00Z')
 const CAMPAIGN_START = 1_793_791_560
 const CAMPAIGN_END = 1_795_521_600
@@ -223,22 +229,12 @@ describe('parseKabumListing page kinds', () => {
   })
 })
 
-describe('kabumListingUrl', () => {
-  it('asks for one page of the department, with no sort parameter', () => {
-    expect(kabumListingUrl('tv', 3)).toBe(`https://www.kabum.com.br/tv?page_number=3&page_size=${KABUM_PAGE_SIZE}`)
-  })
-  it('covers 26 distinct departments', () => {
-    expect(new Set(KABUM_DEPARTMENTS).size).toBe(26)
-    for (const slug of KABUM_DEPARTMENTS) expect(kabumListingUrl(slug, 1)).not.toContain('sort=')
-  })
-})
-
 describe('parseKabumSitemapIndex', () => {
   const INDEX = fixture('kabum-sitemap-index.xml')
   const entry = (loc: string) => `<sitemap><loc>${loc}</loc><lastmod>2026-11-04</lastmod></sitemap>`
 
   it('gives the product departments of the live index, which are the fallback list', () => {
-    expect(parseKabumSitemapIndex(200, INDEX)).toEqual(KABUM_DEPARTMENTS)
+    expect(parseKabumSitemapIndex(200, INDEX)).toEqual(LIVE_DEPARTMENTS)
   })
   it('leaves out the institutional, search, promotion, store, brand and service sitemaps', () => {
     const departments = parseKabumSitemapIndex(200, INDEX)

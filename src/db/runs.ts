@@ -1,6 +1,7 @@
 import { and, desc, eq, inArray, isNotNull, isNull, lt, or, sql, type SQL } from 'drizzle-orm'
 import { CYCLE_COUNT } from '@/lib/cycle-counts'
 import { BLOCKED_STATUS, ORPHAN_RUN_TEXT, SESSION_EXPIRED_STATUS, type RunKind, type RunRowStatus } from '@/lib/domain'
+import { storableOptionalText } from '@/lib/storable-text'
 import { db } from './client'
 import { runs, type Run } from './schema'
 
@@ -33,7 +34,7 @@ export async function finishRun(id: string, result: RunResult): Promise<Run> {
       status: result.status,
       pages: result.pages,
       counts: result.counts,
-      error: result.error ?? null,
+      error: storableOptionalText(result.error ?? null),
     })
     .where(eq(runs.id, id))
     .returning()

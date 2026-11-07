@@ -1,6 +1,6 @@
 import { sql, type SQL, type SQLWrapper } from 'drizzle-orm'
-import { CHECK_KEY_ITEM_PREFIX } from '../lib/price-check-rules'
 
+export const CHECK_KEY_ITEM_PREFIX = 'item:'
 const QUOTE = "'"
 const ITEM_PREFIX_LITERAL = sql.raw(`${QUOTE}${CHECK_KEY_ITEM_PREFIX.replaceAll(QUOTE, QUOTE + QUOTE)}${QUOTE}`)
 

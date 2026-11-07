@@ -2,11 +2,11 @@ import { sql, type SQL } from 'drizzle-orm'
 import { getTableConfig, PgDialect } from 'drizzle-orm/pg-core'
 import { expect, test } from 'vitest'
 import { checkKeyOf } from './check-key'
-import { checkKeySql } from './check-sql'
 import { items } from './schema'
 
 const dialect = new PgDialect()
 const CHECK_KEY_INDEX = 'items_check_key_idx'
+const checkKeySql = checkKeyOf(items.productId, items.id)
 
 test('the check key renders the item prefix as a literal, with no parameter', () => {
   expect(dialect.sqlToQuery(checkKeySql)).toMatchObject({ sql: `coalesce("items"."product_id", 'item:' || "items"."id")`, params: [] })

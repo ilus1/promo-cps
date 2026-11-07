@@ -8,10 +8,10 @@ import {
 } from '@/lib/coupon-value'
 import { COUPON_SORTS, type CouponKind } from '@/lib/domain'
 import { discountThresholdRatio } from '@/lib/format'
-import { COUPON_PREVIEW_FETCH_LIMIT } from '@/lib/coupon-preview'
 import { wordRegexes } from '@/lib/text-search'
 import {
-  activationOrderBy, couponOrderBy, discountAtMinimumSql, filterConditions, maxSavingSql, prioritizeWhere, validConditions, type CouponFilters,
+  activationOrderBy, COUPON_TEXT_ITEMS_LIMIT, couponOrderBy, discountAtMinimumSql, filterConditions, maxSavingSql, validConditions,
+  type CouponFilters,
 } from './coupons'
 
 vi.mock('./client', () => ({ db: {} }))
@@ -37,7 +37,7 @@ test('no filters add no condition', () => {
 
 test('zero and empty values add no condition', () => {
   expect(filterConditions({
-    minimumMaxCents: 0, limitMinCents: 0, discountMin: 0, withOffers: false, text: '',
+    minimumMaxCents: 0, limitMinCents: 0, discountMin: 0, text: '',
   }, NOW)).toEqual([])
   expect(filterConditions({ text: ' \0 ' }, NOW)).toEqual([])
 })
@@ -54,12 +54,6 @@ test('limit uses the value for fixed coupons and the cap for percent coupons', (
   const q = renderWhere({ limitMinCents: 500 })
   expect(q.sql).toContain('"amount_off_cents"')
   expect(q.sql).toContain('"cap_cents"')
-})
-
-test('with offers reuses the linked items subquery', () => {
-  const q = renderWhere({ withOffers: true })
-  expect(q.sql).toContain('"item_sources"')
-  expect(q.sql).toContain('> 0')
 })
 
 test('text matches the title, the store name without the prefix or a preview alt text, ignoring accents', () => {
@@ -87,7 +81,7 @@ describe('text matching', () => {
     expect(q.sql).toContain('with ordinality as preview(item, ord)')
     expect(q.sql).toContain('preview.ord <=')
     expect(q.sql).toContain("preview.item ->> 'image_url' ~*")
-    expect(q.params).toContain(COUPON_PREVIEW_FETCH_LIMIT)
+    expect(q.params).toContain(COUPON_TEXT_ITEMS_LIMIT)
     expect(q.params).toContain('^https?://http2\\.mlstatic\\.com([/?#]|$)')
   })
 
@@ -170,7 +164,6 @@ describe('couponOrderBy', () => {
     economia: ['desc nulls first', 'desc nulls last'],
     minimo: [],
     limite: ['desc nulls last'],
-    ofertas: [],
     vence: ['asc nulls last'],
   }
 
@@ -249,25 +242,6 @@ describe('sort order by the pure functions', () => {
 
   test('minimo: a missing minimum counts as zero', () => {
     expect(order(noNumberLast, (x, y) => x.min - y.min, byId)).toEqual(['e', 'f', 'a', 'h', 'i', 'j', 'b', 'c', 'k', 'd', 'g'])
-  })
-})
-
-describe('prioritizeWhere', () => {
-  const render = (f: CouponFilters) => dialect.sqlToQuery(prioritizeWhere(f, NOW))
-
-  test('always requires a live coupon with a listing', () => {
-    const q = render({ text: 'a' })
-    expect(q.sql).toContain('"coupons"."ended_at" is null')
-    expect(q.sql).toContain('"coupons"."listing_url" is not null')
-    expect(q.sql).toContain('"coupons"."expires_at" >')
-    expect(q.params).toContain(NOW.toISOString())
-  })
-
-  test('adds the filter conditions', () => {
-    const q = render({ minimumMaxCents: 10000, scope: 'store' })
-    expect(q.sql).toContain('"coupons"."min_payment_cents"')
-    expect(q.sql).toContain('"coupons"."is_store" =')
-    expect(q.params).toContain(10000)
   })
 })
 

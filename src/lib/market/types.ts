@@ -19,8 +19,6 @@ export interface MarketOffer {
   source: OfferSource
 }
 
-export interface RetrievalTerms { all: string[]; any: string[] }
-
 export interface MarketCard {
   name: string
   priceCents: number
@@ -42,55 +40,3 @@ export interface KabumPageExtra { page: number; totalPages: number; totalItems: 
 export interface AmazonSearchExtra { resultCount: number }
 
 export interface AmazonBestsellerExtra { nextPageUrl: string | null; nodeUrls: string[] }
-
-export const CRAWLER_STATES = ['running', 'held', 'blocked', 'waiting', 'stopped'] as const
-export type CrawlerState = (typeof CRAWLER_STATES)[number]
-
-export interface KabumProgress {
-  site: 'kabum'
-  department: string | null
-  departmentIndex: number
-  departmentCount: number
-  page: number
-  passStartedAt: Date | null
-  nextPassAt: Date | null
-}
-
-export interface AmazonProgress {
-  site: 'amazon'
-  searchedKeys: number
-  dueKeys: number
-  bestsellersAt: Date | null
-}
-
-export const WAITING_REASONS = ['next_pass', 'daily_budget', 'ml_busy', 'queue_empty'] as const
-export type WaitingReason = (typeof WAITING_REASONS)[number]
-
-export interface CrawlerStatus {
-  state: CrawlerState
-  holdText: string | null
-  waitingFor: WaitingReason | null
-  blockedUntil: Date | null
-  lastError: string | null
-  pagesToday: number
-  dailyBudget: number | null
-  intervalMs: number
-  lastPageAt: Date | null
-  validOffers: number
-  progress: KabumProgress | AmazonProgress
-}
-
-export interface MarketCoverage { matched: number; total: number; minPercent: number }
-
-export interface MarketStatus {
-  kabum: CrawlerStatus
-  amazon: CrawlerStatus
-  coverage: MarketCoverage
-}
-
-export const COMPARE_OUTCOMES = ['matched', 'no_match'] as const
-export type CompareOutcome = (typeof COMPARE_OUTCOMES)[number]
-
-export interface CompareResponse { status: CompareOutcome; amazonQueued: boolean; amazonSearchedAt: string | null }
-
-export interface SearchPriority { queued: boolean; searchedAt: Date | null }

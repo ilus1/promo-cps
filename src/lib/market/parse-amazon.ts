@@ -41,7 +41,7 @@ const DETAIL_PATH = '/dp/'
 const FIRST_PAGE = 1
 const NEXT_PAGE = 2
 
-function amazonFailure(status: number, html: string): FailedPage | null {
+export function amazonFailure(status: number, html: string): FailedPage | null {
   const failure = statusFailure(status)
   if (failure) return failure
   const text = markerText(html)

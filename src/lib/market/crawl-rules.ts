@@ -1,4 +1,4 @@
-import { DAY_MS, HOUR_MS, KABUM_PASS_DAYS, MARKET_UNKNOWN_STREAK_STOP, MINUTE_MS } from '../constants'
+import { DAY_MS, HOUR_MS, MARKET_UNKNOWN_STREAK_STOP, MINUTE_MS } from '../constants'
 import { TIME_ZONE } from '../format'
 import type { PageKind } from './types'
 
@@ -39,21 +39,8 @@ export function pagesToday(savedDayKey: string | null, savedPages: number, now: 
   return savedDayKey === dayKey(now) ? savedPages : NO_PAGES
 }
 
-export function withinBudget(pagesSoFar: number, budget: number): boolean {
-  return pagesSoFar < budget
-}
-
 export function pageDelayMs(intervalMs: number, jitterMs: number, random: number): number {
   return intervalMs + Math.floor(random * jitterMs)
-}
-
-export function kabumNextPassAt(lastPassStartedAt: Date | null): Date | null {
-  return lastPassStartedAt ? new Date(lastPassStartedAt.getTime() + KABUM_PASS_DAYS * DAY_MS) : null
-}
-
-export function kabumPassDue(lastPassStartedAt: Date | null, now: Date): boolean {
-  const next = kabumNextPassAt(lastPassStartedAt)
-  return next === null || now.getTime() >= next.getTime()
 }
 
 export function unknownStreakBlocks(streak: number): boolean {
