@@ -26,14 +26,14 @@ Slice 1: skeleton, browser, capture
 - [x] Task 6: Login flow and Conta page (on 2026-11-02 the app profile was wiped and Fernando logged in the secondary account with the app's button; never copy a session in)
 - [x] Task 7: `ml:capture` and fixtures
 - [x] Task 6b: Verification window (captcha wall solved by hand)
-- [ ] Checkpoint 1
+- [x] Checkpoint 1 -- **MODIFIED:** confirmed by use. Fernando has used this slice live since 2026-11-02, and it was reviewed again in the improvement rounds (2026-11-03-improvement-rounds.md).
 
 Slice 2: coupons
 - [x] Task 8: Coupon parser and strength
 - [x] Task 9: Coupon, run and item repositories
 - [x] Task 10: Harvest and activation steps
 - [x] Task 11: App shell and Cupons page
-- [ ] Checkpoint 2
+- [x] Checkpoint 2 -- **MODIFIED:** confirmed by use. Fernando has used this slice live since 2026-11-02, and it was reviewed again in the improvement rounds (2026-11-03-improvement-rounds.md).
 
 Slice 3: deals
 - [x] Task 12: Card reader
@@ -41,12 +41,12 @@ Slice 3: deals
 - [x] Task 14: Observations and discovery step (live check 2026-11-02 after the Task 6b hand solve: 5 listings, 192 items; landing and linking rules corrected from it)
 - [x] Task 15: Cycle runner and Rodar agora (first live cycle 2026-11-02 19:31-19:51: partial, 444 page loads, no wall; harvest full 1,974/1,977, 69 new; 19 activated, 1 failed; 300 listings, 13,864 items, 12,354 coupon links over 292 coupons; 1 listing without results)
 - [x] Task 16: Ofertas page (reviewed and approved 2026-11-02; `dealWhere` is the shared condition builder for Task 20)
-- [ ] Checkpoint 3
+- [x] Checkpoint 3 -- **MODIFIED:** confirmed by use. Fernando has used this slice live since 2026-11-02, and it was reviewed again in the improvement rounds (2026-11-03-improvement-rounds.md).
 
 Slice 4: Buscas
 - [x] Task 17: Buscas repository, step and API (reviewed and approved 2026-11-02; first live Busca run is Fernando's, from Task 18)
 - [x] Task 18: Buscas page (reviewed and approved 2026-11-02; the first live Busca run is Fernando's)
-- [ ] Checkpoint 4
+- [x] Checkpoint 4 -- **MODIFIED:** confirmed by use. Fernando has used this slice live since 2026-11-02, and it was reviewed again in the improvement rounds (2026-11-03-improvement-rounds.md).
 
 Slice 5: schedule and alerts
 - [x] Task 19: Scheduler (reviewed 2026-11-02; paused until Fernando's first cycle finishes ok or partial) (pure parts done: due times, nextRunAt, schedulerPause)
@@ -55,7 +55,7 @@ Slice 5: schedule and alerts
 - [x] Task 23: Offers for a coupon set and Priorizar no proximo ciclo (reviewed and approved 2026-11-02; migration 0002 applied; also fixed a Task 19 pause gap and "Sessão ativa")
 - [x] Task 24: Economia total com cupom on Ofertas (reviewed and approved 2026-11-03; migrations 0003 and 0004 applied)
 - [x] Task 21: README and final verification (2026-11-03: README; tsc, lint, 1,635 tests and `npm run build` pass; the first cycle under the systemd service ended `ok`; whole-app reviews done in the improvement rounds)
-- [ ] Checkpoint 5
+- [x] Checkpoint 5 -- **MODIFIED:** confirmed by use. Fernando has used this slice live since 2026-11-02, and it was reviewed again in the improvement rounds (2026-11-03-improvement-rounds.md).
 
 ---
 

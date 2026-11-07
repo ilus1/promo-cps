@@ -107,7 +107,8 @@ same match on other retail websites and compare them locally."
 - [x] Task 42: crawlers and Buscapé removal (impl-m3)
 - [x] Task 43: UI, API texts and README (impl-m4)
 - [x] Task 45: keep the database cause of a failed run (impl-m3, with Task 42)
-- [-] Task 44: deploy (team lead)
+- [x] Task 44: deploy (team lead)
+- [x] Task 47: post-deploy fixes: NUL in ML text, run errors, Buscapé leftovers (impl-m2, impl-m3, impl-m4)
 - [x] Task 46: matcher precision pass on real Kabum/Amazon data (impl-m1)
 
 Tasks 40 and 41 run in parallel. Task 41 waits for Task 40's `tokens.ts` before writing the
@@ -876,7 +877,7 @@ them.
   - document `scripts/market-capture.ts`.
   **Reason:** Fernando runs it from the README.
   **Code Reference:** cause → `README.md` ("Price comparison" section).
-- [-] **Verify:** `npx tsc --noEmit`, lint and the full `npx vitest run` pass. Pure view tests
+- [x] **Verify:** `npx tsc --noEmit`, lint and the full `npx vitest run` pass. Pure view tests
   cover every state text.
   -- **MODIFIED:** after the re-review fixes (2026-11-04): lint is clean. vitest has 2,538 of
   2,539 tests passing; the one failure is `src/db/market-searches.test.ts`, and the tsc errors are
@@ -958,6 +959,34 @@ tests.
   - tsc, lint and vitest pass;
   - then a review and a redeploy in an idle window.
 
+### Task 47: Post-deploy fixes (2026-11-05)
+
+- [x] **Step 1:** Strip NUL, and repair lone surrogates, in every database write of outside text.
+  - New src/lib/storable-text.ts:
+    - `storableText` is `toWellFormed()` plus the NUL strip;
+    - `storableFields` cleans a row's top-level strings;
+    - `storableJson` cleans jsonb deeply, keys included.
+  - It is used by items (`storableCard`, for items, price_segments and item_sources), coupons
+    (`couponRow`, with raw through storableJson), Buscas, alerts, finished runs, crawler
+    lastError and the market parsers. It also covers the read-side URL params (`str()` and
+    `searchTextOf`).
+  **Reason:** the 2026-11-04 19:30 and 2026-11-05 01:39 UTC ML cycles failed with
+  `invalid byte sequence for encoding "UTF8": 0x00 (22021)`. A NUL in an ML card's text aborted
+  the items insert and the whole cycle. review-m2 reproduced it live, and also found that a lone
+  surrogate breaks jsonb (22P02).
+  **Code Reference:** cause → `src/db/items.ts:L41-L63` (`itemRow`), `src/db/coupons.ts:L197`.
+- [x] **Step 2:** Conta's "Últimas execuções" shows a run error's first line, capped at 200
+  characters, and puts the full text behind "Ver erro completo" (`runErrorView`).
+  **Reason:** the old failed run displayed kilobytes of SQL.
+- [x] **Step 3:** Remove the Buscapé-only check statuses ('failed' and 'blocked'), and the
+  `price_checks.reason` column with migration 0016.
+  **Reason:** Buscapé is gone, and its 742 rows were deleted at the first deploy.
+- [x] **Verify:**
+  - tsc, lint and vitest pass (151 files, 2,676 passed plus 5 expected fail);
+  - review-m2 approved Step 1, after a read-only live check;
+  - deployed 2026-11-05 02:22 UTC, with 0016 applied while the service was stopped;
+  - the Conta error display was checked in the browser.
+
 ### Task 44: Deploy (team lead)
 
 - [x] **Step 1:** Run the gates: tsc, lint and the full vitest suite. Then a final review of
@@ -988,7 +1017,7 @@ tests.
     skipped as existing. The team lead had created it at 22:47 UTC.
   - The build passed, and the 742 Buscapé `price_checks` rows were deleted.
   - The service and timer started, with health up after 2 s, and the pause was lifted.
-- [-] **Step 3:** In the journal, watch the first Kabum department pages, the first Amazon session
+- [x] **Step 3:** In the journal, watch the first Kabum department pages, the first Amazon session
   and the first rematch pass. Fix any skipped Kabum slugs.
   **Reason:** department slugs and Amazon's page shapes are only proven live.
   -- **MODIFIED:** first minutes, at 23:57 UTC:
@@ -999,7 +1028,7 @@ tests.
     nearly empty.
   - No block and no error. Still to watch: the first Amazon searches (after the best-seller
     pass) and the end of the first department.
-- [-] **Step 4:** In the browser, with every request outside localhost blocked, check the Ofertas
+- [x] **Step 4:** In the browser, with every request outside localhost blocked, check the Ofertas
   coverage line, the Conta panel and "Comparar agora". Then spot-check about 20 flagged cards.
   -- **MODIFIED:** checked at 23:57 UTC, with every non-localhost request aborted:
   - Conta shows both site blocks: "Rodando: 1 página a cada 10 s", "Departamento 1 de 26
@@ -1009,8 +1038,13 @@ tests.
   - One "Comparar agora" (no_match) returned `{no_match, amazonQueued: true}` and showed "busca
     na Amazon na fila", with focus kept on the button.
   - The spot-check of flagged cards waits until coverage builds.
-- [ ] **Verify:** `/api/health` shows both crawlers; `market_offers` grows; at least one Amazon
+- [x] **Verify:** `/api/health` shows both crawlers; `market_offers` grows; at least one Amazon
   search is recorded; the docs are updated.
+  -- **MODIFIED:** verified 2026-11-05 02:23 UTC.
+  - Kabum is on department 10 of 26 with 40,215 offers, and Amazon has 9,270 offers with 168
+    searches recorded.
+  - 530 checks have an equivalent, and 153 cards are hidden as inflated.
+  - The flagged-card spot-check became Task 46.
 
 ## Execution Protocol
 
